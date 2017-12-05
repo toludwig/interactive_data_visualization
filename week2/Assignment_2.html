@@ -4,7 +4,28 @@
     <meta charset="UTF-8">
     <title>Assignment 2</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="Assignment_2v3.js"></script>
+    <script src="line_plot.js"></script>
+    <script src="line_std_plot.js"></script>
+    <script>
+        d3.select(window).on('load', init);
+        function init() {
+            d3.csv("station_short.csv",
+                function (mydata) {
+                    //Parse Data into usable format
+                    mydata.forEach(function (d) {
+                        d.metANN = +d.metANN;
+                        d.YEAR = +d.YEAR;
+                        //the + sign converts numeric string to number
+                    });
+                    var data  = mydata;
+                    // bin the data in decades
+                    var bins = bin_decades(mydata);
+
+                    makeVis1(data);
+                    makeVis2(bins);
+                });
+        }
+    </script>
     <style>
       #plot1 {
         border:1px solid grey;
@@ -17,7 +38,10 @@
 <h2>Motivation</h2>
 <h2>Method</h2>
 <h2>Graphical Analysis</h2>
+    <p>Line plot</p>
     <svg style="width:760px; height:316px" id="plot1"></svg>
+    <p>Line + standard deviation plot</p>
+    <svg style="width:760px; height:316px" id="plot2"></svg>
 <h2>Results and Discussion</h2>
 <h2>Conclusion</h2>
 </body>
