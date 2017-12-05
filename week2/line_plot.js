@@ -41,7 +41,7 @@ function makeVis1(data){
 
 
     container.append("path")
-        .data(data)
+        .datum(data)
         .attr("fill", "none")
         .attr("stroke", "blue")
         .attr("stroke-linejoin", "round")

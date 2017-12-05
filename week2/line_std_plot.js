@@ -76,22 +76,32 @@ function makeVis2(bins){
         .y(function(d){ return yScale(d.mean - d.std); });
 
     container.append("path")
-        .data(bins)
+        .datum(bins)
         .attr("fill", "none")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
         .attr("stroke", "steelblue")
         .attr("stroke-width", 1)
         .attr("d", mean_line);
 
     container.append("path")
-        .data(bins)
-        .attr("fill", "#000")
+        .datum(bins)
+        .attr("d", d3.line().x([10, 20]).y([10,20]));
+
+    container.append("path")
+        .datum(bins)
+        .attr("fill", "none")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
         .attr("stroke", "red")
         .attr("stroke-width", 0.5)
         .attr("d", std_line1);
 
     container.append("path")
-        .data(bins)
-        .attr("fill", "#000")
+        .datum(bins)
+        .attr("fill", "none")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
         .attr("stroke", "lightblue")
         .attr("stroke-width", 0.5)
         .attr("d", std_line2);
