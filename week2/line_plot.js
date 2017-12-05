@@ -12,7 +12,7 @@ function makeVis1(data){
         .range([padding,width-padding]);
 
     var yScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d){ return d.metANN}))
+        .domain([7, 12])
         .range([height-padding, padding]);
 
     container.selectAll("circle")
