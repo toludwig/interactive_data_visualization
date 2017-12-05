@@ -40,6 +40,9 @@ function makeVis1(data){
         .y(function(d) { return yScale(d.metANN); });
 
 
+    // line drawing and axis labeling code is copied from:
+    // https://bl.ocks.org/mbostock/3883245
+
     container.append("path")
         .datum(data)
         .attr("fill", "none")
