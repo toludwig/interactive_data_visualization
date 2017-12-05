@@ -40,7 +40,7 @@ function makeVis2(bins){
         .range([padding,width-padding]);
 
     var yScale = d3.scaleLinear()
-        .domain(d3.extent(bins, function(d){ return d.mean}))
+        .domain([7, 12])
         .range([height-padding, padding]);
 
     container.selectAll("circle")
@@ -93,7 +93,7 @@ function makeVis2(bins){
         .attr("fill", "none")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
-        .attr("stroke", "red")
+        .attr("stroke", "blue")
         .attr("stroke-width", 0.5)
         .attr("d", std_line1);
 
@@ -102,7 +102,7 @@ function makeVis2(bins){
         .attr("fill", "none")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
-        .attr("stroke", "lightblue")
+        .attr("stroke", "blue")
         .attr("stroke-width", 0.5)
         .attr("d", std_line2);
 
