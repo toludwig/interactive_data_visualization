@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Trump Family</title>
+    <script>
+        d3.select(window).on('load', init);
+        function init() {
+            d3.json("trump_family.json",
+                function (mydata) {
+                    drawtree(mydata);
+                })};
+    </script>
+</head>
+<body>
+    <svg id="plotarea"></svg>
+</body>
+</html>
