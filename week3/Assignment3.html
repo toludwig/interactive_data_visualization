@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>The Trump Family</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="trumptree.js"></script>
     <script>
         d3.select(window).on('load', init);
         function init() {
             d3.json("trump_family.json",
                 function (mydata) {
                     drawtree(mydata);
+                    console.log(mydata);
                 })};
     </script>
 </head>
