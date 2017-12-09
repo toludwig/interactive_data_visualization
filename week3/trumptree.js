@@ -24,11 +24,39 @@ function drawtree(data){
     var link = g.selectAll(".link")
         .data(tree(root).links())
         .enter().append("path")
+        // TODO schönere Links
+        // TODO alle Links!!
         .attr("class", "link")
-        .attr("d", d3.linkHorizontal()
-            .x(function(d) { return d.y; })
-            .y(function(d) { return d.x; }));
+        .attr("d", function(d){
+                d3.line()
+                    .x(function(d) { return d.x; })
+                    .y(function(d) { return d.y; });
+            }
+            // function link(d) {
+            //     return
+            //     "M" + d.source.y + "," + d.source.x
+            //         + "C" + (d.source.y + d.target.y)  + "," + d.source.x
+            //         + " " + (d.source.y + d.target.y)  + "," + d.target.x
+            //         + " " + d.target.y + "," + d.target.x;
+            // }
+        );
 
-    tree.nodes();
+            //d3.linkHorizontal()
+            //.x(function(d) { return d.x; })
+            //.y(function(d) { return d.y; }));
 
+    var node = g.selectAll(".node")
+        .data(root.descendants())
+        .enter().append("g")
+        .attr("class", function(d) { return "node" + (d.children ? " node--internal" : " node--leaf"); })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+
+    node.append("circle")
+        .attr("r", 10)
+        .style("fill", "none")
+        .style("stroke", "red");
+
+    node.append("text")
+        // FIXME
+        .text(function(d) { return d["name"]; });
 }
