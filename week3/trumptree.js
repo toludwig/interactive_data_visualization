@@ -27,23 +27,16 @@ function drawtree(data){
         // TODO schönere Links
         // TODO alle Links!!
         .attr("class", "link")
-        .attr("d", function(d){
-                d3.line()
-                    .x(function(d) { return d.x; })
-                    .y(function(d) { return d.y; });
-            }
-            // function link(d) {
-            //     return
-            //     "M" + d.source.y + "," + d.source.x
-            //         + "C" + (d.source.y + d.target.y)  + "," + d.source.x
-            //         + " " + (d.source.y + d.target.y)  + "," + d.target.x
-            //         + " " + d.target.y + "," + d.target.x;
-            // }
-        );
+        .attr("d",  function link(d) {
+                return "M" + d.source.x + "," + d.source.y
+                      + "L" + (d.source.x + d.target.x)/2 + "," + d.source.y
+                      + " " + (d.source.x + d.target.x)/2 + "," + d.target.y
+                      + " " + d.target.x + "," + d.target.y;
+                }
+        )
+        .attr("fill", "none")
+        .attr("stroke", "black");
 
-            //d3.linkHorizontal()
-            //.x(function(d) { return d.x; })
-            //.y(function(d) { return d.y; }));
 
     var node = g.selectAll(".node")
         .data(root.descendants())
