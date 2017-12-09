@@ -66,7 +66,7 @@ function drawtree(data){
     console.log(data.name);
 
     node.append("text")
-        // FIXME ich arbeite gerade dran
+        // FIXME
         .attr('text-anchor','middle')
         .text(function(d) { return "test" });
 }
