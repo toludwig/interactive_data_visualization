@@ -24,8 +24,6 @@ function drawtree(data){
     var link = g.selectAll(".link")
         .data(tree(root).links())
         .enter().append("path")
-        // TODO schönere Links
-        // TODO alle Links!!
         .attr("class", "link")
         .attr("d",  function link(d) {
                 return "M" + d.source.x + "," + d.source.y
