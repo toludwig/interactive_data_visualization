@@ -3,19 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <title>The Trump Family</title>
+
+    <style>
+        text, td {
+            font-size: 14px;
+        }
+
+        table {
+            border: 1px solid black;
+            font-weight: bold;
+        }
+
+    </style>
+
+    <!-- set up D3 and link to .js script:-->
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="trumptree.js"></script>
     <script>
         d3.select(window).on('load', init);
+
         function init() {
             d3.json("trump_family.json",
                 function (mydata) {
                     drawtree(mydata);
                     console.log(mydata);
-                })};
+                })
+        };
     </script>
 </head>
 <body>
-    <svg id="plotarea"></svg>
+<h2> Trump Family Tree</h2>
+<h3> Assignment 3: Johannes Jacob, Mona Timmermann, Tobias Ludwig</h3>
+
+<p>
+    The following visualisation shows a family tree created for the Trump family based on <a
+        href="https://wouterboomsma.github.io/ide2017/week49/trump_family.json">this</a> data.
+    <br>
+    The goal was to create an easy-to-read tree. We have made the following decisions:
+<ul>
+    <li>Partners have been put on their own level for simplification</li>
+    <li>Links between people's names as basic easy-to-read lines</li>
+    <li>Differentiation between Husband/Wife and Parent/Child relationship by color</li>
+    <li>Legend to explain meaning of colours</li>
+
+</ul>
+<br>
+Possible improvements could be:
+<ul>
+    <li> Having partners on a subordinated level can be confusing at first. Something similar to <a
+            href="https://i.pinimg.com/564x/3b/c7/65/3bc7659f4e0bd449b79664291fbfde6f--donald-trump-children-donald-trump-family.jpg">this</a>
+        may be nicer.
+    </li>
+    <li> The visualisation seems too wide and should probably be narrowed a little.
+    <li> Adding more information, e.g.:
+        <ol>
+            <li> photo of corresponding person</li>
+            <li> current relationship status (married, divorced)</li>
+            <li> age and/or birthday</li>
+            <li> current job</li>
+            <li> place of residence</li>
+
+        </ol>
+    <li> The information mentioned above could be added based on an event listener, e.g. a mouse click or mouseover.
+    </li>
+</ul>
+</p>
+<br>
+<br>
+<!-- Create legend for graph: -->
+<table>
+    <tr>
+        <td> Husband/Wife</td>
+    </tr>
+    <tr>
+        <td> Parent/Child</td>
+    </tr>
+</table>
+
+<!-- Create svg element: -->
+<svg id="plotarea"></svg>
 </body>
 </html>
