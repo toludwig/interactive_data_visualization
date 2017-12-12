@@ -1,11 +1,12 @@
 function drawtree(data) {
-    var margin = {top: 20, right: 10, bottom: 10, left: 10};
-    var width = 2000 - margin.right - margin.left;
+    var margin = {top: 20, right: 100, bottom: 10, left: 10};
+    var width = 1700 - margin.right - margin.left;
     var height = 600 - margin.top - margin.bottom;
 
 
     var tree = d3.tree()
         .size([width, height]);
+
 
     // Partners will be treated as children for graph (simplification):
     var root = d3.hierarchy(data,
@@ -60,22 +61,48 @@ function drawtree(data) {
         });
 
 
-    // Create rectangles which will later be placed behind the names:
-    // note:x=-60 needed so that the rectangles will be placed in the center, not pushed to right from node
+    // Create rectangles which will be placed behind the names:
+    // note:x=-50 needed so that the rectangles will be placed in the center, not pushed to right from node
     node.append("rect")
-        .attr("x", -60)
+        .attr("x", -50)
         .attr("y", -20)
-        .attr("width", 120)
+        .attr("width", 100)
         .attr("height", 30)
         .style("stroke", "black")
         .style("fill", "white");
 
+
     // add the person's name to node:
-    node.append("text")
+    var text = node.append("text")
         .attr('text-anchor', 'middle')
         .text(function (node) {
             return node.data.name;
         });
+
+
+    // add interactivity (Who is your favourite Trump family member?):
+    text.on("mousemove", function (d) {
+        // print name:
+        d3.select('#event-text')
+            .text(d.data.name);
+        // print that person's age:
+        d3.select("#event-age")
+            .text(d.data.age);
+        // make the text within chosen rectangle green:
+        d3.select(this).style("fill", "limegreen").attr("font-weight", "bold");
+
+    })
+        .on("mouseout", function (d) {
+            // print text to appear between choices:
+            d3.select('#event-text')
+                .text("Hmm, such a hard decision...");
+            // remove previous person's age:
+            d3.select("#event-age")
+                .text("__");
+            // make the text within previously chosen rectangle black again:
+            d3.select(this).style("fill", "black").attr("font-weight", "normal");
+        });
+
 
     // add colours to legend table:
     d3.select("table")
@@ -86,5 +113,6 @@ function drawtree(data) {
                     return "red";
                 else
                     return "blue";
-            })
+            });
+
 }
