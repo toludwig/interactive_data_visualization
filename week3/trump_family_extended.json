@@ -1,0 +1,98 @@
+{
+  "name": "Donald Trump",
+  "age":"71",
+  "photo":"https://www.thenation.com/wp-content/uploads/2017/03/trump_daywithout_ap_img.jpg",
+  "partners": [
+    {
+      "name": "Ivana Trump",
+      "age":"68",
+      "children": [
+        {
+          "name": "Donald Trump Jr.",
+          "age":"36",
+          "partners": [
+            {
+              "name": "Vanessa Trump",
+              "age":"39",
+              "children": [
+                {
+                  "name": "Kai Madison",
+                  "age":"10"
+                },
+                {
+                  "name": "Donald III",
+                  "age":"8"
+                },
+                {
+                  "name": "Chloe Sophia",
+                  "age":"3"
+                },
+                {
+                  "name": "Tristan Milos",
+                  "age":"6"
+                },
+                {
+                  "name": "Spencer Frederick",
+                  "age":"5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Ivanka Trump",
+          "age":"36",
+          "partners": [
+            {
+              "name": "Jared Kushner",
+              "age":"36",
+              "children": [
+                {
+                  "name": "Arabella Rose",
+                  "age":"6"
+                },
+                {
+                  "name": "Joseph Frederick",
+                  "age":"4"
+                },
+                {
+                  "name": "Theodore James",
+                  "age":"1"
+                }
+              ]
+            }
+          ]
+        },          
+        {
+          "name": "Eric Trump",
+          "age":"33",
+          "partners": [
+            {
+              "name": "Lara Yunaska"
+            }
+          ]
+        }          
+      ]
+    },
+    {
+      "name": "Marla Maples",
+      "age":"54",
+      "children": [
+        {
+          "name": "Tiffany Trump",
+          "age":"24"
+        }
+      ]
+    },
+    {
+      "name": "Melania Trump",
+      "age":"47",
+      "children": [
+        {
+          "name": "Baron Trump",
+          "age":"11"
+        }
+      ]
+    }    
+  ]
+}
