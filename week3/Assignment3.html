@@ -5,8 +5,9 @@
     <title>The Trump Family</title>
 
     <style>
+
         text, td {
-            font-size: 14px;
+            font-size: 12px;
         }
 
         table {
@@ -23,12 +24,12 @@
         d3.select(window).on('load', init);
 
         function init() {
-            d3.json("trump_family.json",
+            d3.json("trump_family_extended.json",
                 function (mydata) {
                     drawtree(mydata);
                     console.log(mydata);
                 })
-        };
+        }
     </script>
 </head>
 <body>
@@ -52,24 +53,38 @@ Possible improvements could be:
 <ul>
     <li> Having partners on a subordinated level can be confusing at first. Something similar to <a
             href="https://i.pinimg.com/564x/3b/c7/65/3bc7659f4e0bd449b79664291fbfde6f--donald-trump-children-donald-trump-family.jpg">this</a>
-        may be nicer.
+        might be nicer.
     </li>
     <li> The visualisation seems too wide and should probably be narrowed a little.
     <li> Adding more information, e.g.:
         <ol>
             <li> photo of corresponding person</li>
             <li> current relationship status (married, divorced)</li>
-            <li> age and/or birthday</li>
+            <li> (age and/or birthday)</li>
             <li> current job</li>
             <li> place of residence</li>
 
         </ol>
-    <li> The information mentioned above could be added based on an event listener, e.g. a mouse click or mouseover.
+    <li> The information mentioned above could nicely be implemented as pop-up windows / switching through
+        idioms
     </li>
 </ul>
 </p>
 <br>
+
+<!-- Create some interactivity: -->
+<p> Because everyone loves interactivity, just go over the rectangles to pick your ultimate fave
+    and find out whether you and that person are of similar age:
+<h3>My favourite Trump family member is: <span id="event-text" style="color:limegreen"> _________________</span>
+    <br>
+    This person is <span id="event-age" style="color:limegreen">__</span> years old.
+    <!--The person looks like this: <svg id="photo_area"> </svg></h3> -->
+</h3>
+</p>
+
 <br>
+<br>
+
 <!-- Create legend for graph: -->
 <table>
     <tr>
@@ -80,7 +95,7 @@ Possible improvements could be:
     </tr>
 </table>
 
-<!-- Create svg element: -->
+<!-- Create svg element:-->
 <svg id="plotarea"></svg>
 </body>
 </html>
