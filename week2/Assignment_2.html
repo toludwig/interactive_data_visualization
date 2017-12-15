@@ -5,6 +5,7 @@
     <title>Assignment 2</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="line_plot.js"></script>
+    <script src="bar_plot.js"></script>
     <script src="line_std_plot.js"></script>
     <script>
         d3.select(window).on('load', init);
@@ -22,6 +23,7 @@
                     var bins = bin_decades(mydata);
 
                     makeVis1(data);
+                    makeVis3(data);
                     makeVis2(bins);
                 });
         }
@@ -30,8 +32,11 @@
       #plot1 {
         border:1px solid grey;
       }
-      #plot2 {
+      #plot3 {
         border:1px solid grey;
+      }
+      #plot2 {
+          border:1px solid grey;
       }
       body {
         font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
@@ -62,6 +67,8 @@
 <h2><a id="grph">3. Graphical Analysis</a></h2>
     <p>Line plot</p>
     <svg style="width:760px; height:316px" id="plot1"></svg>
+    <p>Bar plot</p>
+    <svg style="width:760px; height:316px" id="plot3"></svg>
     <p>Line + standard deviation plot</p>
     <svg style="width:760px; height:316px" id="plot2"></svg>
 <h2><a id="resul">4. Results and Discussion</a></h2>
