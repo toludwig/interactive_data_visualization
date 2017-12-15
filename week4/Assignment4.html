@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show of Hands</title>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="two_panel.js"></script>
+
+    <script>
+        d3.select(window).on('load', init);
+        function init() {
+            d3.text("hands.csv",
+                function (text) {
+                    var data = d3.csvParseRows(text).map(function (row) {
+                        return row.map(function (value) {
+                            return +value;
+                        });
+                    });
+                    drawHand(data);
+                });
+
+
+            var pointData = d3.text("hands_pca.csv",
+                function (text) {
+                    var data = d3.csvParseRows(text).map(function (row) {
+                        return row.map(function (value) {
+                            return +value;
+                        });
+                    });
+                    drawPoints(data);
+                });
+        }
+
+    </script>
+
+    <style>
+        svg {
+            border:1px solid grey;
+        }
+    </style>
+
+</head>
+<body>
+<svg width="1600" height="800" fill="black" id="plotarea">
+    <g x="0" y="0" width="800" height="800" stroke="black" id="hand"> </g>
+    <g x="800" y="0" width="800" height="800" stroke="black" id="points"></g>
+</svg>
+</body>
+</html>
