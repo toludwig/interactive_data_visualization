@@ -1,6 +1,4 @@
-colors = d3.schemeCategory12;
-
-
+// WESENTLICHE ÄNDERUNG: PUNKTE ANZEIGEN LASSEN DURCH KLICK
 
 // DRAW POINTS PANEL:
 function drawPoints(data) {
