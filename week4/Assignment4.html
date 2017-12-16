@@ -4,23 +4,50 @@
     <meta charset="UTF-8">
     <title>Show of Hands</title>
 
+    <!-- Set (CSS) style: -->
+    <style>
+        svg {
+            border: 1px solid grey;
+        }
+
+        .axis {
+            font-size: 80%;
+            font-weight: bold;
+        }
+
+        .axis text {
+            fill: black;
+        }
+
+    </style>
+
+
+
+    <!-- D3 & JS -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="two_panel.js"></script>
 
     <script>
         d3.select(window).on('load', init);
+
         function init() {
-            d3.text("hands.csv",
+
+
+            // HANDS PLOT:
+            var handData = d3.text("hands.csv",
+                // transform numeric strings into numerics:
                 function (text) {
                     var data = d3.csvParseRows(text).map(function (row) {
                         return row.map(function (value) {
                             return +value;
                         });
                     });
+                    // call Function to draw the hand in the left panel
                     drawHand(data);
                 });
 
 
+            // SCATTER PLOT (PCA):
             var pointData = d3.text("hands_pca.csv",
                 function (text) {
                     var data = d3.csvParseRows(text).map(function (row) {
@@ -28,22 +55,25 @@
                             return +value;
                         });
                     });
+                    // call Function to draw the points in the right panel:
                     drawPoints(data);
                 });
         }
 
     </script>
 
-    <style>
-        svg {
-            border:1px solid grey;
-        }
-    </style>
 
 </head>
 <body>
+<!-- To check the data values: -->
+    <p>
+        Chosen data point (by clicking on it): <span id="x_value">___</span>; <span id="y_value">___</span>
+    </p>
+
+<!-- Set up svg element and split into two panels (through groups) which will later
+show the two different plots: -->
 <svg width="1600" height="800" fill="black" id="plotarea">
-    <g x="0" y="0" width="800" height="800" stroke="black" id="hand"> </g>
+    <g x="0" y="0" width="800" height="800" stroke="black" id="hand"></g>
     <g x="800" y="0" width="800" height="800" stroke="black" id="points"></g>
 </svg>
 </body>
