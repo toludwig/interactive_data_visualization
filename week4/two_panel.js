@@ -50,7 +50,7 @@ function drawPoints(data) {
         .append("circle")
         .attr("r", "5")
         .attr("cx", function (d) {
-            return ""+ yScale(d[0]) +"px";})
+            return ""+ xScale(d[0]) +"px";})
         .attr("cy", function (d) {
             return ""+ yScale(d[1]) +"px";})
         .attr("fill", "lightblue")
