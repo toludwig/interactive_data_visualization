@@ -30,33 +30,35 @@
     <script>
         d3.select(window).on('load', init);
 
+        var handData = []; // store the hand data globally, we need to have access always when we request a new draw
+
         function init() {
-
-
-            // HANDS PLOT:
-            var handData = d3.text("hands.csv",
+            // SCATTER PLOT (PCA):
+            d3.text("hands_pca.csv",
                 // transform numeric strings into numerics:
                 function (text) {
-                    var data = d3.csvParseRows(text).map(function (row) {
-                        return row.map(function (value) {
-                            return +value;
-                        });
+                    var data = d3.csvParseRows(text).map(function (row, id) {
+                        var xy = [+row[0], +row[1]]; // only are the first two coordinates are needed for projection
+                        // adding the row index as an id is needed for accessing the corresponding hand data when clicked
+                        return {id: id, xy: xy};
                     });
-                    // call Function to draw the hand in the left panel
-                    drawHand(data);
+                    // call Function to draw the points in the left panel:
+                    drawPoints(data);
                 });
 
 
-            // SCATTER PLOT (PCA):
-            var pointData = d3.text("hands_pca.csv",
+            // HANDS PLOT:
+            d3.text("hands.csv",
                 function (text) {
-                    var data = d3.csvParseRows(text).map(function (row) {
-                        return row.map(function (value) {
+                    handData = d3.csvParseRows(text).map(function (row) {
+                        var xyValues = row.map(function (value) {
                             return +value;
                         });
+                        return {"xs": xyValues.slice(0,  56),
+                                "ys": xyValues.slice(56, 112)};
                     });
-                    // call Function to draw the points in the right panel:
-                    drawPoints(data);
+                    // call Function to draw the hand in the right panel
+                    drawHand(0); // first id is selected first
                 });
         }
 
@@ -67,14 +69,15 @@
 <body>
 <!-- To check the data values: -->
     <p>
-        Chosen data point (by clicking on it): <span id="x_value">___</span>; <span id="y_value">___</span>
+        Choose a data point in the PCA-Panel (by clicking on it). Id is: <span id="id_value">___</span>
     </p>
 
-<!-- Set up svg element and split into two panels (through groups) which will later
-show the two different plots: -->
-<svg width="1600" height="800" fill="black" id="plotarea">
-    <g x="0" y="0" width="800" height="800" stroke="black" id="hand"></g>
-    <g x="800" y="0" width="800" height="800" stroke="black" id="points"></g>
-</svg>
+<!-- Set up two svg panels that are displayed next to each other (vertically or horizontally responsively)
+One will show the hand, the other the pca-points -->
+<div style="display: inline-block">
+    <svg width="800" height="800" id="points"></svg>
+    <svg width="800" height="800" id="hand"></svg>
+</div>
+
 </body>
 </html>
