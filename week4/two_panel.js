@@ -21,8 +21,6 @@ function drawPoints(data) {
         }))
         .range([height-padding, padding]);
 
-
-
     // Create the data point circles:
     var circles = svg.selectAll("circle")
         .data(data)
@@ -57,8 +55,33 @@ function drawPoints(data) {
         .attr("class","axis y")
         .call(d3.axisLeft(yScale));
 
-}
+    // x Axis:
+    g.append("text")
+        .attr("fill","black")
+        .attr("x", 750)
+        .attr("y", 770)
+        .attr("dx", "1px")
+        .attr("text-anchor", "end")
+        .text("PC 1");
 
+    // y Axis:
+    g.append("text")
+        .attr("fill", "black")
+        .attr("x", 40)
+        .attr("y", 80)
+        .attr("dy", "1px")
+        .attr("text-anchor", "end")
+        .text("PC 2");
+
+    // Add title to left panel visualisation:
+    g.append("text")
+        .attr("fill","black")
+        .attr("x",400)
+        .attr("y",50)
+        .attr("dy","1px")
+        .text("PCA Results");
+
+}
 
 
 // DRAW HAND PANEL:
@@ -102,5 +125,4 @@ function drawHand(id) {
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 0.5)
         .attr("d", line(handData[id]));
-
 }
