@@ -9,13 +9,13 @@ function drawPoints(data) {
     padding = 60;
 
     // Scaling:
-     var xScale = d3.scaleLinear()
+    var xScale = d3.scaleLinear()
         .domain(d3.extent(data, function(d){
             return d.xy[0];
         }))
         .range([padding, width-padding]);
 
-     var yScale = d3.scaleLinear()
+    var yScale = d3.scaleLinear()
         .domain(d3.extent(data, function(d){
             return d.xy[1];
         }))
@@ -57,7 +57,7 @@ function drawPoints(data) {
     svg.append("text")
         .attr("fill","black")
         .attr("x", 550)
-        .attr("y", 570)
+        .attr("y", 580)
         .attr("dx", "1px")
         .attr("text-anchor", "end")
         .text("PC 1");
@@ -74,7 +74,7 @@ function drawPoints(data) {
     // Add main title to left panel visualisation:
     svg.append("text")
         .attr("fill","black")
-        .attr("x",350)
+        .attr("x",300)
         .attr("y",15)
         .attr("font-weight","bold")
         .attr("dy","10px")
@@ -94,14 +94,25 @@ function drawPoints(data) {
 }
 
 
+
+
+
+
+
 // DRAW HAND PANEL:
+
 function drawHand(id) {
 
     // Select area for hand drawing
     svg = d3.select("#hand");
 
-    // To avoid hand being drawn on top of each other remove the previous hand:
-    d3.select("#oldHand").remove();
+
+    // if One Hand selected in Combo Box:
+    // To avoid hands being drawn on top of each other remove the previous hand:
+    if (selectValue == "One Hand"){
+        d3.select("#oldHand").remove();
+    }
+
 
     // Layout:
     width  = 600;
@@ -117,6 +128,14 @@ function drawHand(id) {
         .domain([0.1, 1.1])
         .range([height-padding, padding]);
 
+    // Add main title to right panel visualisation:
+    svg.append("text")
+        .attr("fill","black")
+        .attr("x",300)
+        .attr("y",15)
+        .attr("font-weight","bold")
+        .attr("dy","10px")
+        .text("Selected Hand(s)");
 
     // Define which values will be used for x and y coordinates to then draw the path:
     var line = d3.line()
@@ -128,22 +147,25 @@ function drawHand(id) {
         });
 
     // Create the data point circles:
-    svg.append("path")
+    path = svg.append("path")
         .datum(handData[id])
         .attr("id", "oldHand")
         .attr("fill", "none")
-        .attr("stroke", "darkblue")
+        .attr("stroke", "black")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 1)
         .attr("d", line);
 
-    // Add main title to right panel visualisation:
-    svg.append("text")
-        .attr("fill","black")
-        .attr("x",350)
-        .attr("y",15)
-        .attr("font-weight","bold")
-        .attr("dy","10px")
-        .text("Selected Hand");
+    // Make selected hand red AND MARK DATA POINT IN LEFT PANEL RED:
+    // FIXME
+    path.on("mousemove", function (d) {
+        d3.select(this).style("stroke", "red").attr("stroke-width", 4);
+
+    });
+    path.on("mouseout", function (d) {
+            d3.select(this).style("stroke", "black").attr("stroke-width", 1);
+    });
+
+
 }

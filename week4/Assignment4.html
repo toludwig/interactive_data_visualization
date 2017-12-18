@@ -9,16 +9,13 @@
         svg {
             border: 1px solid grey;
         }
-
         .axis {
             font-size: 80%;
             font-weight: bold;
         }
-
         .axis text {
             fill: black;
         }
-
     </style>
 
 
@@ -29,11 +26,9 @@
 
     <script>
         d3.select(window).on('load', init);
-
         var handData = []; // store the hand data globally, we need to have access always when we request a new draw
         var xVar = 0;
         var yVar = 1; // columns
-
         function init() {
             // SCATTER PLOT (PCA):
             d3.text("hands_pca.csv",
@@ -47,8 +42,6 @@
                     // call Function to draw the points in the left panel:
                     drawPoints(data);
                 });
-
-
             // HANDS PLOT:
             d3.text("hands.csv",
                 function (text) {
@@ -57,13 +50,12 @@
                             return +value;
                         });
                         return d3.zip(xyValues.slice(0,  56),
-                                      xyValues.slice(56, 112));
+                            xyValues.slice(56, 112));
                     });
                     // call Function to draw the hand in the right panel
-                    drawHand(0); // first id is selected first
+                    drawHand(); // first id is selected first
                 });
         }
-
     </script>
 
 
@@ -78,21 +70,73 @@
 
 <h2>Introduction</h2>
 
+
+
+
 <h2>Method</h2>
-<!-- Interactivity: Choose a data point (initially hand with ID=0 will be selected): -->
+<h3>Data</h3>
+The hand data used for this assignment (hands.csv) is a 112-dimensional dataset. Each of the 40 rows respresents
+the outline of a hand (first 56 values are x-coordinates and next 56 values are the corresponding y-values).
+<br/>
+Principal Component Analysis has been applied to the hands dataset and resulted in the second data set: hands_pca.csv.
+Principal Component Analysis is a commonly used technique to deal with high-dimensional data. Based on variance, it repositions all
+data points along orthogonal axes. The first dimension captures most variance and the last dimension captures least variance.
+<br/>
+<h3>Visualisation</h3>
+The goal of this assignment was to create a scatterplot visualising different hands as data points based on two
+principal components. When a data point is selected, the outline of the hand is created in a second panel to the right.
+There is an option to plot only one hand or to plot hands selected one after another on top of each other. (SWITCHING IMPOSSIBLE SO FAR)
 
-<!-- LEAVE LOWER PART (IN ITALICS) AT BOTTOM -->
 
-
-<p>
+<!--Print selected ID -->
+<p style="color:dimgrey">
     <i>
-    Choose a data point in the PCA-Panel (by clicking on it). <br/>
-    The selected ID is: <span id="id_value">0</span>
+        Choose a data point in the PCA-Panel. <br/>
+        The selected ID is: <span id="id_value">0</span>
     </i>
-<p>
+</p>
 
 
-<!-- Set up two svg panels that are displayed next to each other (vertically or horizontally responsively)
+<!-- Combo Box:
+to decide whether one or more hands (on top of each other) should be created:-->
+<span id="selection_text" style="color:dimgrey"> Choose to display either one or multiple hands:</span>
+
+<script>
+    // The following creates a combo box so you can decide to plot just one hand
+    // or to plot each selected hand on previously selected hands:
+
+    // Give options:
+    var choice = ["","One Hand", "Multiple Hands"];
+
+    // Set up combo box in body:
+    var select = d3.select('body')
+        .append('select')
+        .attr('class','select')
+        .on('change',onchange);
+
+    var options = select
+        .selectAll('option')
+        .data(choice).enter()
+        .append('option')
+        .text(function (d) { return d; });
+
+    // selectValue will be used for if function in .js file
+    var selectValue="";
+
+    // change value of selectValue depending on what has been chose.
+    function onchange() {
+        selectValue = d3.select('select').property('value');
+        //d3.select('#selection_text')
+        //    .text(selectValue + ' is the last selected option.')
+    }
+
+</script>
+<br/>
+
+
+
+
+<!-- Set up two svg panels that are displayed next to each other (horizontally)
 One will show the hand, the other the pca-points -->
 <div style="display: inline-block">
     <svg width="600" height="600" id="points"></svg>
@@ -100,25 +144,26 @@ One will show the hand, the other the pca-points -->
 </div>
 
 <h2>Results</h2>
+In the PCA plot one can clearly see which hands can be expected to look more alike.
+As expected, <element id="outlierPar" style="color:red">outliers</element> (marked red when you place your mouse the word)
+look rather different than the other hands.....
 
-<h3>Outliers</h3>
-    <p id="outlierPar">
-        The outliers...
-    </p>
 
-    <script>
-        d3.select("#outlierPar")
-            .on("mousemove", function (d) {
-                d3.selectAll(".outlier")
-                    .attr("fill", "red");
-            })
-            .on("mouseout", function (d) {
-                d3.selectAll(".outlier")
-                    .attr("fill", "lightblue");
-            });
-    </script>
+<script>
+    d3.select("#outlierPar")
+        .on("mousemove", function (d) {
+            d3.selectAll(".outlier")
+                .attr("fill", "red");
+        })
+        .on("mouseout", function (d) {
+            d3.selectAll(".outlier")
+                .attr("fill", "lightblue");
+        });
+</script>
 
 <h2>Conclusion</h2>
+
+
 
 
 
