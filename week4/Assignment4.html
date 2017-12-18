@@ -54,8 +54,8 @@
                         var xyValues = row.map(function (value) {
                             return +value;
                         });
-                        return {"xs": xyValues.slice(0,  56),
-                                "ys": xyValues.slice(56, 112)};
+                        return d3.zip(xyValues.slice(0,  56),
+                                      xyValues.slice(56, 112));
                     });
                     // call Function to draw the hand in the right panel
                     drawHand(0); // first id is selected first
@@ -69,14 +69,14 @@
 <body>
 <!-- To check the data values: -->
     <p>
-        Choose a data point in the PCA-Panel (by clicking on it). Id is: <span id="id_value">___</span>
+        Choose a data point in the PCA-Panel (by clicking on it). Id is: <span id="id_value">0</span>
     </p>
 
 <!-- Set up two svg panels that are displayed next to each other (vertically or horizontally responsively)
 One will show the hand, the other the pca-points -->
 <div style="display: inline-block">
-    <svg width="800" height="800" id="points"></svg>
-    <svg width="800" height="800" id="hand"></svg>
+    <svg width="700" height="700" id="points"></svg>
+    <svg width="700" height="700" id="hand"></svg>
 </div>
 
 </body>

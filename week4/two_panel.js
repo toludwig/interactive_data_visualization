@@ -4,9 +4,9 @@ function drawPoints(data) {
     // Select area for points and define layout:
     svg = d3.select("#points");
 
-    width = 800;
-    height = 800;
-    padding = 80;
+    width = 700;
+    height = 700;
+    padding = 70;
 
     // Scaling:
      var xScale = d3.scaleLinear()
@@ -56,25 +56,25 @@ function drawPoints(data) {
         .call(d3.axisLeft(yScale));
 
     // x Axis:
-    g.append("text")
+    svg.append("text")
         .attr("fill","black")
-        .attr("x", 750)
-        .attr("y", 770)
+        .attr("x", 650)
+        .attr("y", 670)
         .attr("dx", "1px")
         .attr("text-anchor", "end")
         .text("PC 1");
 
     // y Axis:
-    g.append("text")
+    svg.append("text")
         .attr("fill", "black")
         .attr("x", 40)
-        .attr("y", 80)
+        .attr("y", 70)
         .attr("dy", "1px")
         .attr("text-anchor", "end")
         .text("PC 2");
 
     // Add title to left panel visualisation:
-    g.append("text")
+    svg.append("text")
         .attr("fill","black")
         .attr("x",400)
         .attr("y",50)
@@ -87,11 +87,14 @@ function drawPoints(data) {
 // DRAW HAND PANEL:
 function drawHand(id) {
     // Select area for hand drawing
+
     svg = d3.select("#hand");
 
-    width  = 800;
-    height = 800;
-    padding = 80;
+    d3.select("#oldHand").remove();
+
+    width  = 700;
+    height = 700;
+    padding = 70;
 
     var xScale = d3.scaleLinear()
         .domain([0, 1.5])
@@ -101,28 +104,22 @@ function drawHand(id) {
         .domain([0, 1.5])
         .range([height-padding, padding]);
 
-    function line(data) {
-        return d3.line()
-            .x(function (d) {
-                console.log(d);
-                return d.xs.map(function (x) {
-                    return xScale(x);
-                });
-            })
-            .y(function (d) {
-                return d.ys.map(function (y) {
-                    return yScale(y);
-                });
-            });
-    }
+    var line = d3.line()
+        .x(function (d) {
+            return xScale(d[0]);
+        })
+        .y(function (d) {
+            return yScale(d[1]);
+        });
 
     // Create the data point circles:
     svg.append("path")
         .datum(handData[id])
+        .attr("id", "oldHand")
         .attr("fill", "none")
         .attr("stroke", "blue")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 0.5)
-        .attr("d", line(handData[id]));
+        .attr("d", line);
 }
