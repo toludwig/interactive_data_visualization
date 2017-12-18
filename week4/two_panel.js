@@ -26,6 +26,9 @@ function drawPoints(data) {
         .data(data)
         .enter()
         .append("circle")
+        .attr("class", function (d){
+            return (d.id==37 || d.id== 39) ? "outlier" : "inlier";
+        })
         .attr("r", "5")
         .attr("cx", function (d) {
             return ""+xScale(d.xy[0])+"px";
@@ -97,11 +100,11 @@ function drawHand(id) {
     padding = 70;
 
     var xScale = d3.scaleLinear()
-        .domain([0, 1.5])
+        .domain([0.1, 1.1])
         .range([padding, width-padding]);
 
     var yScale = d3.scaleLinear()
-        .domain([0, 1.5])
+        .domain([0.1, 1.1])
         .range([height-padding, padding]);
 
     var line = d3.line()
@@ -120,6 +123,6 @@ function drawHand(id) {
         .attr("stroke", "blue")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
-        .attr("stroke-width", 0.5)
+        .attr("stroke-width", 1.5)
         .attr("d", line);
 }
