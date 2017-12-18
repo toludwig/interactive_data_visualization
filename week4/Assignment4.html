@@ -31,7 +31,8 @@
         d3.select(window).on('load', init);
 
         var handData = []; // store the hand data globally, we need to have access always when we request a new draw
-        var xVar = 0, yVar = 1; // columns
+        var xVar = 0;
+        var yVar = 1; // columns
 
         function init() {
             // SCATTER PLOT (PCA):
@@ -67,36 +68,59 @@
 
 
 </head>
+
+
 <body>
-<!-- To check the data values: -->
-    <p>
-        Choose a data point in the PCA-Panel (by clicking on it). Id is: <span id="id_value">0</span>
-    </p>
-    <p>
-        Choose
-    </p>
+
+<h1 style="color:darkblue">Assignment 4: Show of Hands </h1>
+<h2 style="color:darkblue">Tobias Ludwig, Johannes Jacob, Mona Timmermann</h2>
+<br/>
+
+<h2>Introduction</h2>
+
+<h2>Method</h2>
+<!-- Interactivity: Choose a data point (initially hand with ID=0 will be selected): -->
+
+<!-- LEAVE LOWER PART (IN ITALICS) AT BOTTOM -->
+
+
+<p>
+    <i>
+    Choose a data point in the PCA-Panel (by clicking on it). <br/>
+    The selected ID is: <span id="id_value">0</span>
+    </i>
+<p>
+
 
 <!-- Set up two svg panels that are displayed next to each other (vertically or horizontally responsively)
 One will show the hand, the other the pca-points -->
 <div style="display: inline-block">
-    <svg width="700" height="700" id="points"></svg>
-    <svg width="700" height="700" id="hand"></svg>
+    <svg width="600" height="600" id="points"></svg>
+    <svg width="600" height="600" id="hand"></svg>
 </div>
 
-<p id="outlierPar">
-    The outliers...
-</p>
+<h2>Results</h2>
 
-<script>
-    d3.select("#outlierPar")
-        .on("mousemove", function (d) {
-            d3.selectAll(".outlier")
-                .attr("fill", "red");
-        })
-        .on("mouseout", function (d) {
-            d3.selectAll(".outlier")
-                .attr("fill", "lightblue");
-        });
-</script>
+<h3>Outliers</h3>
+    <p id="outlierPar">
+        The outliers...
+    </p>
+
+    <script>
+        d3.select("#outlierPar")
+            .on("mousemove", function (d) {
+                d3.selectAll(".outlier")
+                    .attr("fill", "red");
+            })
+            .on("mouseout", function (d) {
+                d3.selectAll(".outlier")
+                    .attr("fill", "lightblue");
+            });
+    </script>
+
+<h2>Conclusion</h2>
+
+
+
 </body>
 </html>
