@@ -31,8 +31,8 @@
         d3.select(window).on('load', init);
 
         var handData = []; // store the hand data globally, we need to have access always when we request a new draw
-        var xVar = 0;
-        var yVar = 1; // columns
+        var xVar = 0; // index of data column to be plottet on the x-axis
+        var yVar = 1; // index of data column to be plottet on the y-axis
 
         function init() {
             // SCATTER PLOT (PCA):
@@ -40,9 +40,9 @@
                 // transform numeric strings into numerics:
                 function (text) {
                     var data = d3.csvParseRows(text).map(function (row, id) {
-                        var xy = [+row[xVar], +row[yVar]]; // only are the first two coordinates are needed for projection
+                        var coords = row.map(function (t) { return +t; }); // convert list of strings to list of numbers
                         // adding the row index as an id is needed for accessing the corresponding hand data when clicked
-                        return {id: id, xy: xy};
+                        return {id: id, coords: coords};
                     });
                     // call Function to draw the points in the left panel:
                     drawPoints(data);
@@ -63,7 +63,6 @@
                     drawHand(0); // first id is selected first
                 });
         }
-
     </script>
 
 
@@ -91,13 +90,19 @@
     </i>
 <p>
 
-
 <!-- Set up two svg panels that are displayed next to each other (vertically or horizontally responsively)
 One will show the hand, the other the pca-points -->
 <div style="display: inline-block">
-    <svg width="600" height="600" id="points"></svg>
-    <svg width="600" height="600" id="hand"></svg>
+    <svg width="600" height="600" id="points">
+        <text x="300" y="25" font-weight="bold">PCA-Results</text>
+    </svg>
+    <svg width="600" height="600" id="hand">
+        <text x="300" y="25" font-weight="bold">Selected Hand</text>
+    </svg>
+
+    </svg>
 </div>
+
 
 <h2>Results</h2>
 

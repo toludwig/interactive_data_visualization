@@ -9,17 +9,17 @@ function drawPoints(data) {
     padding = 60;
 
     // Scaling:
-     var xScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d){
-            return d.xy[0];
+    var xScale = d3.scaleLinear()
+        .domain(d3.extent(data, function (d) {
+            return d.coords[xVar];
         }))
-        .range([padding, width-padding]);
+        .range([padding, width - padding]);
 
-     var yScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d){
-            return d.xy[1];
+    var yScale = d3.scaleLinear()
+        .domain(d3.extent(data, function (d) {
+            return d.coords[yVar];
         }))
-        .range([height-padding, padding]);
+        .range([height - padding, padding]);
 
     // Create the data point circles:
     // Note: We need the outlier/inlier class definitions to later fill those with red colours
@@ -28,34 +28,36 @@ function drawPoints(data) {
         .data(data)
         .enter()
         .append("circle")
-        .attr("class", function (d){
-            return (d.id==37 || d.id== 39) ? "outlier" : "inlier";
+        .attr("class", function (d) {
+            return (d.id == 37 || d.id == 39) ? "outlier" : "inlier";
         })
         .attr("r", "5")
         .attr("cx", function (d) {
-            return ""+xScale(d.xy[0])+"px";
+            return "" + xScale(d.coords[xVar]) + "px";
         })
         .attr("cy", function (d) {
-            return ""+yScale(d.xy[1])+"px";
+            return "" + yScale(d.coords[yVar]) + "px";
         })
-        .attr("fill", "lightblue")
+        .attr("fill", function (d) {
+            return d.id == "0" ? "blue" : "lightblue"; // first selection has id 0
+        })
         .attr("stroke", "black");
 
 
     // Include x-axis (bottom)
     svg.append('g')
-        .attr('transform', 'translate(0,' + (height-padding) + ')')
-        .attr("class","axis x")
+        .attr('transform', 'translate(0,' + (height - padding) + ')')
+        .attr("class", "axis x")
         .call(d3.axisBottom(xScale));
 
     svg.append('g')
-        .attr('transform', 'translate('+padding+', 0)')
-        .attr("class","axis y")
+        .attr('transform', 'translate(' + padding + ', 0)')
+        .attr("class", "axis y")
         .call(d3.axisLeft(yScale));
 
     // x Axis Title:
     svg.append("text")
-        .attr("fill","black")
+        .attr("fill", "black")
         .attr("x", 550)
         .attr("y", 570)
         .attr("dx", "1px")
@@ -71,25 +73,14 @@ function drawPoints(data) {
         .attr("text-anchor", "end")
         .text("PC 2");
 
-    // Add main title to left panel visualisation:
-    svg.append("text")
-        .attr("fill","black")
-        .attr("x",350)
-        .attr("y",15)
-        .attr("font-weight","bold")
-        .attr("dy","10px")
-        .text("PCA Results");
-
-
     // When mouse is on a circle, return ID value to text above panels and initially make circle black:
-    circles.on("mousemove", function (d) {
+    circles.on("mouseover", function (d) {
         d3.select('#id_value')
             .text(d.id);
-        d3.select(this).style("fill", "black");
-        drawHand(d.id);});
-
-    circles.on("mouseout",function(d){
-        d3.select(this).style("fill","lightblue")
+        d3.selectAll("#points circle")
+            .style("fill", "lightblue"); // deselect the old one
+        d3.select(this).style("fill", "blue"); // select the new
+        drawHand(d.id);
     });
 }
 
@@ -110,11 +101,11 @@ function drawHand(id) {
 
     // Scaling:
     var xScale = d3.scaleLinear()
-        .domain([0.1, 1.1])
+        .domain([0.1, 1.3])
         .range([padding, width-padding]);
 
     var yScale = d3.scaleLinear()
-        .domain([0.1, 1.1])
+        .domain([0.1, 1.3])
         .range([height-padding, padding]);
 
 
@@ -137,13 +128,4 @@ function drawHand(id) {
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 1.5)
         .attr("d", line);
-
-    // Add main title to right panel visualisation:
-    svg.append("text")
-        .attr("fill","black")
-        .attr("x",350)
-        .attr("y",15)
-        .attr("font-weight","bold")
-        .attr("dy","10px")
-        .text("Selected Hand");
 }
