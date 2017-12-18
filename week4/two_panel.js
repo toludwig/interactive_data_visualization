@@ -105,16 +105,6 @@ function drawHand(data) {
     padding = 80;
 
     // SCALING
-
-    // Print out min and max of first and second row's data values:
-    // console.log(d3.extent(data, function(d){return d[0];})); //-0.4899838 to 0.6225203 (x-Axis)
-    // console.log(d3.extent(data, function(d){return d[1];})); //-0.4273515 to 0.4657887 (y-Axis)
-
-    // alternative: domain based on data range:
-    //       .domain(d3.extent(data, function(d){return d[0]}))
-    //       .domain(d3.extent(data, function(d){return d[1];}))
-    // but then the axis are a little shorter
-
     var xScale = d3.scaleLinear()
         .domain([0.1,1.3])
         .range([padding, width - padding]);
