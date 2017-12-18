@@ -31,6 +31,7 @@
         d3.select(window).on('load', init);
 
         var handData = []; // store the hand data globally, we need to have access always when we request a new draw
+        var xVar, yVar; // columns
 
         function init() {
             // SCATTER PLOT (PCA):
@@ -38,7 +39,7 @@
                 // transform numeric strings into numerics:
                 function (text) {
                     var data = d3.csvParseRows(text).map(function (row, id) {
-                        var xy = [+row[0], +row[1]]; // only are the first two coordinates are needed for projection
+                        var xy = [+row[xVar], +row[yVar]]; // only are the first two coordinates are needed for projection
                         // adding the row index as an id is needed for accessing the corresponding hand data when clicked
                         return {id: id, xy: xy};
                     });
@@ -71,6 +72,9 @@
     <p>
         Choose a data point in the PCA-Panel (by clicking on it). Id is: <span id="id_value">0</span>
     </p>
+    <p>
+        Choose
+    </p>
 
 <!-- Set up two svg panels that are displayed next to each other (vertically or horizontally responsively)
 One will show the hand, the other the pca-points -->
@@ -79,5 +83,20 @@ One will show the hand, the other the pca-points -->
     <svg width="700" height="700" id="hand"></svg>
 </div>
 
+<p id="outlierPar">
+    The outliers...
+</p>
+
+<script>
+    d3.select("#outlierPar")
+        .on("mousemove", function (d) {
+            d3.selectAll(".outlier")
+                .attr("fill", "red");
+        })
+        .on("mouseout", function (d) {
+            d3.selectAll(".outlier")
+                .attr("fill", "lightblue");
+        });
+</script>
 </body>
 </html>
