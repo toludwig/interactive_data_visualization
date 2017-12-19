@@ -1,5 +1,5 @@
 // DRAW POINTS PANEL:
-function drawPoints(data) {
+function drawPoints() {
 
     // Select area for points and define layout:
     svg = d3.select("#points");
@@ -10,13 +10,13 @@ function drawPoints(data) {
 
     // Scaling:
     var xScale = d3.scaleLinear()
-        .domain(d3.extent(data, function (d) {
+        .domain(d3.extent(pointData, function (d) {
             return d.coords[xVar];
         }))
         .range([padding, width - padding]);
 
     var yScale = d3.scaleLinear()
-        .domain(d3.extent(data, function (d) {
+        .domain(d3.extent(pointData, function (d) {
             return d.coords[yVar];
         }))
         .range([height - padding, padding]);
@@ -25,9 +25,14 @@ function drawPoints(data) {
     // Note: We need the outlier/inlier class definitions to later fill those with red colours
     // when the mouse hovers over a specific section of our text.
     var circles = svg.selectAll("circle")
-        .data(data)
-        .enter()
+        .data(pointData); // UPDATE
+
+    circles.exit() // EXIT
+        .remove();
+
+    circles.enter() // ENTER
         .append("circle")
+        .merge(circles) // MERGE
         .attr("class", function (d) {
             return (d.id == 37 || d.id == 39) ? "outlier" : "inlier";
         })
@@ -44,34 +49,23 @@ function drawPoints(data) {
         .attr("stroke", "black");
 
 
+
     // Include x-axis (bottom)
-    svg.append('g')
+    svg.select('#xAxis')
         .attr('transform', 'translate(0,' + (height - padding) + ')')
-        .attr("class", "axis x")
         .call(d3.axisBottom(xScale));
 
-    svg.append('g')
+    svg.select('#yAxis')
         .attr('transform', 'translate(' + padding + ', 0)')
-        .attr("class", "axis y")
         .call(d3.axisLeft(yScale));
 
     // x Axis Title:
-    svg.append("text")
-        .attr("fill", "black")
-        .attr("x", 550)
-        .attr("y", 570)
-        .attr("dx", "1px")
-        .attr("text-anchor", "end")
-        .text("PC 1");
+    svg.select("#xLabel")
+        .text("PC " + xVar);
 
     // y Axis Title:
-    svg.append("text")
-        .attr("fill", "black")
-        .attr("x", 40)
-        .attr("y", 70)
-        .attr("dy", "1px")
-        .attr("text-anchor", "end")
-        .text("PC 2");
+    svg.select("#yLabel")
+        .text("PC " + yVar);
 
     // When mouse is on a circle, return ID value to text above panels and initially make circle black:
     circles.on("mouseover", function (d) {
@@ -80,19 +74,24 @@ function drawPoints(data) {
         d3.selectAll("#points circle")
             .style("fill", "lightblue"); // deselect the old one
         d3.select(this).style("fill", "blue"); // select the new
-        drawHand(d.id);
+        drawHand(d.id); // DRAW THE CORRESPONDING HAND
     });
 }
 
 
 // DRAW HAND PANEL:
+
 function drawHand(id) {
 
     // Select area for hand drawing
     svg = d3.select("#hand");
 
-    // To avoid hand being drawn on top of each other remove the previous hand:
-    d3.select("#oldHand").remove();
+
+    // if One Hand selected in Combo Box:
+    // To avoid hands being drawn on top of each other remove the previous hands:
+    if (!multiHand){
+        svg.selectAll(".oldHand").remove();
+    }
 
     // Layout:
     width  = 600;
@@ -108,7 +107,6 @@ function drawHand(id) {
         .domain([0.1, 1.3])
         .range([height-padding, padding]);
 
-
     // Define which values will be used for x and y coordinates to then draw the path:
     var line = d3.line()
         .x(function (d) {
@@ -118,14 +116,25 @@ function drawHand(id) {
             return yScale(d[1]);
         });
 
-    // Create the data point circles:
-    svg.append("path")
+    // Create the data point hand line:
+    var path = svg.append("path")
         .datum(handData[id])
-        .attr("id", "oldHand")
+        .attr("class", "oldHand")
         .attr("fill", "none")
-        .attr("stroke", "darkblue")
+        .attr("stroke", "black")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 1)
         .attr("d", line);
+
+
+    // Make selected hand red AND MARK DATA POINT IN LEFT PANEL RED:
+    // FIXME
+    path.on("mousemove", function (d) {
+        d3.select(this).attr("stroke", "red").attr("stroke-width", 4);
+
+    });
+    path.on("mouseout", function (d) {
+            d3.select(this).attr("stroke", "black").attr("stroke-width", 1);
+    });
 }

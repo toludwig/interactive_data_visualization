@@ -9,16 +9,13 @@
         svg {
             border: 1px solid grey;
         }
-
         .axis {
             font-size: 80%;
             font-weight: bold;
         }
-
         .axis text {
             fill: black;
         }
-
     </style>
 
 
@@ -30,25 +27,27 @@
     <script>
         d3.select(window).on('load', init);
 
-        var handData = []; // store the hand data globally, we need to have access always when we request a new draw
+        // IMPORTANT GLOBAL VARIABLES
+        var handData = []; // store the hand data
+        var pointData = []; // stores the point data globally
         var xVar = 0; // index of data column to be plottet on the x-axis
         var yVar = 1; // index of data column to be plottet on the y-axis
+        var curID = 0; // current id of hand plotted
+        var altID = undefined; // alternative id
+        var multiHand = false; // multiHand mode can be selected with the combobox
 
         function init() {
             // SCATTER PLOT (PCA):
             d3.text("hands_pca.csv",
-                // transform numeric strings into numerics:
                 function (text) {
-                    var data = d3.csvParseRows(text).map(function (row, id) {
+                    pointData = d3.csvParseRows(text).map(function (row, id) {
                         var coords = row.map(function (t) { return +t; }); // convert list of strings to list of numbers
-                        // adding the row index as an id is needed for accessing the corresponding hand data when clicked
+                        // adding the row index as an id is needed for accessing the corresponding hand data
                         return {id: id, coords: coords};
                     });
                     // call Function to draw the points in the left panel:
-                    drawPoints(data);
+                    drawPoints();
                 });
-
-
             // HANDS PLOT:
             d3.text("hands.csv",
                 function (text) {
@@ -56,11 +55,11 @@
                         var xyValues = row.map(function (value) {
                             return +value;
                         });
-                        return d3.zip(xyValues.slice(0,  56),
+                        return d3.zip(xyValues.slice(0, 56),
                                       xyValues.slice(56, 112));
                     });
                     // call Function to draw the hand in the right panel
-                    drawHand(0); // first id is selected first
+                    drawHand(curID); // first id is selected first
                 });
         }
     </script>
@@ -76,54 +75,118 @@
 <br/>
 
 <h2>Introduction</h2>
+Inspired by Tensorboard's projection of the MNIST dataset we want to plot the PCA of a hand dataset.
+
+
 
 <h2>Method</h2>
-<!-- Interactivity: Choose a data point (initially hand with ID=0 will be selected): -->
+<h3>Data</h3>
+The hand data used for this assignment (hands.csv) is a 112-dimensional dataset. Each of the 40 rows respresents
+the outline of a hand (first 56 values are x-coordinates and next 56 values are the corresponding y-values).
+<br/>
+Principal Component Analysis has been applied to the hands dataset and resulted in the second data set: hands_pca.csv.
+Principal Component Analysis is a commonly used technique to deal with high-dimensional data. Based on variance, it repositions all
+data points along orthogonal axes. The first dimension captures most variance and the last dimension captures least variance.
+<br/>
 
-<!-- LEAVE LOWER PART (IN ITALICS) AT BOTTOM -->
+<h3>Visualisation</h3>
+The goal of this assignment was to create a scatterplot visualising different hands as data points based on two
+principal components. When a data point is selected, the outline of the hand is created in a second panel to the right.
+
+<h3>Extensions</h3>
+<ul>
+    <li>The <b>label</b> of the ID of the hand is printed.</li>
+    <li>In <b>multihand mode</b> hands selected one after another are drawn on top of each other.</li>
+    <li>You can choose which of the 39 principal components (with decreasing variance; the remaining 17 columns are zero)
+        to display on <b>which axis</b>.</li>
+</ul>
 
 
-<p>
+<!--Print selected ID -->
+<p style="color:dimgrey">
     <i>
-    Choose a data point in the PCA-Panel (by clicking on it). <br/>
-    The selected ID is: <span id="id_value">0</span>
+        Choose a data point in the PCA-Panel. <br/>
+        The selected ID is: <span id="id_value">0</span>
     </i>
-<p>
+</p>
+
+
+<!-- Combo Box: to decide whether one or more hands (on top of each other) should be created:-->
+<label for="multihand">Choose to display either one or multiple hands:</label>
+<select id="multihand" onchange="multiHandChange(this)">
+    <option value="false" selected>One Hand</option>
+    <option value="true">Multiple Hands</option>
+</select>
+<br><br>
+
+<!-- Spinners for xVar and yVar -->
+<label for="xvar">Choose which principal component to plot on the x-axis:</label>
+<input id="xvar" type="number" min="0" max="38" value="0" onchange="xVarChange(this)"/>
+<br>
+<label for="yvar">Choose which principal component to plot on the y-axis:</label>
+<input id="yvar" type="number" min="1" max="38" value="1" onchange="yVarChange(this)"/>
+
+<script>
+    // Callback for Comboboxes:
+    function multiHandChange(selectObject) {
+        multiHand = selectObject.value;
+        drawHand(curID);
+    }
+
+    function xVarChange(selectObject) {
+        xVar = selectObject.value;
+        drawPoints();
+        drawHand(curID);
+    }
+
+    function yVarChange(selectObject) {
+        yVar = selectObject.value;
+        drawPoints();
+        drawHand(curID);
+    }
+</script>
+
 
 <!-- Set up two svg panels that are displayed next to each other (vertically or horizontally responsively)
 One will show the hand, the other the pca-points -->
 <div style="display: inline-block">
     <svg width="600" height="600" id="points">
         <text x="300" y="25" font-weight="bold">PCA-Results</text>
+        <g id="xAxis" class="axis"></g>
+        <g id="yAxis" class="axis"></g>
+        <text id="xLabel" x="550" y="580" text-anchor="end"></text>
+        <text id="yLabel" x="40" y="50" text-anchor="end"></text>
     </svg>
     <svg width="600" height="600" id="hand">
-        <text x="300" y="25" font-weight="bold">Selected Hand</text>
-    </svg>
-
+        <text x="300" y="25" font-weight="bold">Selected Hand(s)</text>
     </svg>
 </div>
 
 
 <h2>Results</h2>
+In the PCA plot one can clearly see which hands can be expected to look more alike.
 
 <h3>Outliers</h3>
-    <p id="outlierPar">
-        The outliers...
-    </p>
+<p id="outlierPar">
+    As expected, (marked red)
+    look rather different than the other hands.....
+</p>
 
-    <script>
-        d3.select("#outlierPar")
-            .on("mousemove", function (d) {
-                d3.selectAll(".outlier")
-                    .attr("fill", "red");
-            })
-            .on("mouseout", function (d) {
-                d3.selectAll(".outlier")
-                    .attr("fill", "lightblue");
-            });
-    </script>
+<script>
+    d3.select("#outlierPar")
+        .on("mousemove", function (d) {
+            d3.selectAll(".outlier")
+                .attr("fill", "red");
+        })
+        .on("mouseout", function (d) {
+            d3.selectAll(".outlier")
+                .attr("fill", "lightblue");
+        });
+</script>
 
 <h2>Conclusion</h2>
+
+
 
 
 
