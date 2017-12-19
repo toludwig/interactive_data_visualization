@@ -5,6 +5,8 @@
     <title>Show of Hands</title>
 
     <!-- Set (CSS) style: -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
     <style>
         svg {
             border: 1px solid grey;
@@ -15,6 +17,15 @@
         }
         .axis text {
             fill: black;
+        }
+        body {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .page-wrap {
+            text-align: left;
+            width: 1200px;
+            margin: 0 auto;
         }
     </style>
 
@@ -69,7 +80,7 @@
 
 
 <body>
-
+<div class="page-wrap">
 <h1 style="color:darkblue">Assignment 4: Show of Hands </h1>
 <h2 style="color:darkblue">Tobias Ludwig, Johannes Jacob, Mona Timmermann</h2>
 <br/>
@@ -78,7 +89,7 @@
 Inspired by Tensorboard's projection of the MNIST dataset we want to plot the PCA of a hand dataset.
 
 
-
+<br/>
 <h2>Method</h2>
 <h3>Data</h3>
 The hand data used for this assignment (hands.csv) is a 112-dimensional dataset. Each of the 40 rows respresents
@@ -101,12 +112,13 @@ principal components. When a data point is selected, the outline of the hand is 
         to display on <b>which axis</b>.</li>
 </ul>
 
+<h2>Application</h2>
 
 <!--Print selected ID -->
 <p style="color:dimgrey">
     <i>
         Choose a data point in the PCA-Panel. <br/>
-        The selected ID is: <span id="id_value">0</span>
+        The currently selected ID is: <b><span id="id_value">0</span></b>
     </i>
 </p>
 
@@ -145,7 +157,7 @@ principal components. When a data point is selected, the outline of the hand is 
         drawHand(curID);
     }
 </script>
-
+</div>
 
 <!-- Set up two svg panels that are displayed next to each other (vertically or horizontally responsively)
 One will show the hand, the other the pca-points -->
@@ -161,7 +173,7 @@ One will show the hand, the other the pca-points -->
         <text x="300" y="25" font-weight="bold">Selected Hand(s)</text>
     </svg>
 </div>
-
+<div class="page-wrap">
 
 <h2>Results</h2>
 In the PCA plot one can clearly see which hands can be expected to look more alike.
@@ -189,6 +201,6 @@ In the PCA plot one can clearly see which hands can be expected to look more ali
 
 
 
-
+</div>
 </body>
 </html>
