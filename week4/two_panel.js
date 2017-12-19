@@ -1,5 +1,5 @@
 // DRAW POINTS PANEL:
-function drawPoints() {
+function drawPoints(handselection) {
 
     // Select area for points and define layout:
     svg = d3.select("#points");
@@ -76,6 +76,12 @@ function drawPoints() {
         d3.select(this).style("fill", "blue"); // select the new
         drawHand(d.id); // DRAW THE CORRESPONDING HAND);
     });
+    // COLORING CORRESPONDING CIRCLES RED
+    if (typeof(handselection) != "undefined"){
+            circles.style("fill", function(d){  
+                return (d.id == "" + handselection) ? "red" : "lightblue";
+        });
+    };
 }
 
 
@@ -134,7 +140,7 @@ function drawHand(id) {
         d3.select(this).attr("stroke", "red").attr("stroke-width", 4);
         d3.select('#id_value')
             .text(d.id);
-
+        drawPoints(id);
         // HIER MUSS NOCH REIN DASS LINKS DER ENTSPRECHENDE CIRCLE MARKIERT WIRD, WENN MAN RECHTS EINEN PATH ANKLICKT
 
     });
