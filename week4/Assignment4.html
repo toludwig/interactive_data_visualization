@@ -130,22 +130,23 @@
 
     <h3>Interactivity Options:</h3>
 
-    <!-- Combo Box: to decide whether one or more hands (on top of each other) should be created:-->
-    <label for="multihand">Choose to display either one or multiple hands:</label>
+   
+    
+
+    <!-- Spinners for xVar and yVar -->
+    <label for="xvar">1.  Choose which principal component to plot on the x-axis, e.g. 0: </label>
+    <input id="xvar" type="number" min="0" max="38" value="" onchange="xVarChange(this)"/>
+    <br>
+    <label for="yvar">2. Choose which principal component to plot on the y-axis, e.g. 1: </label>
+    <input id="yvar" type="number" min="1" max="38" value="" onchange="yVarChange(this)"/>
+    <br><br>
+
+     <!-- Combo Box: to decide whether one or more hands (on top of each other) should be created:-->
+    <label for="multihand">3. Choose to display either one or multiple hands:</label>
     <select id="multihand" onchange="multiHandChange(this)">
         <option value="false" selected>One Hand</option>
         <option value="true">Multiple Hands</option>
     </select>
-    <br><br>
-
-    <!-- Spinners for xVar and yVar -->
-    <label for="xvar">Choose which principal component to plot on the x-axis, e.g. 0: </label>
-    <input id="xvar" type="number" min="0" max="38" value="" onchange="xVarChange(this)"/>
-    <br>
-    <label for="yvar">Choose which principal component to plot on the y-axis, e.g. 1: </label>
-    <input id="yvar" type="number" min="1" max="38" value="" onchange="yVarChange(this)"/>
-
-
 
     <script>
         // Callback for Comboboxes:
