@@ -74,7 +74,7 @@ function drawPoints() {
         d3.selectAll("#points circle")
             .style("fill", "lightblue"); // deselect the old one
         d3.select(this).style("fill", "blue"); // select the new
-        drawHand(d.id); // DRAW THE CORRESPONDING HAND
+        drawHand(d.id); // DRAW THE CORRESPONDING HAND);
     });
 }
 
@@ -132,9 +132,13 @@ function drawHand(id) {
     // FIXME
     path.on("mousemove", function (d) {
         d3.select(this).attr("stroke", "red").attr("stroke-width", 4);
+        d3.select('#id_value')
+            .text(d.id);
+
+        // HIER MUSS NOCH REIN DASS LINKS DER ENTSPRECHENDE CIRCLE MARKIERT WIRD, WENN MAN RECHTS EINEN PATH ANKLICKT
 
     });
     path.on("mouseout", function (d) {
-            d3.select(this).attr("stroke", "black").attr("stroke-width", 1);
+        d3.select(this).attr("stroke", "black").attr("stroke-width", 1);
     });
 }
