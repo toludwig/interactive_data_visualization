@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Crime Map | Kaggle</title>
+    <meta charset="utf-8" />
+    <meta name="robots" content="index, follow"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">    <meta name="theme-color" content="#008ABC" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" /><link rel="dns-prefetch" href="https://stats.g.doubleclick.net" /><link rel="dns-prefetch" href="https://js.intercomcdn.com" /><link rel="preload" href="https://az416426.vo.msecnd.net/scripts/a/ai.0.js" as=script /><link rel="dns-prefetch" href="https://kaggle2.blob.core.windows.net" />
+    <link href="/content/v/d420a040e581/kaggle/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="manifest" href="/static/json/manifest.json">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic" rel='stylesheet' type='text/css'>
+                <link rel="stylesheet" type="text/css" href="/static/assets/vendor.css?v=72f4ef2ebe4f"/>
+        <link rel="stylesheet" type="text/css" href="/static/assets/app.css?v=7b8258d418c0"/>
+        <script>
+            
+            (function () {
+                var originalError = window.onerror;
+
+                window.onerror = function (message, url, lineNumber, columnNumber, error) {
+                    var handled = originalError && originalError(message, url, lineNumber, columnNumber, error);
+                    var blockedByCors = message && message.toLowerCase().indexOf("script error") >= 0;
+                    return handled || blockedByCors;
+                };
+            })();
+        </script>
+    <script>
+        var appInsights=window.appInsights||function(config){
+        function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
+        }({
+            instrumentationKey:"5b3d6014-f021-4304-8366-3cf961d5b90f",
+            disableAjaxTracking: true
+        });
+        window.appInsights=appInsights;
+        appInsights.trackPageView();
+    </script>
+    
+    
+    
+ 
+    
+    <script>
+    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+    ga('create', 'UA-12629138-1', 'auto');
+    ga('set', 'displayFeaturesTask', null);
+    ga('send', 'pageview');
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+    
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window,document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+    fbq("set", "autoConfig", "false", "136809193586742");
+    fbq('init', '136809193586742'); 
+    fbq('track', 'PageView');
+</script>
+<noscript>
+    <img height="1" width="1" src="https://www.facebook.com/tr?id=136809193586742&ev=PageView&noscript=1"/>
+</noscript>
+
+    
+
+    <script>
+          window.intercomSettings = {
+            app_id: "koj6gxx6"
+          };
+    </script>
+<script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/koj6gxx6';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@kaggledatasets" />
+        <meta name="twitter:creator" content="@jjangsangy" />
+    <meta name="og:url" content="https://www.kaggle.com/sanghan/crime-map-viz" />
+    <meta name="og:title" content="Interactive Crime Map" />
+    <meta name="og:description" content="Using data from San Francisco Crime Classification" />
+    <meta name="og:image" content="https://www.kaggle.com/static/images/no-datasource.png" />
+
+
+    
+    
+
+    <script src="/static/assets/manifest.js?v=47a28ec84654"></script>
+<script src="/static/assets/vendor.js?v=b83f9046871b"></script>
+</head>
+<body>
+    
+
+
+
+
+
+
+
+<div class="site-layout">
+        <div class="site-layout__header">
+            <div data-component-name="SiteHeaderContainer"></div><script>var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push({});performance && performance.mark && performance.mark("SiteHeaderContainer.componentCouldBootstrap");</script>
+        </div>
+
+    <div class="site-layout__main-content">
+        
+
+
+<div data-component-name="ScriptViewer"></div><script>var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push({"pageMessages":[],"log":"processing file: script.Rmd\n\r  |                                                                       \r  |                                                                 |   0%\r  |                                                                       \r  |.................................................................| 100%\n  ordinary text without R code\n\n\noutput file: /kaggle/working/script.knit.md\n\n/usr/local/bin/pandoc /kaggle/working/script.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output /kaggle/working/output.html --smart --email-obfuscation none --standalone --section-divs --template /usr/local/lib/R/site-library/rmarkdown/rmd/h/default.html --variable \u0027theme:bootstrap\u0027 --include-in-header /tmp/RtmpaVDVcP/rmarkdown-str73b7cd5e0.html --mathjax --variable \u0027mathjax-url:https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\u0027 --no-highlight --variable highlightjs=output_files/highlight \n\nOutput created: output.html","code":"# [SF Crime Dashboard](https://public.tableau.com/views/SanFranciscoCrimeClassification/Dashboard?:embed=y\u0026:showTabs=y\u0026:retry=yes\u0026:display_count=yes)\n\u003c!--html_preserve--\u003e\n\u003cdiv class=\u0027tableauPlaceholder\u0027 style=\u0027width: 1024px; height: 694px;\u0027\u003e\n\n\u003cnoscript\u003e\n    \u003ca href=\u0027#\u0027\u003e\n        \u003cimg alt=\u0027Dashboard \u0027 src=\u0027https:\u0026#47;\u0026#47;public.tableau.com\u0026#47;static\u0026#47;images\u0026#47;Sa\u0026#47;SanFranciscoCrimeClassification\u0026#47;Dashboard\u0026#47;1_rss.png\u0027 style=\u0027border: none\u0027 /\u003e\n    \u003c/a\u003e\n\u003c/noscript\u003e\n\n\u003cobject class=\u0027tableauViz\u0027 width=\u00271024\u0027 height=\u0027694\u0027 style=\u0027display:none;\u0027\u003e\n    \u003cparam name=\u0027host_url\u0027 value=\u0027https%3A%2F%2Fpublic.tableau.com%2F\u0027 /\u003e\n    \u003cparam name=\u0027site_root\u0027 value=\u0027\u0027 /\u003e\n    \u003cparam name=\u0027name\u0027 value=\u0027SanFranciscoCrimeClassification\u0026#47;Dashboard\u0027 /\u003e\n    \u003cparam name=\u0027tabs\u0027 value=\u0027no\u0027 /\u003e\n    \u003cparam name=\u0027toolbar\u0027 value=\u0027yes\u0027 /\u003e\n    \u003cparam name=\u0027static_image\u0027 value=\u0027https:\u0026#47;\u0026#47;public.tableau.com\u0026#47;static\u0026#47;images\u0026#47;Sa\u0026#47;SanFranciscoCrimeClassification\u0026#47;Dashboard\u0026#47;1.png\u0027 /\u003e\n    \u003cparam name=\u0027animate_transition\u0027 value=\u0027yes\u0027 /\u003e\n    \u003cparam name=\u0027display_static_image\u0027 value=\u0027yes\u0027 /\u003e\n    \u003cparam name=\u0027display_spinner\u0027 value=\u0027yes\u0027 /\u003e\n    \u003cparam name=\u0027display_overlay\u0027 value=\u0027yes\u0027 /\u003e\n    \u003cparam name=\u0027display_count\u0027 value=\u0027yes\u0027 /\u003e\n    \u003cparam name=\u0027filter\u0027 value=\u0027%3Aembed=y\u0027 /\u003e\n    \u003cparam name=\u0027filter\u0027 value=\u0027%3AshowVizHome=no\u0027 /\u003e\n    \u003cparam name=\u0027filter\u0027 value=\u0027%3AshowTabs=y\u0027 /\u003e\n    \u003cparam name=\u0027filter\u0027 value=\u0027%3Adisplay_count=y\u0027 /\u003e\n    \u003cparam name=\u0027filter\u0027 value=\u0027%3Adisplay_static_image=y\u0027 /\u003e\n    \u003cparam name=\u0027filter\u0027 value=\u0027%3Aretry=yes\u0027 /\u003e\n\u003c/object\u003e\n\n\u003c/div\u003e\n\u003cscript type=\u0027text/javascript\u0027 src=\u0027https://public.tableau.com/javascripts/api/viz_v1.js\u0027\u003e\u003c/script\u003e\n\u003c!--/html_preserve--\u003e","languageName":"R","htmlOutputFileUrl":"https://www.kaggle.io/svf/21988/ceefd6be55614901af608d2189df5609/__results__.html","outputFiles":[{"size":3810,"fullPath":null,"previewUrl":"/kernels/preview.json/21988/ceefd6be-5561-4901-af60-8d2189df5609/output.html","downloadUrl":"https://www.kaggle.io/svf/21988/ceefd6be55614901af608d2189df5609/output.html","fileType":".html","validationErrors":"","name":"output.html","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}}],"downloadAllFilesUrl":"/kernels/svzip/21988","runInfo":{"isValidStatus":true,"failureMessage":"","exitCode":0,"succeeded":true,"dockerImageName":"kaggle/rstats","dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"c5b6e1600373bcafb6f00cd28438614a64e9a08194f7284792933773b59da291","timeoutExceeded":false,"runTimeSeconds":0.546122312545776,"usedAllSpace":false,"queuedSeconds":0.12,"outputSizeBytes":7879},"versionHistory":[{"id":21988,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-07-09T06:07:43.777Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":1,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":3810,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"c5b6e1600373bcafb6f00cd28438614a64e9a08194f7284792933773b59da291","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.546122312545776,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Interactive Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=21988","versionNumber":11,"hasVersionNumber":true},{"id":21978,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-07-09T06:03:15.733Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":2,"linesInsertedFromPrevious":1,"outputFilesTotalSizeBytes":3826,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"c5b6e1600373bcafb6f00cd28438614a64e9a08194f7284792933773b59da291","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.528728485107422,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Interactive Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=21978","versionNumber":10,"hasVersionNumber":true},{"id":21971,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-07-09T06:00:13.63Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":3827,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"c5b6e1600373bcafb6f00cd28438614a64e9a08194f7284792933773b59da291","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.534719228744507,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Interactive Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=21971","versionNumber":9,"hasVersionNumber":true},{"id":21969,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-07-09T05:58:23.937Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":1,"outputFilesTotalSizeBytes":3827,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"c5b6e1600373bcafb6f00cd28438614a64e9a08194f7284792933773b59da291","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.525480270385742,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Tableau Interactive Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=21969","versionNumber":8,"hasVersionNumber":true},{"id":21959,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-07-09T05:55:38.817Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":29,"outputFilesTotalSizeBytes":3822,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"c5b6e1600373bcafb6f00cd28438614a64e9a08194f7284792933773b59da291","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.508801937103271,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Tableau Interactive Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=21959","versionNumber":7,"hasVersionNumber":true},{"id":14248,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-06-13T05:01:11.887Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":3715,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"d8e9df01e9f1d94fd2815e9ef6b7d0af6c111ec3324130b3ffa27f78dfd2d89b","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.758579254150391,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Tableau Interactive Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=14248","versionNumber":6,"hasVersionNumber":true},{"id":14247,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-06-13T05:00:33.883Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":2,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":3715,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"d8e9df01e9f1d94fd2815e9ef6b7d0af6c111ec3324130b3ffa27f78dfd2d89b","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.731135368347168,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Tableau Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=14247","versionNumber":5,"hasVersionNumber":true},{"id":14246,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-06-13T05:00:00.793Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":4,"outputFilesTotalSizeBytes":3812,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"d8e9df01e9f1d94fd2815e9ef6b7d0af6c111ec3324130b3ffa27f78dfd2d89b","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.711988925933838,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Tableau Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=14246","versionNumber":4,"hasVersionNumber":true},{"id":14244,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-06-13T04:53:55.82Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":2422,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"d8e9df01e9f1d94fd2815e9ef6b7d0af6c111ec3324130b3ffa27f78dfd2d89b","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.721602916717529,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Tableau Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=14244","versionNumber":3,"hasVersionNumber":true},{"id":14243,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-06-13T04:53:26.383Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":2,"outputFilesTotalSizeBytes":2352,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"d8e9df01e9f1d94fd2815e9ef6b7d0af6c111ec3324130b3ffa27f78dfd2d89b","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.714540958404541,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Tableau Crime Map","url":"/sanghan/crime-map-viz?scriptVersionId=14243","versionNumber":2,"hasVersionNumber":true},{"id":14241,"isForkParent":false,"isNotebook":false,"languageName":"R","lastRunTime":"2015-06-13T04:51:15.8Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":2174,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-rstats/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/rstats/","dockerImageId":"d8e9df01e9f1d94fd2815e9ef6b7d0af6c111ec3324130b3ffa27f78dfd2d89b","dockerImageName":"kaggle/rstats","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":0.703230381011963,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime Map Viz","url":"/sanghan/crime-map-viz?scriptVersionId=14241","versionNumber":1,"hasVersionNumber":true}],"sanitizeHtml":false,"initialScriptVersionId":21988,"initialTab":null,"baseUrl":"/sanghan/crime-map-viz","toggleScriptIsHiddenUrl":"/kernels/5918/hidden/toggle","scriptIsHidden":false,"kernelDeletionUrl":null,"isAdmin":false,"datasetHidden":false,"readOnly":false,"scriptIsLanguageTemplate":false,"rerunScriptUrl":"/kernels/rerun?id=21988","dataSources":[{"imageUrl":"https://kaggle2.blob.core.windows.net/competitions/kaggle/4458/logos/thumb76_76.png","sourceUrl":"/c/sf-crime","slug":"sf-crime","lastUpdated":"2015-06-02T20:51:28.977Z","overview":"Predict the category of crimes that occurred in the city by the bay ","sourceType":"competition","sourceId":4458,"descriptionMimeType":"","deleted":false,"name":"San Francisco Crime Classification","description":"\u003cp\u003eThis dataset contains incidents derived from SFPD Crime Incident Reporting system. The data ranges from 1/1/2003 to 5/13/2015. The training set and test set rotate every week, meaning week 1,3,5,7... belong to test set, week 2,4,6,8 belong to training set. \u003c/p\u003e\r\n\u003cp\u003e\u003cimg src=\u0022https://kaggle2.blob.core.windows.net/competitions/kaggle/4458/media/Screen%20Shot%202015-05-28%20at%205.23.48%20PM.png\u0022 alt=\u0022\u0022 width=\u0022650\u0022 height=\u0022352\u0022 /\u003e\u003c/p\u003e\r\n\u003ch2\u003eData fields\u003c/h2\u003e\r\n\u003cul\u003e\r\n\u003cli\u003e\u003cstrong\u003eDates\u003c/strong\u003e - timestamp of the crime incident\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eCategory\u003c/strong\u003e - category of the crime incident (only in train.csv). \u003cstrong\u003eThis is the target variable you are going to predict.\u003c/strong\u003e\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eDescript\u003c/strong\u003e - detailed description of the crime incident (only in train.csv)\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eDayOfWeek\u003c/strong\u003e - the day of the week\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003ePdDistrict\u003c/strong\u003e - name of the Police Department District\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eResolution\u003c/strong\u003e - how the crime incident was resolved (only in train.csv)\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eAddress\u003c/strong\u003e - the approximate street address of the crime incident \u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eX\u003c/strong\u003e - Longitude\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eY\u003c/strong\u003e - Latitude\u003c/li\u003e\r\n\u003c/ul\u003e","type":"dataSource","children":[{"size":2498027,"fullPath":"../input/sampleSubmission.csv","previewUrl":"/Scripts/ScriptCompetitionInputFilePreview?competitionId=4458\u0026relativePath=sampleSubmission.csv","downloadUrl":"/c/sf-crime/download/sampleSubmission.csv","fileType":".csv","validationErrors":null,"name":"sampleSubmission.csv","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}},{"size":19665660,"fullPath":"../input/test.csv","previewUrl":"/Scripts/ScriptCompetitionInputFilePreview?competitionId=4458\u0026relativePath=test.csv","downloadUrl":"/c/sf-crime/download/test.csv","fileType":".csv","validationErrors":null,"name":"test.csv","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}},{"size":23166068,"fullPath":"../input/train.csv","previewUrl":"/Scripts/ScriptCompetitionInputFilePreview?competitionId=4458\u0026relativePath=train.csv","downloadUrl":"/c/sf-crime/download/train.csv","fileType":".csv","validationErrors":null,"name":"train.csv","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}}],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}}],"forksBaseUrl":"/kernels/forks/5918/0","totalForks":4,"newForkUrl":"/Scripts/NewScriptAsync?forkParentScriptVersionId=21988\u0026userName=sanghan","isNotebook":true,"isRMarkdown":true,"scriptId":5918,"scriptVersionId":21988,"scriptVersionHasError":false,"userCanEditScript":false,"showSubmitToCompButtons":false,"submitToCompUrl":"/competitions/kernels/submit","competitionName":"San Francisco Crime Classification","currentScriptVersionIsBusy":false,"statusCallbackUrl":"/kernels/status?id=21988","forkParentUrl":"","forkParentTitle":null,"forkParentAuthorUrl":null,"forkParentAuthorDisplayName":null,"forkDiffUrl":"/sanghan/crime-map-viz/versions#base=0\u0026new=21988","forkDiffLinesChanged":0,"forkDiffLinesDeleted":0,"forkDiffLinesInserted":0,"voteButton":{"totalVotes":17,"hasAlreadyVotedUp":false,"hasAlreadyVotedDown":false,"canUpvote":true,"canDownvote":false,"voteUpUrl":"/kernels/vote?id=5918","voteDownUrl":null,"voters":[{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/740429-kg.jpg","displayName":"I,Coder","userName":"ash316","profileUrl":"/ash316","tier":"Expert","tierInt":2,"userId":740429},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"Chloe","userName":"chloeyeah","profileUrl":"/chloeyeah","tier":"Novice","tierInt":0,"userId":288864},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"numeroUno","userName":"deleted=beallavenue","profileUrl":"/deleted=beallavenue","tier":"Novice","tierInt":0,"userId":202431},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/441136-gr.jpg","displayName":"piushvaish","userName":"piushvaish","profileUrl":"/piushvaish","tier":"Novice","tierInt":0,"userId":441136},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/304806-kg.jpg","displayName":"Myles O\u0027Neill","userName":"mylesoneill","profileUrl":"/mylesoneill","tier":"Staff","tierInt":5,"userId":304806},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"jdob","userName":"itobysq","profileUrl":"/itobysq","tier":"Novice","tierInt":0,"userId":480962},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/419570-kg.jpg","displayName":"Jess H","userName":"jicarh","profileUrl":"/jicarh","tier":"Novice","tierInt":0,"userId":419570},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"muliga","userName":"muliga","profileUrl":"/muliga","tier":"Novice","tierInt":0,"userId":466309},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/287555-gr.jpg","displayName":"Anton Poznyakovskiy","userName":"poznyakovskiy","profileUrl":"/poznyakovskiy","tier":"Contributor","tierInt":1,"userId":287555},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"stellasia","userName":"stellasia","profileUrl":"/stellasia","tier":"Novice","tierInt":0,"userId":320933},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/231561-fb.jpg","displayName":"Gowdhaman Dhandapani","userName":"gowdhamand","profileUrl":"/gowdhamand","tier":"Novice","tierInt":0,"userId":231561},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"Marc","userName":"marcheiligers","profileUrl":"/marcheiligers","tier":"Novice","tierInt":0,"userId":381944},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/227880-gr.jpg","displayName":"icj","userName":"eyecjay","profileUrl":"/eyecjay","tier":"Novice","tierInt":0,"userId":227880},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/358894-fb.jpg","displayName":"YuriBlaise","userName":"yuriblaise","profileUrl":"/yuriblaise","tier":"Novice","tierInt":0,"userId":358894},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/279047-fb.jpg","displayName":"Sang Han","userName":"sanghan","profileUrl":"/sanghan","tier":"Contributor","tierInt":1,"userId":279047},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/3258-fb.jpg","displayName":"William Cukierski","userName":"wcukierski","profileUrl":"/wcukierski","tier":"Staff","tierInt":5,"userId":3258},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/114978-fb.jpg","displayName":"Triskelion","userName":"triskelion","profileUrl":"/triskelion","tier":"Master","tierInt":3,"userId":114978}],"currentUserInfo":null,"showVoters":true,"alwaysShowVoters":true},"dateUpdated":"2015-07-09T06:07:43.897Z","userName":"Sang Han","userUrl":"/sanghan","userAvatarImageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/279047-fb.jpg","parentName":"San Francisco Crime Classification","parentUrl":"/c/sf-crime","scriptLanguage":"R notebook","totalViews":7399,"title":"Interactive Crime Map","titleUrl":"/sanghan/crime-map-viz","thumbnailImageUrl":"/static/images/no-datasource.png","isPrivate":false,"isCodeSubmission":false,"submission":null,"menuLinks":[{"href":null,"text":"Report","title":"Notebook","tab":"notebook","count":null,"showZeroCountExplicitly":false},{"href":null,"text":"Code","title":"Code","tab":"code","count":null,"showZeroCountExplicitly":false},{"href":null,"text":"Data","title":"Data","tab":"data","count":1,"showZeroCountExplicitly":false},{"href":null,"text":"Output","title":"Output","tab":"output","count":1,"showZeroCountExplicitly":false},{"href":null,"text":"Comments","title":"Comments","tab":"comments","count":2,"showZeroCountExplicitly":true},{"href":null,"text":"Log","title":"Log","tab":"log","count":null,"showZeroCountExplicitly":false},{"href":null,"text":"Versions","title":"Versions","tab":"versions","count":11,"showZeroCountExplicitly":false},{"href":null,"text":"Forks","title":"Forks","tab":"forks","count":4,"showZeroCountExplicitly":false}],"rightMenuLinks":[],"callToAction":{"href":"/Scripts/NewScriptAsync?forkParentScriptVersionId=21988\u0026userName=sanghan","text":"Fork Script","title":"Fork Script","tab":null,"count":null,"showZeroCountExplicitly":false},"topic":{"allowAttachments":false,"canDownvote":false,"comment":null,"commentList":null,"id":17795,"isDeleted":false,"isLocked":false,"isPinned":false,"isSpammed":false,"isSubscribed":false,"parentName":null,"parentUrl":null,"title":null},"medal":"bronze","categories":{"categories":[],"type":"script"},"canSeeUpvoteSuggestion":true,"suggestions":[{"entityType":"kernel","entityId":5039,"title":"San Francisco Top Crimes Map","entityUrl":"/benhamner/san-francisco-top-crimes-map","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":993,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/993-fb.jpg","isOrganization":false,"name":"Ben Hamner","profileUrl":"/benhamner","slug":"benhamner","maxFileSizeBytes":null}},{"entityType":"kernel","entityId":34393,"title":"Mapping and Visualizing Violent Crime","entityUrl":"/mircat/violent-crime-mapping","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":208885,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/208885-fb.jpg","isOrganization":false,"name":"Mir Henglin","profileUrl":"/mircat","slug":"mircat","maxFileSizeBytes":null}},{"entityType":"kernel","entityId":6560,"title":"a history of crime","entityUrl":"/swbevan/a-history-of-crime-python","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":278304,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/278304-gr.jpg","isOrganization":false,"name":"Simon","profileUrl":"/swbevan","slug":"swbevan","maxFileSizeBytes":null}},{"entityType":"kernel","entityId":7079,"title":"Vehicle Thefts or Jerry Rice Jubilation?","entityUrl":"/eyecjay/vehicle-thefts-or-jerry-rice-jubilation","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":227880,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/227880-gr.jpg","isOrganization":false,"name":"icj","profileUrl":"/eyecjay","slug":"eyecjay","maxFileSizeBytes":null}},{"entityType":"kernel","entityId":10113,"title":"Function to map any crime","entityUrl":"/captcalculator/function-to-map-any-crime","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":379860,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/379860-fb.jpg","isOrganization":false,"name":"Troy Walters","profileUrl":"/captcalculator","slug":"captcalculator","maxFileSizeBytes":null}}]});performance && performance.mark && performance.mark("ScriptViewer.componentCouldBootstrap");</script>
+
+
+<form action="/sanghan/crime-map-viz" id="__AjaxAntiForgeryForm" method="post"><input name="__RequestVerificationToken" type="hidden" value="SvTD0x9RyL-AkJhiwcGbV4fbv6F197oBYX2do74nmkLQq7Fsn7Ws8C5xdZUwUm_zsHk37M_lcv5OXdw2ndyuUJrgdIQ1" /></form>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            preferredFont: "TeX",
+            availableFonts: ["STIX", "TeX"],
+            linebreaks: {
+                automatic: true
+            },
+            EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+        },
+        tex2jax: {
+            inlineMath: [["\\(", "\\)"], ["\\\\(", "\\\\)"]],
+            displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+            processEscapes: true,
+            ignoreClass: "tex2jax_ignore|dno"
+        },
+        TeX: {
+            noUndefined: {
+                attributes: {
+                    mathcolor: "red",
+                    mathbackground: "#FFEEEE",
+                    mathsize: "90%"
+                }
+            }
+        },
+        Macros: {
+            href: "{}"
+        },
+        skipStartupTypeset: true,
+        messageStyle: "none"
+    });
+</script>
+
+<script type="text/javascript" async crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+    </div>
+
+        <div class="site-layout__footer">
+            <footer class="site-footer">
+    <div class="site-footer__content">
+        <div class="site-footer__copyright">
+            <span>&copy; 2017 Kaggle Inc</span>
+        </div>
+        <nav class="site-footer__nav">
+            <a href="/team">Our Team</a>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/contact">Contact/Support</a>
+        </nav>
+        <nav class="site-footer__social">
+            <div data-component-name="SocialIcons"></div><script>var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push();performance && performance.mark && performance.mark("SocialIcons.componentCouldBootstrap");</script>
+        </nav>
+    </div>
+</footer>
+
+        </div>
+</div>
+
+
+
+<script type="text/javascript">
+    var Kaggle = Kaggle || {};
+
+    Kaggle.Current = {
+        hasJupyterNotebookEditor: true,
+        hasEnvironmentVariables: false,
+        hasInteractiveScripts: false,
+        hasStandaloneKernelProxy: true,
+        hasKernelsAsDataSources: true,
+        antiForgeryToken: 'Jf4cF7reLcINHwFfh0IzbhS7HKuMv2ozL4ELLT2NbpqEBUTFj9yDal2rOPMBwO5qvqcdn2vbaDCaZ6vnjAFKr6zcQ-g1',
+        isAnonymous: true,
+        isFullScreen: false,
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+        Kaggle.Current.log = function(){};
+        Kaggle.Current.warn = function(){};
+    var decodeUserDisplayName = function () {
+        var escapedUserDisplayName = Kaggle.Current.userDisplayNameEscaped;
+        try {
+          var textVersion = new DOMParser().parseFromString(escapedUserDisplayName, "text/html").documentElement.textContent;
+          if (textVersion) {
+              return textVersion;
+          }
+        } catch(ex) {}
+        
+        return escapedUserDisplayName;
+    }
+    Kaggle.Current.userDisplayName = decodeUserDisplayName();
+</script>
+
+
+
+
+
+<script type="text/javascript">
+    var Kaggle = Kaggle || {};
+    Kaggle.PageMessages = [];
+</script>
+
+
+<script src="/content/v/5dbea6ee9ce1/shared/js/kaggle.prism.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+    <script src="/static/assets/app.js?v=f64d55c4323b"></script>
+    
+        <script>
+            (function() {
+                if ('serviceWorker' in navigator) {
+                    
+                    navigator.serviceWorker.register("/static/assets/service-worker.js").then(function(reg) {
+                        
+                        reg.onupdatefound = function() {
+                            
+                            var installingWorker = reg.installing;
+                            installingWorker.onstatechange = function() {
+                                switch (installingWorker.state) {
+                                case 'installed':
+                                    if (navigator.serviceWorker.controller) {
+                                        
+                                        console.log('New or updated content is available.');
+                                    } else {
+                                        
+                                        console.log('Content is now available offline!');
+                                    }
+                                    break;
+                                case 'redundant':
+                                    console.error('The installing service worker became redundant.');
+                                    break;
+                                }
+                            };
+                        };
+                    }).catch(function(e) {
+                      console.error('Error during service worker registration:', e);
+                    });
+                }
+            })();
+        </script>
+</body>
+</html>

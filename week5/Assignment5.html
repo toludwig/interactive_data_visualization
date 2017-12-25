@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment 5</title>
+
+    <!-- Set (CSS) style: -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        .page-wrap {
+            text-align: left;
+            width: 1200px;
+            margin: 0 auto;
+        }
+        body {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+        svg {
+            border: 1px solid grey;
+        }
+
+        #barplot {
+            border:1px solid grey;
+        }
+    </style>
+
+
+    <!-- D3 & JS -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+</head>
+<body>
+
+<h2>
+    Assignment 5
+    <br>
+    by Johannes Jacob, Tobias Ludwig and Mona Timmermann
+</h2>
+
+<div class="page-wrap">
+    <p>
+        <h3>(Visualisierungs-) Ideen / Fragen / Hinweise /...</h3>
+        <ol>
+            <li>Hat sich die Art der Crimes geändert über die Jahre (Interaktivität)?-> Map der Crimes mit unterschiedlichen Farben je nach Art?
+                <a href="https://www.kaggle.com/mircat/violent-crime-mapping">(vgl.)</a></li>
+            <li>Stacked Bar plot x=Years, y=verschiedene Crimes</li>
+            <li>Welche Areas sind besonders geprägt? Evtl. Detailanalyse Golden Gate Bridge etc.</li>
+            <li>Bei Maps könnte ein Problem mit Overlapping der Farben entstehen: siehe Kaggle Kernel  <a href="https://www.kaggle.com/mircat/violent-crime-mapping">hier</a></li>
+
+        </ol>
+    </p>
+
+    <p>
+        <h3> Research Questions </h3>
+        <h3> Data Exploration</h3>
+            <ol>
+                <p>e.g., Stacked Barplot</p>
+                <svg style="width:800px; height:500px" id="barplot"></svg>
+            </ol>
+    </p>
+</div>
+
+</body>
+</html>
