@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crime density by location | Kaggle</title>
+    <meta charset="utf-8" />
+    <meta name="robots" content="index, follow"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">    <meta name="theme-color" content="#008ABC" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" /><link rel="dns-prefetch" href="https://stats.g.doubleclick.net" /><link rel="dns-prefetch" href="https://js.intercomcdn.com" /><link rel="preload" href="https://az416426.vo.msecnd.net/scripts/a/ai.0.js" as=script /><link rel="dns-prefetch" href="https://kaggle2.blob.core.windows.net" />
+    <link href="/content/v/d420a040e581/kaggle/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="manifest" href="/static/json/manifest.json">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic" rel='stylesheet' type='text/css'>
+                <link rel="stylesheet" type="text/css" href="/static/assets/vendor.css?v=72f4ef2ebe4f"/>
+        <link rel="stylesheet" type="text/css" href="/static/assets/app.css?v=7b8258d418c0"/>
+        <script>
+            
+            (function () {
+                var originalError = window.onerror;
+
+                window.onerror = function (message, url, lineNumber, columnNumber, error) {
+                    var handled = originalError && originalError(message, url, lineNumber, columnNumber, error);
+                    var blockedByCors = message && message.toLowerCase().indexOf("script error") >= 0;
+                    return handled || blockedByCors;
+                };
+            })();
+        </script>
+    <script>
+        var appInsights=window.appInsights||function(config){
+        function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
+        }({
+            instrumentationKey:"5b3d6014-f021-4304-8366-3cf961d5b90f",
+            disableAjaxTracking: true
+        });
+        window.appInsights=appInsights;
+        appInsights.trackPageView();
+    </script>
+    
+    
+    
+ 
+    
+    <script>
+    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+    ga('create', 'UA-12629138-1', 'auto');
+    ga('set', 'displayFeaturesTask', null);
+    ga('send', 'pageview');
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+    
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window,document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+    fbq("set", "autoConfig", "false", "136809193586742");
+    fbq('init', '136809193586742'); 
+    fbq('track', 'PageView');
+</script>
+<noscript>
+    <img height="1" width="1" src="https://www.facebook.com/tr?id=136809193586742&ev=PageView&noscript=1"/>
+</noscript>
+
+    
+
+    <script>
+         window.intercomSettings = {
+        app_id: "koj6gxx6",
+            name: "monart",
+            email: "mona.timmermann@outlook.com",
+            created_at: 1497517756,
+            user_hash: "9271c692f23e78f014e769cc2f2b09281f207c99ca13a081fd15ede594741f01",
+            "last_visit_date_at": 1514208775,  
+            "is_activated": true,
+            "is_locked_out": false,
+            "points": 128.199996948242,
+             "ranking": 35297,
+             "tier": 0,
+             "performance_tier": 0,
+             "highest_ranking": 28620,
+             "user_name": "monart",
+             "display_name": "monart",
+             "is_admin": false,
+             "experiment_group": 1,
+             "newsletter_subscriber": true,
+             "block_emails": false,
+                 
+                 "competitions_tier": 0,
+                 "competitions_tier_attained_at" : -62135596800,
+                 "kernels_tier": 0,
+                 "kernels_tier_attained_at" : -62135596800,
+                 "discussion_tier": 0,
+                 "discussion_tier_attained_at" : -62135596800,
+                 
+                              "datasets_count": 0,
+                 "last_dataset_created_at": null,
+                 "last_dataset_validation_error_at": null,
+                 "last_new_dataset_visit_at": null,
+                 "host_page_visits": 0,
+             "delete_account_reason": ""
+        };
+    </script>
+<script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/koj6gxx6';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@kaggledatasets" />
+    <meta name="og:url" content="https://www.kaggle.com/dbennett/test-map" />
+    <meta name="og:title" content="Crime density by location" />
+    <meta name="og:description" content="Using data from San Francisco Crime Classification" />
+    <meta name="og:image" content="https://www.kaggle.com/static/images/no-datasource.png" />
+
+
+    
+    
+
+    <script src="/static/assets/manifest.js?v=47a28ec84654"></script>
+<script src="/static/assets/vendor.js?v=b83f9046871b"></script>
+</head>
+<body>
+    
+
+
+
+
+
+
+
+<div class="site-layout">
+        <div class="site-layout__header">
+            <div data-component-name="SiteHeaderContainer"></div><script>var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push({});performance && performance.mark && performance.mark("SiteHeaderContainer.componentCouldBootstrap");</script>
+        </div>
+
+    <div class="site-layout__main-content">
+        
+
+
+<div data-component-name="ScriptViewer"></div><script>var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push({"pageMessages":[],"log":"","code":"import pandas as pd\nimport numpy as np\nimport zipfile\nimport matplotlib.pyplot as pl\nimport seaborn as sns\n\n# Supplied map bounding box:\n#    ll.lon     ll.lat   ur.lon     ur.lat\n#    -122.52469 37.69862 -122.33663 37.82986\nmapdata = np.loadtxt(\u0022../input/sf_map_copyright_openstreetmap_contributors.txt\u0022)\nasp = mapdata.shape[0] * 1.0 / mapdata.shape[1]\n\nlon_lat_box = (-122.5247, -122.3366, 37.699, 37.8299)\nclipsize = [[-122.5247, -122.3366],[ 37.699, 37.8299]]\n\nz = zipfile.ZipFile(\u0027../input/train.csv.zip\u0027)\ntrain = pd.read_csv(z.open(\u0027train.csv\u0027))\n\n#Get rid of the bad lat/longs\ntrain[\u0027Xok\u0027] = train[train.X\u003c-121].X\ntrain[\u0027Yok\u0027] = train[train.Y\u003c40].Y\ntrain = train.dropna()\ntrainP = train[train.Category == \u0027PROSTITUTION\u0027] #Grab the prostitution crimes\ntrain = train[1:300000] #Can\u0027t use all the data and complete within 600 sec :(\n\n#Seaborn FacetGrid, split by crime Category\ng= sns.FacetGrid(train, col=\u0022Category\u0022, col_wrap=6, size=5, aspect=1/asp)\n\n#Show the background map\nfor ax in g.axes:\n    ax.imshow(mapdata, cmap=pl.get_cmap(\u0027gray\u0027), \n              extent=lon_lat_box, \n              aspect=asp)\n#Kernel Density Estimate plot\ng.map(sns.kdeplot, \u0022Xok\u0022, \u0022Yok\u0022, clip=clipsize)\n\npl.savefig(\u0027category_density_plot.png\u0027)\n\n#Do a larger plot with prostitution only\npl.figure(figsize=(20,20*asp))\nax = sns.kdeplot(trainP.Xok, trainP.Yok, clip=clipsize, aspect=1/asp)\nax.imshow(mapdata, cmap=pl.get_cmap(\u0027gray\u0027), \n              extent=lon_lat_box, \n              aspect=asp)\npl.savefig(\u0027prostitution_density_plot.png\u0027)","languageName":"Python","htmlOutputFileUrl":null,"outputFiles":[{"size":2969832,"fullPath":null,"previewUrl":"/kernels/preview.json/14252/26e15118-6f86-47cc-8b41-822d8508f9f5/category_density_plot.png","downloadUrl":"https://www.kaggle.io/svf/14252/26e151186f8647cc8b41822d8508f9f5/category_density_plot.png","fileType":".png","validationErrors":"","name":"category_density_plot.png","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}},{"size":840614,"fullPath":null,"previewUrl":"/kernels/preview.json/14252/26e15118-6f86-47cc-8b41-822d8508f9f5/prostitution_density_plot.png","downloadUrl":"https://www.kaggle.io/svf/14252/26e151186f8647cc8b41822d8508f9f5/prostitution_density_plot.png","fileType":".png","validationErrors":"","name":"prostitution_density_plot.png","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}}],"downloadAllFilesUrl":"/kernels/svzip/14252","runInfo":{"isValidStatus":true,"failureMessage":"","exitCode":0,"succeeded":true,"dockerImageName":"kaggle/python","dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","timeoutExceeded":false,"runTimeSeconds":441.874212503433,"usedAllSpace":false,"queuedSeconds":0.353,"outputSizeBytes":3810446},"versionHistory":[{"id":14252,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-13T05:16:36.76Z","linesChangedFromPrevious":8,"linesDeletedFromPrevious":4,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":3810446,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":441.874212503433,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14252","versionNumber":19,"hasVersionNumber":true},{"id":14251,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-13T05:15:23.8Z","linesChangedFromPrevious":3,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":840614,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":18.7286016941071,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14251","versionNumber":18,"hasVersionNumber":true},{"id":14250,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-13T05:14:26.07Z","linesChangedFromPrevious":8,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":581016,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":19.2047672271729,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14250","versionNumber":17,"hasVersionNumber":true},{"id":14249,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-13T05:06:23.85Z","linesChangedFromPrevious":3,"linesDeletedFromPrevious":1,"linesInsertedFromPrevious":4,"outputFilesTotalSizeBytes":2969832,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","dockerImageName":"kaggle/python","exitCode":1,"failureMessage":"The script returned with an error. See the log below for more information.","isValidStatus":true,"runTimeSeconds":431.341499567032,"succeeded":false,"timeoutExceeded":false,"usedAllSpace":false},"status":"error","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14249","versionNumber":16,"hasVersionNumber":true},{"id":14242,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-13T04:52:01.497Z","linesChangedFromPrevious":8,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":3488950,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":440.713384389877,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14242","versionNumber":15,"hasVersionNumber":true},{"id":14240,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-13T04:46:02.473Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":418674,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":17.6004416942596,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14240","versionNumber":14,"hasVersionNumber":true},{"id":14239,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-13T04:45:28Z","linesChangedFromPrevious":2,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","dockerImageName":"kaggle/python","exitCode":1,"failureMessage":"The script returned with an error. See the log below for more information.","isValidStatus":true,"runTimeSeconds":17.0433144569397,"succeeded":false,"timeoutExceeded":false,"usedAllSpace":false},"status":"error","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14239","versionNumber":13,"hasVersionNumber":true},{"id":14238,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-13T04:44:54.87Z","linesChangedFromPrevious":4,"linesDeletedFromPrevious":2,"linesInsertedFromPrevious":12,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"8a879db5f3f5265ecd11f7d3d559210fbdc9decde29e4d314563e71aa9761146","dockerImageName":"kaggle/python","exitCode":1,"failureMessage":"The script returned with an error. See the log below for more information.","isValidStatus":true,"runTimeSeconds":7.70039367675781,"succeeded":false,"timeoutExceeded":false,"usedAllSpace":false},"status":"error","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14238","versionNumber":12,"hasVersionNumber":true},{"id":14029,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T14:29:35.983Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":2969832,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":431.218357086182,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14029","versionNumber":11,"hasVersionNumber":true},{"id":14028,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T14:24:09.41Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":2969832,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":430.265371799469,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14028","versionNumber":10,"hasVersionNumber":true},{"id":14027,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T14:13:59.47Z","linesChangedFromPrevious":3,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":2137454,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":428.547700405121,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Crime density by location","url":"/dbennett/test-map?scriptVersionId=14027","versionNumber":9,"hasVersionNumber":true},{"id":14026,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T13:57:52.9Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":4545002,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":432.907188892365,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Test map","url":"/dbennett/test-map?scriptVersionId=14026","versionNumber":8,"hasVersionNumber":true},{"id":14025,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T13:46:18.79Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":2,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":137,"failureMessage":"The script was killed for running longer than 600 seconds.","isValidStatus":true,"runTimeSeconds":600.196736812592,"succeeded":false,"timeoutExceeded":true,"usedAllSpace":false},"status":"error","title":"Test map","url":"/dbennett/test-map?scriptVersionId=14025","versionNumber":7,"hasVersionNumber":true},{"id":14024,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T13:33:32.223Z","linesChangedFromPrevious":4,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":23,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":137,"failureMessage":"The script was killed for running longer than 600 seconds.","isValidStatus":true,"runTimeSeconds":600.17359161377,"succeeded":false,"timeoutExceeded":true,"usedAllSpace":false},"status":"error","title":"Test map","url":"/dbennett/test-map?scriptVersionId=14024","versionNumber":6,"hasVersionNumber":true},{"id":14023,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T13:28:05.54Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":2,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":1,"failureMessage":"The script returned with an error. See the log below for more information.","isValidStatus":true,"runTimeSeconds":2.61597418785095,"succeeded":false,"timeoutExceeded":false,"usedAllSpace":false},"status":"error","title":"Test map","url":"/dbennett/test-map?scriptVersionId=14023","versionNumber":5,"hasVersionNumber":true},{"id":14022,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T13:22:04.23Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":2.60754752159119,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Test map","url":"/dbennett/test-map?scriptVersionId=14022","versionNumber":4,"hasVersionNumber":true},{"id":14019,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T13:01:08.497Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":1,"failureMessage":"The script returned with an error. See the log below for more information.","isValidStatus":true,"runTimeSeconds":2.40039324760437,"succeeded":false,"timeoutExceeded":false,"usedAllSpace":false},"status":"error","title":"Test map","url":"/dbennett/test-map?scriptVersionId=14019","versionNumber":3,"hasVersionNumber":true},{"id":14018,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T13:00:33.24Z","linesChangedFromPrevious":1,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":1,"failureMessage":"The script returned with an error. See the log below for more information.","isValidStatus":true,"runTimeSeconds":2.32100772857666,"succeeded":false,"timeoutExceeded":false,"usedAllSpace":false},"status":"error","title":"Test map","url":"/dbennett/test-map?scriptVersionId=14018","versionNumber":2,"hasVersionNumber":true},{"id":14017,"isForkParent":false,"isNotebook":false,"languageName":"Python","lastRunTime":"2015-06-12T13:00:08.793Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"e06df42b85eba8af654ed9383b6fa74141de591fb1cac52a308f08a8159f4206","dockerImageName":"kaggle/python","exitCode":1,"failureMessage":"The script returned with an error. See the log below for more information.","isValidStatus":true,"runTimeSeconds":0.247398376464844,"succeeded":false,"timeoutExceeded":false,"usedAllSpace":false},"status":"error","title":"Test map","url":"/dbennett/test-map?scriptVersionId=14017","versionNumber":1,"hasVersionNumber":true}],"sanitizeHtml":false,"initialScriptVersionId":14252,"initialTab":"code","baseUrl":"/dbennett/test-map","toggleScriptIsHiddenUrl":"/kernels/5869/hidden/toggle","scriptIsHidden":false,"kernelDeletionUrl":null,"isAdmin":false,"datasetHidden":false,"readOnly":false,"scriptIsLanguageTemplate":false,"rerunScriptUrl":"/kernels/rerun?id=14252","dataSources":[{"imageUrl":"https://kaggle2.blob.core.windows.net/competitions/kaggle/4458/logos/thumb76_76.png","sourceUrl":"/c/sf-crime","slug":"sf-crime","lastUpdated":"2015-06-02T20:51:28.977Z","overview":"Predict the category of crimes that occurred in the city by the bay ","sourceType":"competition","sourceId":4458,"descriptionMimeType":"","deleted":false,"name":"San Francisco Crime Classification","description":"\u003cp\u003eThis dataset contains incidents derived from SFPD Crime Incident Reporting system. The data ranges from 1/1/2003 to 5/13/2015. The training set and test set rotate every week, meaning week 1,3,5,7... belong to test set, week 2,4,6,8 belong to training set. \u003c/p\u003e\r\n\u003cp\u003e\u003cimg src=\u0022https://kaggle2.blob.core.windows.net/competitions/kaggle/4458/media/Screen%20Shot%202015-05-28%20at%205.23.48%20PM.png\u0022 alt=\u0022\u0022 width=\u0022650\u0022 height=\u0022352\u0022 /\u003e\u003c/p\u003e\r\n\u003ch2\u003eData fields\u003c/h2\u003e\r\n\u003cul\u003e\r\n\u003cli\u003e\u003cstrong\u003eDates\u003c/strong\u003e - timestamp of the crime incident\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eCategory\u003c/strong\u003e - category of the crime incident (only in train.csv). \u003cstrong\u003eThis is the target variable you are going to predict.\u003c/strong\u003e\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eDescript\u003c/strong\u003e - detailed description of the crime incident (only in train.csv)\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eDayOfWeek\u003c/strong\u003e - the day of the week\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003ePdDistrict\u003c/strong\u003e - name of the Police Department District\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eResolution\u003c/strong\u003e - how the crime incident was resolved (only in train.csv)\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eAddress\u003c/strong\u003e - the approximate street address of the crime incident \u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eX\u003c/strong\u003e - Longitude\u003c/li\u003e\r\n\u003cli\u003e\u003cstrong\u003eY\u003c/strong\u003e - Latitude\u003c/li\u003e\r\n\u003c/ul\u003e","type":"dataSource","children":[{"size":2498027,"fullPath":"../input/sampleSubmission.csv","previewUrl":"/Scripts/ScriptCompetitionInputFilePreview?competitionId=4458\u0026relativePath=sampleSubmission.csv","downloadUrl":"/c/sf-crime/download/sampleSubmission.csv","fileType":".csv","validationErrors":null,"name":"sampleSubmission.csv","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}},{"size":19665660,"fullPath":"../input/test.csv","previewUrl":"/Scripts/ScriptCompetitionInputFilePreview?competitionId=4458\u0026relativePath=test.csv","downloadUrl":"/c/sf-crime/download/test.csv","fileType":".csv","validationErrors":null,"name":"test.csv","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}},{"size":23166068,"fullPath":"../input/train.csv","previewUrl":"/Scripts/ScriptCompetitionInputFilePreview?competitionId=4458\u0026relativePath=train.csv","downloadUrl":"/c/sf-crime/download/train.csv","fileType":".csv","validationErrors":null,"name":"train.csv","description":null,"type":"file","children":[],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}}],"collapsed":false,"info":{"metrics":null},"settings":{"csvSettings":null,"bigQuerySettings":null}}],"forksBaseUrl":"/kernels/forks/5869/0","totalForks":30,"newForkUrl":"/monart/kernels/scripts/new?forkParentScriptVersionId=14252","isNotebook":false,"isRMarkdown":false,"scriptId":5869,"scriptVersionId":14252,"scriptVersionHasError":false,"userCanEditScript":false,"showSubmitToCompButtons":false,"submitToCompUrl":"/competitions/kernels/submit","competitionName":"San Francisco Crime Classification","currentScriptVersionIsBusy":false,"statusCallbackUrl":"/kernels/status?id=14252","forkParentUrl":"","forkParentTitle":null,"forkParentAuthorUrl":null,"forkParentAuthorDisplayName":null,"forkDiffUrl":"/dbennett/test-map/versions#base=0\u0026new=14252","forkDiffLinesChanged":0,"forkDiffLinesDeleted":0,"forkDiffLinesInserted":0,"voteButton":{"totalVotes":34,"hasAlreadyVotedUp":false,"hasAlreadyVotedDown":false,"canUpvote":true,"canDownvote":false,"voteUpUrl":"/kernels/vote?id=5869","voteDownUrl":null,"voters":[{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"SongJiaYu","userName":"heavensyc","profileUrl":"/heavensyc","tier":"Novice","tierInt":0,"userId":1453682},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"Templet","userName":"hellojoyboy","profileUrl":"/hellojoyboy","tier":"Novice","tierInt":0,"userId":1218272},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"qmind","userName":"dqmind","profileUrl":"/dqmind","tier":"Contributor","tierInt":1,"userId":493532},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"edcba","userName":"phgerner","profileUrl":"/phgerner","tier":"Novice","tierInt":0,"userId":591993},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/461633-gr.jpg","displayName":"RoseLi","userName":"innocentroseli","profileUrl":"/innocentroseli","tier":"Contributor","tierInt":1,"userId":461633},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/545464-fb.jpg","displayName":"MaiteEcheverry","userName":"maite828","profileUrl":"/maite828","tier":"Novice","tierInt":0,"userId":545464},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/522584-kg.jpg","displayName":"SvenBrüssow","userName":"bruessow","profileUrl":"/bruessow","tier":"Expert","tierInt":2,"userId":522584},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"JienaGu","userName":"jienagu","profileUrl":"/jienagu","tier":"Novice","tierInt":0,"userId":497519},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/459996-gr.jpg","displayName":"Angelo Ziletti","userName":"angeloziletti","profileUrl":"/angeloziletti","tier":"Novice","tierInt":0,"userId":459996},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/304806-kg.jpg","displayName":"Myles O\u0027Neill","userName":"mylesoneill","profileUrl":"/mylesoneill","tier":"Staff","tierInt":5,"userId":304806},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/372069-kg.jpg","displayName":"jiangh52","userName":"jiangh52","profileUrl":"/jiangh52","tier":"Novice","tierInt":0,"userId":372069},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"StarGazer","userName":"str8sky2star","profileUrl":"/str8sky2star","tier":"Novice","tierInt":0,"userId":481297},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/397058-fb.jpg","displayName":"DanielaCunha","userName":"aleina","profileUrl":"/aleina","tier":"Novice","tierInt":0,"userId":397058},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"mjdawson","userName":"mjdawson","profileUrl":"/mjdawson","tier":"Novice","tierInt":0,"userId":444124},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/226223-gr.jpg","displayName":"spjca","userName":"seanpj","profileUrl":"/seanpj","tier":"Novice","tierInt":0,"userId":226223},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/414820-gp.jpg","displayName":"EricYeh","userName":"ericyeh","profileUrl":"/ericyeh","tier":"Novice","tierInt":0,"userId":414820},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"wiking","userName":"wiking","profileUrl":"/wiking","tier":"Novice","tierInt":0,"userId":270433},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/300833-gr.jpg","displayName":"Ole Kröger","userName":"wikunia","profileUrl":"/wikunia","tier":"Expert","tierInt":2,"userId":300833},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/248090-fb.jpg","displayName":"Hideki Ikeda","userName":"hideki1234","profileUrl":"/hideki1234","tier":"Novice","tierInt":0,"userId":248090},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"stellasia","userName":"stellasia","profileUrl":"/stellasia","tier":"Novice","tierInt":0,"userId":320933},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/98095-gr.jpg","displayName":"Moustafa Alzantot","userName":"malzantot","profileUrl":"/malzantot","tier":"Expert","tierInt":2,"userId":98095},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/324472-gr.jpg","displayName":"Peiyao Li","userName":"peiyaoli","profileUrl":"/peiyaoli","tier":"Novice","tierInt":0,"userId":324472},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/87907-kg.jpg","displayName":"Sven Degroeve","userName":"svendegroeve","profileUrl":"/svendegroeve","tier":"Expert","tierInt":2,"userId":87907},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/278304-gr.jpg","displayName":"Simon","userName":"swbevan","profileUrl":"/swbevan","tier":"Novice","tierInt":0,"userId":278304},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/149650-gp.jpg","displayName":"Viktor S","userName":"viktorshaumann","profileUrl":"/viktorshaumann","tier":"Novice","tierInt":0,"userId":149650},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/71041-gr.jpg","displayName":"Dessy Amirudin","userName":"staesthetics","profileUrl":"/staesthetics","tier":"Contributor","tierInt":1,"userId":71041},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/344688-kg.jpg","displayName":"the1owl","userName":"the1owl","profileUrl":"/the1owl","tier":"Master","tierInt":3,"userId":344688},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","displayName":"DBenn","userName":"dbennett","profileUrl":"/dbennett","tier":"Contributor","tierInt":1,"userId":176473},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/37594-fb.jpg","displayName":"Wendy Kan","userName":"wendykan","profileUrl":"/wendykan","tier":"Staff","tierInt":5,"userId":37594},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/259561-kg.jpg","displayName":"Anna Montoya","userName":"annavictoria","profileUrl":"/annavictoria","tier":"Staff","tierInt":5,"userId":259561},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/3258-fb.jpg","displayName":"William Cukierski","userName":"wcukierski","profileUrl":"/wcukierski","tier":"Staff","tierInt":5,"userId":3258},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/28963-fb.jpg","displayName":"DataCanary","userName":"datacanary","profileUrl":"/datacanary","tier":"Staff","tierInt":5,"userId":28963},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/2505-fb.jpg","displayName":"Jeff Moser","userName":"jeffmoser","profileUrl":"/jeffmoser","tier":"Staff","tierInt":5,"userId":2505},{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/993-fb.jpg","displayName":"Ben Hamner","userName":"benhamner","profileUrl":"/benhamner","tier":"Staff","tierInt":5,"userId":993}],"currentUserInfo":{"avatarThumbnailUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/1126871-kg.jpg","displayName":"monart","userName":"monart","profileUrl":"/monart","tier":"Novice","tierInt":0,"userId":1126871},"showVoters":true,"alwaysShowVoters":true},"dateUpdated":"2015-06-13T05:16:37.113Z","userName":"DBenn","userUrl":"/dbennett","userAvatarImageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/default-thumb.png","parentName":"San Francisco Crime Classification","parentUrl":"/c/sf-crime","scriptLanguage":"Python script","totalViews":8172,"title":"Crime density by location","titleUrl":"/dbennett/test-map","thumbnailImageUrl":"/static/images/no-datasource.png","isPrivate":false,"isCodeSubmission":false,"submission":null,"menuLinks":[{"href":null,"text":"Code","title":"Code","tab":"code","count":null,"showZeroCountExplicitly":false},{"href":null,"text":"Data","title":"Data","tab":"data","count":1,"showZeroCountExplicitly":false},{"href":null,"text":"Output","title":"Output","tab":"output","count":2,"showZeroCountExplicitly":false},{"href":null,"text":"Comments","title":"Comments","tab":"comments","count":9,"showZeroCountExplicitly":true},{"href":null,"text":"Log","title":"Log","tab":"log","count":null,"showZeroCountExplicitly":false},{"href":null,"text":"Versions","title":"Versions","tab":"versions","count":19,"showZeroCountExplicitly":false},{"href":null,"text":"Forks","title":"Forks","tab":"forks","count":30,"showZeroCountExplicitly":false}],"rightMenuLinks":[],"callToAction":{"href":"/monart/kernels/scripts/new?forkParentScriptVersionId=14252","text":"Fork Script","title":"Fork Script","tab":null,"count":null,"showZeroCountExplicitly":false},"topic":{"allowAttachments":false,"canDownvote":true,"comment":null,"commentList":null,"id":14701,"isDeleted":false,"isLocked":false,"isPinned":false,"isSpammed":false,"isSubscribed":false,"parentName":null,"parentUrl":null,"title":null},"medal":"bronze","categories":{"categories":[],"type":"script"},"canSeeUpvoteSuggestion":true,"suggestions":[{"entityType":"kernel","entityId":5039,"title":"San Francisco Top Crimes Map","entityUrl":"/benhamner/san-francisco-top-crimes-map","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":993,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/993-fb.jpg","isOrganization":false,"name":"Ben Hamner","profileUrl":"/benhamner","slug":"benhamner","maxFileSizeBytes":null}},{"entityType":"kernel","entityId":34393,"title":"Mapping and Visualizing Violent Crime","entityUrl":"/mircat/violent-crime-mapping","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":208885,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/208885-fb.jpg","isOrganization":false,"name":"Mir Henglin","profileUrl":"/mircat","slug":"mircat","maxFileSizeBytes":null}},{"entityType":"kernel","entityId":6560,"title":"a history of crime","entityUrl":"/swbevan/a-history-of-crime-python","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":278304,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/278304-gr.jpg","isOrganization":false,"name":"Simon","profileUrl":"/swbevan","slug":"swbevan","maxFileSizeBytes":null}},{"entityType":"kernel","entityId":7079,"title":"Vehicle Thefts or Jerry Rice Jubilation?","entityUrl":"/eyecjay/vehicle-thefts-or-jerry-rice-jubilation","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":227880,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/227880-gr.jpg","isOrganization":false,"name":"icj","profileUrl":"/eyecjay","slug":"eyecjay","maxFileSizeBytes":null}},{"entityType":"kernel","entityId":10113,"title":"Function to map any crime","entityUrl":"/captcalculator/function-to-map-any-crime","thumbnailImageUrl":"/static/images/competition-noimage-thumb.png","owner":{"id":379860,"imageUrl":"https://kaggle2.blob.core.windows.net/avatars/thumbnails/379860-fb.jpg","isOrganization":false,"name":"Troy Walters","profileUrl":"/captcalculator","slug":"captcalculator","maxFileSizeBytes":null}}]});performance && performance.mark && performance.mark("ScriptViewer.componentCouldBootstrap");</script>
+
+
+<form action="/dbennett/test-map/code" id="__AjaxAntiForgeryForm" method="post"><input name="__RequestVerificationToken" type="hidden" value="RLrV3naS-KFDGjRd1H8ekqXPPFBwM5pGepB4K6nNt34PjLseIM8cYT6zTg6YZBtOn3bWQgQUqRdcMANopRZ438V_WHA1" /></form>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            preferredFont: "TeX",
+            availableFonts: ["STIX", "TeX"],
+            linebreaks: {
+                automatic: true
+            },
+            EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+        },
+        tex2jax: {
+            inlineMath: [["\\(", "\\)"], ["\\\\(", "\\\\)"]],
+            displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+            processEscapes: true,
+            ignoreClass: "tex2jax_ignore|dno"
+        },
+        TeX: {
+            noUndefined: {
+                attributes: {
+                    mathcolor: "red",
+                    mathbackground: "#FFEEEE",
+                    mathsize: "90%"
+                }
+            }
+        },
+        Macros: {
+            href: "{}"
+        },
+        skipStartupTypeset: true,
+        messageStyle: "none"
+    });
+</script>
+
+<script type="text/javascript" async crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+    </div>
+
+        <div class="site-layout__footer">
+            <footer class="site-footer">
+    <div class="site-footer__content">
+        <div class="site-footer__copyright">
+            <span>&copy; 2017 Kaggle Inc</span>
+        </div>
+        <nav class="site-footer__nav">
+            <a href="/team">Our Team</a>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/contact">Contact/Support</a>
+        </nav>
+        <nav class="site-footer__social">
+            <div data-component-name="SocialIcons"></div><script>var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push();performance && performance.mark && performance.mark("SocialIcons.componentCouldBootstrap");</script>
+        </nav>
+    </div>
+</footer>
+
+        </div>
+</div>
+
+
+
+<script type="text/javascript">
+    var Kaggle = Kaggle || {};
+
+    Kaggle.Current = {
+        userId: 1126871,
+        userProfileUrl: '/monart',
+        userDisplayNameEscaped: 'monart',
+        userThumbnailUrl: 'https://kaggle2.blob.core.windows.net/avatars/thumbnails/1126871-kg.jpg',
+        userEmail: 'mona.timmermann@outlook.com',
+        userIsPhoneVerified: true,
+        userName: 'monart',
+        tier: 'Novice',
+        hasJupyterNotebookEditor: true,
+        hasEnvironmentVariables: false,
+        hasInteractiveScripts: false,
+        hasStandaloneKernelProxy: true,
+        hasKernelsAsDataSources: true,
+        antiForgeryToken: 'YxVigX15hArgZREv3snKCSLvNLpi6OCzua59iANlJopkx06E5LEjhpw6i7mTiv_EoiWLXCCOG9v3JzgJQhhCT0hKmDM1',
+        isAnonymous: false,
+        isFullScreen: false,
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+        Kaggle.Current.log = function(){};
+        Kaggle.Current.warn = function(){};
+    var decodeUserDisplayName = function () {
+        var escapedUserDisplayName = Kaggle.Current.userDisplayNameEscaped;
+        try {
+          var textVersion = new DOMParser().parseFromString(escapedUserDisplayName, "text/html").documentElement.textContent;
+          if (textVersion) {
+              return textVersion;
+          }
+        } catch(ex) {}
+        
+        return escapedUserDisplayName;
+    }
+    Kaggle.Current.userDisplayName = decodeUserDisplayName();
+</script>
+
+
+
+
+
+<script type="text/javascript">
+    var Kaggle = Kaggle || {};
+    Kaggle.PageMessages = [];
+</script>
+
+
+<script src="/content/v/5dbea6ee9ce1/shared/js/kaggle.prism.min.js"></script>
+
+
+
+
+
+
+
+
+
+    <!-- Cheers, RD00155D48653Dp. -->
+
+    <script src="/static/assets/app.js?v=f64d55c4323b"></script>
+    
+        <script>
+            (function() {
+                if ('serviceWorker' in navigator) {
+                    
+                    navigator.serviceWorker.register("/static/assets/service-worker.js").then(function(reg) {
+                        
+                        reg.onupdatefound = function() {
+                            
+                            var installingWorker = reg.installing;
+                            installingWorker.onstatechange = function() {
+                                switch (installingWorker.state) {
+                                case 'installed':
+                                    if (navigator.serviceWorker.controller) {
+                                        
+                                        console.log('New or updated content is available.');
+                                    } else {
+                                        
+                                        console.log('Content is now available offline!');
+                                    }
+                                    break;
+                                case 'redundant':
+                                    console.error('The installing service worker became redundant.');
+                                    break;
+                                }
+                            };
+                        };
+                    }).catch(function(e) {
+                      console.error('Error during service worker registration:', e);
+                    });
+                }
+            })();
+        </script>
+</body>
+</html>

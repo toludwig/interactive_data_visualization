@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+	<title>Interactive Data Visualization for the Web</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="http://dwn0odqttrkhc.cloudfront.net/assets/book-f1caceafd9c9f3a6ff72d40c54d173ab.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="http://dwn0odqttrkhc.cloudfront.net/assets/default-24583441b4f47382b8932338cd56ed23.css" media="screen" rel="stylesheet" type="text/css" />
+	<script src="http://dwn0odqttrkhc.cloudfront.net/assets/application-47d6ffb0c77b868d29a43eb65e940505.js" type="text/javascript"></script>
+	<script src="http://dwn0odqttrkhc.cloudfront.net/assets/book-756862b9ed04d945ca53de5b8f106a83.js" type="text/javascript"></script>
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<link href="http://dwn0odqttrkhc.cloudfront.net/assets/janrain-53eb5abed55992e21943b9d3373923e8.css" media="all" rel="stylesheet" type="text/css" />
+	<meta content="authenticity_token" name="csrf-param" />
+<meta content="9x3kx91zquLKDw5rMpPiItZY7fMUsYOrQHo5aBl4jcI=" name="csrf-token" />
+	<script type="text/javascript" charset="utf-8">
+  	
+		app.data = new classes.Data({"controller":{"controller":"books","action":"html"},"capturable":{"capture_server":"https://oreilly.janraincapture.com","client_id":"6n5q2k9vesqgn93k3mhevka6c3c3rsre","app_url":"https://login.oreilly.com","app_id":"xsnca5wmqe9vxv97ygh5vfejkd","load_js":"d16s8pqtk4uodx.cloudfront.net/login.oreilly.com/load.js"},"user":{"id":null,"account":"LoggedOutAccount","email":"","name":null,"gravatar_url":"http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=40&d=identicon"},"book":{"isbn":"1230000000345","chapter":"ch12.html","toc_url":"/books/1230000000345/toc_html","metadata_url":"http://d4bb7yl96lyl1.cloudfront.net/1230000000345/metadata/metadata_955c409ac75891a777d6200ca329e52fa6fb5c19.json"},"abilities":{"can_destroy_all_comments":false,"can_create_comments":false},"advertisement":{"body":"<style>      \r\n.ad-profile-image {\r\n  padding: 0;\r\n  margin: 0;\r\n  max-height: 30px;\r\n }\r\n\r\n.top-banner {\r\n  position: absolute;\r\n  right: 0;\r\n  top: 34px;\r\n  z-index: 99999;\r\n}\r\n\r\np.banner-text {\r\n  margin: 0;\r\n  text-align: center;\r\n  padding-right: 10px;\r\n  width: 450px;\r\n}\r\n\r\n@media screen and (max-width: 600px) {\r\n   p.banner-text {\r\n     width: 100%;\r\n     text-align: center;\r\n  }\r\n}\r\n\r\nspan.ebook-advantage {\r\n  font-size: smaller;\r\n  display: block;\r\n}\r\n\r\ndiv.banner-container {\r\n  margin: 0 auto;\r\n}\r\n\r\ndiv.banner-container ul {\r\n  margin: 0 auto;\r\n}\r\n\r\ndiv.topad { padding-bottom: 5px; }\r\n\r\ndiv.banner-container ul li {\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\ndiv.banner-container li p {\r\n  padding-top: 0;\r\n  margin-top: 0;\r\n}\r\n\r\ndiv.banner-container li.sponsor {\r\n  border-right: 1px solid rgb(125, 154, 180);\r\n  margin-right: 5px;\r\n  padding-right: 10px;\r\n}\r\n\r\ndiv.banner-container .webbutton {\r\n  background-color: #3994b6;\r\n  display: inline-block;\r\n  padding: 10px;\r\n  -webkit-border-radius: 5px;\r\n  -moz-border-radius: 5px;\r\n  border-radius: 5px;\r\n  color: #FFF;\r\n  text-align: center;\r\n  text-decoration: none;\r\n  font-size: 12px;\r\n  font-weight: bold;\r\n}\r\n\r\n</style>\r\n   \r\n<div style=\"color: rgb(125, 154, 180);\">\r\n\r\n<div class=\"banner-container\">\r\n\r\n<ul>\r\n\r\n<li class=\"sponsor\">\r\n<!--CONFERENCE SPONSOR IMAGE-->\r\n<a href=\"http://fluentconf.com/fluent2013\">\r\n<img src=\"http://orm-other.s3.amazonaws.com/fluent_logo.png\" class=\"ad-profile-image\"/>\r\n<!--<img src=\"http://orm-other.s3.amazonaws.com/oscon_logo.png\" class=\"ad-profile-image\"/>\r\n<img src=\"http://orm-other.s3.amazonaws.com/strata_logo.png\" class=\"ad-profile-image\"/>\r\n<img src=\"http://orm-other.s3.amazonaws.com/StrataRx_logo.png\" class=\"ad-profile-image\"/>\r\n<img src=\"http://orm-other.s3.amazonaws.com/velocity_logo.png\" class=\"ad-profile-image\"/>-->\r\n</a>\r\n</li>\r\n\r\n<li>\r\n<!--AD TEXT, 2 LINES, REPLACE LINK URL AS WELL-->\r\n<p class=\"banner-text\">Enjoy this interactive version of <em>Interactive Data Visualization for the Web</em>. Purchase and download the DRM-free ebook on <a href=\"http://shop.oreilly.com/product/0636920026938.do\">oreilly.com</a>.<span class=\"ebook-advantage\">Learn more about the O’Reilly <a href=\"http://shop.oreilly.com/category/ebooks.do\">Ebook Advantage</a>.</span></p>\r\n</li>\r\n\r\n<li>\r\n<!--BUY BUTTON-->\r\n<a class=\"webbutton\" href=\"http://shop.oreilly.com/product/0636920026938.do\">Buy the Ebook</a>\r\n</li> \r\n\r\n</ul>\r\n\r\n</div>\r\n\r\n<!--CORNER BANNER (IF NEEDED)-->\r\n<!--<a href=\"http://shop.oreilly.com/product/0636920025245.do\" class=\"top-banner\"><img src=\"http://orm-other.s3.amazonaws.com/banner.png\" /></a>-->\r\n\r\n</div>"}});
+
+		/* Janrain setup */
+  	var janrainModal = new JanrainView();
+  	$("head").append(janrainModal.render().el);
+
+  	/* segment.io setup */
+  	var analytics=analytics||[];analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);var r=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}},i=["identify","track","trackLink","trackForm","trackClick","trackSubmit","pageview","ab","alias","ready"];for(var s=0;s<i.length;s++)analytics[i[s]]=r(i[s])};
+  	
+  	analytics.load("hg9h6b9pae");
+
+  	$(function() {
+			app.bookapp = new BookApp();
+		});
+	
+	</script>
+</head>
+<body>
+	<div id="menu">
+	
+		<ul id="menu-left">
+			<li id="home-link"><a href="/"><i class="icon-house"></i></a></li>
+			<li><a href="/books/1230000000345">Interactive Data Visualization for the Web</a></li>
+			<div class="clear"></div>
+		</ul>
+	
+		<ul id="menu-right">
+			<li id="comments-link"><a>&nbsp;</a></li>
+			<li>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Chapters</a>
+				<div id="toc-popup" class="dropdown-menu"></div>
+			</li>
+				<li><a href="#" class="capture_modal_open" id="capture_signin_link">Log In / Sign Up</a></li>
+			<li id="search-li">
+				<form accept-charset="UTF-8" action="/searches" id="search-form" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+	<input name='search[q]' type="text" placeholder="Search book..." id="book-search" />
+
+	<input id="search_bookId" name="search[bookId]" type="hidden" value="1230000000345" />
+	
+	<div style='display:none'>
+		sorted by: 
+		<select name='search[sort]' >
+			<option value='relevance'>Relevance</option>
+			<option value='authors'>Author(s)</option>
+			<option value='title'>Title</option>
+		</select>
+		returning
+		<select name='search[limit]' >
+			<option value='5'>5</option>
+			<option value='10'>10</option>
+			<option value='20'>20</option>
+			<option selected="selected" value='50'>50</option>
+			<option value='100'>100</option>
+		</select>
+		values at a time.
+	</div>
+</form>
+			</li>
+			<div class="clear"></div>
+		</ul>
+		<div class="clear"></div>
+	
+</div>
+	<header><div class="navheader">
+<table style="width: 100%; ">
+<tr><td style="text-align: center; " colspan="3">Chapter 12. Geomapping</td></tr>
+<tr>
+<td style="width: 20%; text-align: left; ">
+<a accesskey="p" href="ch11.html">Prev</a> </td>
+<td style="width: 60%; text-align: center; "> </td>
+<td style="width: 20%; text-align: right; "> <a accesskey="n" href="ch13.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div></header><section class="chapter" data-original-filename="12_geomapping.asciidoc" id="_geomapping_2"><div class="titlepage"><div><div><h1 class="title">Chapter 12. Geomapping</h1></div></div></div>
+<p id="bar_charts_sca">Bar charts, scatterplots, ring charts, and even force-directed graphs…  <span class="emphasis"><em>Yeah, that’s all okay</em></span>, you’re thinking, <span class="emphasis"><em>but get to the maps already!</em></span></p>
+<div class="sect1" data-original-filename="12_geomapping.asciidoc" id="_json_meet_geojson">
+<div class="titlepage"><div><div><h2 class="title">JSON, Meet GeoJSON</h2></div></div></div>
+<p id="youve_already_">You’ve already met JSON.  Now meet GeoJSON, the JSON-based standard for encoding geodata for web applications.  GeoJSON actually is not a totally different format, but just a very specific use of JSON.<a id="ix_geom" class="indexterm"></a><a id="id563156" class="indexterm"></a><a id="id563162" class="indexterm"></a><a id="id563170" class="indexterm"></a><a id="id563175" class="indexterm"></a></p>
+<p id="before_you_can__id2">Before you can generate a geographic map, you need to acquire the path data (the outlines) for the shapes you want to display.  We’ll start with a common example, mapping US state boundaries.  I’ve included a file <span class="emphasis"><em>us-states.json</em></span> with the sample code.  This file is taken directly from one of the D3 examples, and we owe Mike Bostock a word of thanks for generating this nice, clean file of state boundaries.</p>
+<p id="opening_up_uss">Opening up <span class="emphasis"><em>us-states.json</em></span>, you’ll see it looks something like this (reformatted and greatly abbreviated here):</p>
+<pre class="programlisting" data-language="javascript" id="type_feat_id2"><code class="p">{</code>
+  <code class="s2">"type"</code><code class="o">:</code> <code class="s2">"FeatureCollection"</code><code class="p">,</code>
+  <code class="s2">"features"</code><code class="o">:</code> <code class="p">[</code>
+     <code class="p">{</code>
+       <code class="s2">"type"</code><code class="o">:</code> <code class="s2">"Feature"</code><code class="p">,</code>
+       <code class="s2">"id"</code><code class="o">:</code> <code class="s2">"01"</code><code class="p">,</code>
+       <code class="s2">"properties"</code><code class="o">:</code> <code class="p">{</code> <code class="s2">"name"</code><code class="o">:</code> <code class="s2">"Alabama"</code> <code class="p">},</code>
+       <code class="s2">"geometry"</code><code class="o">:</code> <code class="p">{</code>
+         <code class="s2">"type"</code><code class="o">:</code> <code class="s2">"Polygon"</code><code class="p">,</code>
+         <code class="s2">"coordinates"</code><code class="o">:</code> <code class="p">[[[</code><code class="o">-</code><code class="mf">87.359296</code><code class="p">,</code><code class="mf">35.00118</code><code class="p">],</code>
+           <code class="p">[</code><code class="o">-</code><code class="mf">85.606675</code><code class="p">,</code><code class="mf">34.984749</code><code class="p">],[</code><code class="o">-</code><code class="mf">85.431413</code><code class="p">,</code><code class="mf">34.124869</code><code class="p">],</code>
+           <code class="p">[</code><code class="o">-</code><code class="mf">85.184951</code><code class="p">,</code><code class="mf">32.859696</code><code class="p">],[</code><code class="o">-</code><code class="mf">85.069935</code><code class="p">,</code><code class="mf">32.580372</code><code class="p">],</code>
+           <code class="p">[</code><code class="o">-</code><code class="mf">84.960397</code><code class="p">,</code><code class="mf">32.421541</code><code class="p">],[</code><code class="o">-</code><code class="mf">85.004212</code><code class="p">,</code><code class="mf">32.322956</code><code class="p">],</code>
+           <code class="p">[</code><code class="o">-</code><code class="mf">84.889196</code><code class="p">,</code><code class="mf">32.262709</code><code class="p">],[</code><code class="o">-</code><code class="mf">85.058981</code><code class="p">,</code><code class="mf">32.13674</code><code class="p">]</code> <code class="err">…</code>
+          <code class="p">]]</code>
+      <code class="p">}</code>
+    <code class="p">},</code>
+    <code class="p">{</code>
+         <code class="s2">"type"</code><code class="o">:</code> <code class="s2">"Feature"</code><code class="p">,</code>
+         <code class="s2">"id"</code><code class="o">:</code> <code class="s2">"02"</code><code class="p">,</code>
+         <code class="s2">"properties"</code><code class="o">:</code> <code class="p">{</code> <code class="s2">"name"</code><code class="o">:</code> <code class="s2">"Alaska"</code> <code class="p">},</code>
+         <code class="s2">"geometry"</code><code class="o">:</code> <code class="p">{</code>
+           <code class="s2">"type"</code><code class="o">:</code> <code class="s2">"MultiPolygon"</code><code class="p">,</code>
+           <code class="s2">"coordinates"</code><code class="o">:</code> <code class="p">[[[[</code><code class="o">-</code><code class="mf">131.602021</code><code class="p">,</code><code class="mf">55.117982</code><code class="p">],</code>
+             <code class="p">[</code><code class="o">-</code><code class="mf">131.569159</code><code class="p">,</code><code class="mf">55.28229</code><code class="p">],[</code><code class="o">-</code><code class="mf">131.355558</code><code class="p">,</code><code class="mf">55.183705</code><code class="p">],</code>
+             <code class="p">[</code><code class="o">-</code><code class="mf">131.38842</code><code class="p">,</code><code class="mf">55.01392</code><code class="p">],[</code><code class="o">-</code><code class="mf">131.645836</code><code class="p">,</code><code class="mf">55.035827</code><code class="p">],</code>
+             <code class="p">[</code><code class="o">-</code><code class="mf">131.602021</code><code class="p">,</code><code class="mf">55.117982</code><code class="p">]]],[[[</code><code class="o">-</code><code class="mf">131.832052</code><code class="p">,</code><code class="mf">55.42469</code><code class="p">],</code>
+             <code class="p">[</code><code class="o">-</code><code class="mf">131.645836</code><code class="p">,</code><code class="mf">55.304197</code><code class="p">],[</code><code class="o">-</code><code class="mf">131.749898</code><code class="p">,</code><code class="mf">55.128935</code><code class="p">],</code>
+             <code class="p">[</code><code class="o">-</code><code class="mf">131.832052</code><code class="p">,</code><code class="mf">55.189182</code><code class="p">],</code> <code class="err">…</code>
+            <code class="p">]]]</code>
+          <code class="p">}</code>
+      <code class="p">}</code>
+<code class="err">…</code></pre>
+<p id="in_typical_geoj">In typical GeoJSON style, we see, first of all, that this is all one giant object.  (Curly brackets, remember?)  That object has a <code class="literal">type</code> of <code class="literal">FeatureCollection</code>, followed by <code class="literal">features</code>, which is an array of individual <code class="literal">Feature</code> objects.  Each one of these <span class="keep-together"><code class="literal">Feature</code>s</span> represents a US state.  You can see each state’s name under <code class="literal">properties</code>.</p>
+<p id="but_the_real_me">But the real meat in any GeoJSON file is under <code class="literal">geometry</code>.  This is where the feature’s <code class="literal">type</code> is specified, followed by the many <code class="literal">coordinates</code> that constitute the feature’s boundary.  Within the <code class="literal">coordinates</code> are sets of longitude/latitude pairs, each one as a small, two-value array.  This is the information that cartographers dedicate their lives to compiling and refining.  We owe generations of explorers and researchers our gratitude for creating these sequences of tiny, yet extremely powerful numbers.</p>
+<p id="its_important__id2">It’s important to note that <span class="emphasis"><em>longitude</em></span> is always listed first.  So despite the cultural bias toward lat/lon, GeoJSON is a lon/lat world.<a id="id564109" class="indexterm"></a><a id="id564114" class="indexterm"></a></p>
+<p id="also_in_case_y_id2">Also, in case your cartographic skills are a bit rusty, here’s how you can always remember which is which:</p>
+<div class="itemizedlist" id="longtiude_is_lo_id1"><ul class="itemizedlist">
+<li class="listitem">
+Longtiude is long.  Therefore, longitudinal lines run vertically, as though hanging down from above.
+</li>
+<li class="listitem">
+Latitude is fatitude.  Therefore, latitudinal lines run horizontally, as though wrapping around the Earth’s waist.
+</li>
+</ul></div>
+<p id="longitude_and_l">Longitude and latitude together constitute an enormous grid that encircles the whole globe.  Conveniently for us, lon/lat can be easily converted to x/y values for screen display.  In bar charts, we map data values to display values—numbers to rectangle heights.  In geomapping, we also map data values to display values—lon/lat becomes x/y.  Thinking in terms of x/y also makes it easier to get used to the uncomfortable order of longitude first, latitude second.<a id="id564164" class="indexterm"></a></p>
+<div class="tip" id="get_latlon_is__id1"><p id="get_latlon_is__id2"><a class="ulink" href="http://teczno.com/squares" target="_top">Get Lat+Lon</a> is a great resource by Michal Migurski for double-checking coordinate values.  Keep it open in a browser tab whenever you’re working on geomaps.  You will reference it often.</p></div>
+</div>
+<div class="sect1" data-original-filename="12_geomapping.asciidoc" id="_paths">
+<div class="titlepage"><div><div><h2 class="title">Paths</h2></div></div></div>
+<p id="weve_got_our_g">We’ve got our geodata.  Now get ready to rock.<a id="id564204" class="indexterm"></a><a id="id564212" class="indexterm"></a></p>
+<p id="first_we_defin">First, we define our first <span class="emphasis"><em>path generator</em></span>:</p>
+<pre class="programlisting" data-language="javascript" id="var_path__dg_id1"><code class="kd">var</code> <code class="nx">path</code> <code class="o">=</code> <code class="nx">d3</code><code class="p">.</code><code class="nx">geo</code><code class="p">.</code><code class="nx">path</code><code class="p">();</code></pre>
+<p id="dgeopath_i"><code class="literal">d3.geo.path()</code> is a total lifesaver of a function.  It does all the dirty work of translating that mess of GeoJSON coordinates into even messier messes of SVG <code class="literal">path</code> codes.  All hail <code class="literal">d3.geo.path()</code>!</p>
+<p id="now_we_could_pa">Now we <span class="emphasis"><em>could</em></span> paste all that GeoJSON directly into our HTML file, but ugh, so many coordinates and curly brackets—what a mess!  It’s cleaner and more common to keep the geodata in a separate file and load it in using <code class="literal">d3.json()</code>:</p>
+<pre class="programlisting" data-language="javascript" id="djsonussta_id1"><code class="nx">d3</code><code class="p">.</code><code class="nx">json</code><code class="p">(</code><code class="s2">"us-states.json"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">json</code><code class="p">)</code> <code class="p">{</code>
+
+        <code class="nx">svg</code><code class="p">.</code><code class="nx">selectAll</code><code class="p">(</code><code class="s2">"path"</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">data</code><code class="p">(</code><code class="nx">json</code><code class="p">.</code><code class="nx">features</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">enter</code><code class="p">()</code>
+           <code class="p">.</code><code class="nx">append</code><code class="p">(</code><code class="s2">"path"</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">attr</code><code class="p">(</code><code class="s2">"d"</code><code class="p">,</code> <code class="nx">path</code><code class="p">);</code>
+
+<code class="p">});</code></pre>
+<p id="djson_takes"><code class="literal">d3.json()</code> takes two arguments.  First, it takes a string pointing to the path of the file to load in.  Second, it takes a callback function that is fired when the JSON file has been loaded and parsed.  (See <a class="xref" href="ch05.html#handling_data_loading_errors_5" title="Handling Data Loading Errors">“Handling Data Loading Errors”</a> for details on the callback function.)  <code class="literal">d3.json()</code>, just like <code class="literal">d3.csv()</code>, is <span class="emphasis"><em>asynchronous</em></span>, meaning it won’t prevent the rest of your code from running while the browser waits for that external file to load.  For example, code placed <span class="emphasis"><em>after</em></span> the callback function might be executed <span class="emphasis"><em>before</em></span> the contents of the callback itself:</p>
+<pre class="programlisting" data-language="javascript" id="djsonsomefi"><code class="nx">d3</code><code class="p">.</code><code class="nx">json</code><code class="p">(</code><code class="s2">"someFile.json"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">json</code><code class="p">)</code> <code class="p">{</code>
+        <code class="c1">//Put things here that depend on the JSON loading</code>
+<code class="p">});</code>
+
+<code class="c1">//Only put things here that can operate independently of the JSON</code>
+<code class="nx">console</code><code class="p">.</code><code class="nx">log</code><code class="p">(</code><code class="s2">"I like cats."</code><code class="p">);</code></pre>
+<p id="so_as_a_rule_w">So as a rule, when loading external datafiles, put the code that depends on that data within the callback function.  (Or put the code into other custom functions, and then call those functions from within the callback.)</p>
+<p id="back_to_the_exa">Back to the example.  Finally, we bind the GeoJSON features to new <code class="literal">path</code> elements, creating one new <code class="literal">path</code> for each feature:</p>
+<pre class="programlisting" data-language="javascript" id="svgselectall_id15">        <code class="nx">svg</code><code class="p">.</code><code class="nx">selectAll</code><code class="p">(</code><code class="s2">"path"</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">data</code><code class="p">(</code><code class="nx">json</code><code class="p">.</code><code class="nx">features</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">enter</code><code class="p">()</code>
+           <code class="p">.</code><code class="nx">append</code><code class="p">(</code><code class="s2">"path"</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">attr</code><code class="p">(</code><code class="s2">"d"</code><code class="p">,</code> <code class="nx">path</code><code class="p">);</code></pre>
+<p id="notice_that_las">Notice that last line, in which <code class="literal">d</code> (the path data attribute) is referred to our path generator, which magically takes the bound geodata and calculates all that crazy SVG code. The result is <a class="xref" href="ch12.html#geojson_simple" title="Figure 12-1. Our first view of GeoJSON data">Figure 12-1</a>.</p>
+<div class="figure" id="geojson_simple">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1201.png" alt="Our first view of GeoJSON data"></div></div>
+<div class="figure-title">Figure 12-1. Our first view of GeoJSON data</div>
+</div>
+<p id="a_map_that_was">A map!  That was so easy!  Check it out in <span class="emphasis"><em>01_paths.html</em></span>.  The rest is just customization.</p>
+<div class="tip" id="you_can_find_lo_id1"><p id="you_can_find_lo_id2">You can find lots more detail on paths and path generator options <a class="ulink" href="https://github.com/mbostock/d3/wiki/Geo-Paths" target="_top">on the wiki</a>.</p></div>
+</div>
+<div class="sect1" data-original-filename="12_geomapping.asciidoc" id="_projections">
+<div class="titlepage"><div><div><h2 class="title">Projections</h2></div></div></div>
+<p id="as_an_astute_ob">As an astute observer, you noticed that our map isn’t quite showing us the entire United States.  To correct this, we need to modify the <span class="emphasis"><em>projection</em></span> being used.<a id="id564903" class="indexterm"></a><a id="id564911" class="indexterm"></a><a id="id564917" class="indexterm"></a></p>
+<p id="what_is_a_proje">What is a projection?  Well, as an astute observer, you have also noticed that the globe is round, not flat.  Round things are three-dimensional, and don’t take well to being represented on two-dimensional surfaces.  A <span class="emphasis"><em>projection</em></span> is an algorithm of compromise; it is the method by which 3D space is “projected” onto a 2D plane.</p>
+<p id="we_define_d_pr">We define D3 projections using a familiar structure:</p>
+<pre class="programlisting" data-language="javascript" id="var_projection__id1"><code class="kd">var</code> <code class="nx">projection</code> <code class="o">=</code> <code class="nx">d3</code><code class="p">.</code><code class="nx">geo</code><code class="p">.</code><code class="nx">albersUsa</code><code class="p">()</code>
+                       <code class="p">.</code><code class="nx">translate</code><code class="p">([</code><code class="nx">w</code><code class="o">/</code><code class="mi">2</code><code class="p">,</code> <code class="nx">h</code><code class="o">/</code><code class="mi">2</code><code class="p">]);</code></pre>
+<p id="d_has_several_">D3 has several built-in projections.  Albers USA is a composite projection that nicely tucks Alaska and Hawaii beneath the Southwest.  (You’ll see in a second.)  <code class="literal">albersUsa</code> is actually the default projection for <code class="literal">d3.path.geo()</code>, but now that we’ve specified it explicitly, we can set several custom options, such as a translation value.  You can see we’re translating the projection to the center of the image (half of its width and half of its height).<a id="id565073" class="indexterm"></a><a id="id565078" class="indexterm"></a><a id="id565084" class="indexterm"></a></p>
+<p id="the_only_other_">The only other change we have to make is to tell the path generator explicitly that it should reference our customized projection when generating all those paths:</p>
+<pre class="programlisting" data-language="javascript" id="var_path__dg_id2"><code class="kd">var</code> <code class="nx">path</code> <code class="o">=</code> <code class="nx">d3</code><code class="p">.</code><code class="nx">geo</code><code class="p">.</code><code class="nx">path</code><code class="p">()</code>
+                 <code class="p">.</code><code class="nx">projection</code><code class="p">(</code><code class="nx">projection</code><code class="p">);</code></pre>
+<p id="that_gives_us_">That gives us <a class="xref" href="ch12.html#geojson_centered" title="Figure 12-2. The same GeoJSON data, but now with a centered projection">Figure 12-2</a>. Getting there!  See <span class="emphasis"><em>02_projection.html</em></span> for the working code.</p>
+<div class="figure" id="geojson_centered">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1202.png" alt="The same GeoJSON data, but now with a centered projection"></div></div>
+<div class="figure-title">Figure 12-2. The same GeoJSON data, but now with a centered projection</div>
+</div>
+<p id="we_can_also_add">We can also add a <code class="literal">scale()</code> method to our projection in order to shrink things down a bit and achieve the result shown in <a class="xref" href="ch12.html#geojson_scaled" title="Figure 12-3. The USA, scaled and centered within the image">Figure 12-3</a>:</p>
+<pre class="programlisting" data-language="javascript" id="var_projection__id2"><code class="kd">var</code> <code class="nx">projection</code> <code class="o">=</code> <code class="nx">d3</code><code class="p">.</code><code class="nx">geo</code><code class="p">.</code><code class="nx">albersUsa</code><code class="p">()</code>
+                       <code class="p">.</code><code class="nx">translate</code><code class="p">([</code><code class="nx">w</code><code class="o">/</code><code class="mi">2</code><code class="p">,</code> <code class="nx">h</code><code class="o">/</code><code class="mi">2</code><code class="p">])</code>
+                       <code class="p">.</code><code class="nx">scale</code><code class="p">([</code><code class="mi">500</code><code class="p">]);</code></pre>
+<p id="the_default_sca">The default scale value is 1,000.  Anything smaller will shrink the map; anything larger will expand it.</p>
+<div class="figure" id="geojson_scaled">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1203.png" alt="The USA, scaled and centered within the image"></div></div>
+<div class="figure-title">Figure 12-3. The USA, scaled and centered within the image</div>
+</div>
+<p id="cool_see_that_">Cool!  See that working code in <span class="emphasis"><em>03_scaled.html</em></span>.</p>
+<p id="by_adding_a_sin">By adding a single <code class="literal">style()</code> statement, we could set the path’s fills to something less severe, like the blue shown in <a class="xref" href="ch12.html#geojson_filled" title="Figure 12-4. Now more blue-ish than black">Figure 12-4</a>.</p>
+<div class="figure" id="geojson_filled">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1204.png" alt="Now more blue-ish than black"></div></div>
+<div class="figure-title">Figure 12-4. Now more blue-ish than black</div>
+</div>
+<p id="see__fillhtm">See <span class="emphasis"><em>04_fill.html</em></span> for that.  You could use the same technique to set stroke color and width, too.</p>
+<p id="map_projections">Map projections are extremely powerful algorithms, and different projections are useful for different purposes and different parts of the world (near the poles, versus the equator, for example).</p>
+<p id="thanks_primaril">Thanks primarily to the contributions of <a class="ulink" href="http://www.jasondavies.com" target="_top">Jason Davies</a>, D3’s geo projections plug-ins now support essentially every obscure projection you could imagine.  Reference <a class="ulink" href="https://github.com/mbostock/d3/wiki/Geo-Projections" target="_top">the complete visual reference of D3 projections on the wiki</a>.  You might also find the <a class="ulink" href="http://bl.ocks.org/3711652" target="_top">projection comparison demo</a> useful.<a id="id565457" class="indexterm"></a></p>
+</div>
+<div class="sect1" data-original-filename="12_geomapping.asciidoc" id="_choropleth">
+<div class="titlepage"><div><div><h2 class="title">Choropleth</h2></div></div></div>
+<p id="chorowhat_thi">Choro-<span class="emphasis"><em>what?</em></span>  This word, which can be difficult to pronounce, refers to a geomap with areas filled in with different values (light or dark) or colors to reflect associated data values.  In the United States, so-called “red state, blue state” choropleth maps showing the Republican and Democratic leanings of each state are ubiquitous, especially around election time.  But choropleths can be generated from any values, not just political ones.<a id="id565490" class="indexterm"></a><a id="id565498" class="indexterm"></a><a id="id565504" class="indexterm"></a><a id="id565509" class="indexterm"></a><a id="id565515" class="indexterm"></a><a id="id565523" class="indexterm"></a></p>
+<p id="these_maps_are_">These maps are also some of the most requested uses of D3.  Although choropleths can be fantastically useful, keep in mind that they have some inherent perceptual limitations.  Because they use <span class="emphasis"><em>area</em></span> to encode values, large areas with low density (such as the state of Nevada) might be overrepresented visually.  A standard choropleth does not represent per-capita values fairly—Nevada is too big, and Delaware far too small.  But they <span class="emphasis"><em>do</em></span> retain the geography of a place, and—as maps—they look really, really cool.  So let’s dive in.  (You can follow along with <span class="emphasis"><em>05_choropleth.html</em></span>.)</p>
+<p id="first_ill_set">First, I’ll set up a scale that can take data values as input, and will return colors.  This is the heart of choropleth-style mapping:</p>
+<pre class="programlisting" data-language="javascript" id="var_color__d_id2"><code class="kd">var</code> <code class="nx">color</code> <code class="o">=</code> <code class="nx">d3</code><code class="p">.</code><code class="nx">scale</code><code class="p">.</code><code class="nx">quantize</code><code class="p">()</code>
+                    <code class="p">.</code><code class="nx">range</code><code class="p">([</code><code class="s2">"rgb(237,248,233)"</code><code class="p">,</code> <code class="s2">"rgb(186,228,179)"</code><code class="p">,</code>
+                     <code class="s2">"rgb(116,196,118)"</code><code class="p">,</code> <code class="s2">"rgb(49,163,84)"</code><code class="p">,</code><code class="s2">"rgb(0,109,44)"</code><code class="p">]);</code></pre>
+<p id="a_quantize_scal">A <span class="emphasis"><em>quantize</em></span> scale functions as a linear scale, but it outputs values from within a discrete range.  These output values could be numbers, colors (as we’ve done here), or anything else you like.  This is useful for sorting values into “buckets.”  In this case, we’re using five buckets, but there could be as many as you like.<a id="id565689" class="indexterm"></a></p>
+<p id="notice_ive_spe">Notice I’ve specified an output range, but not an input domain.  (I’m waiting until our data is loaded in to do that.)  These particular colors are taken from the <span class="keep-together"><code class="literal">colorbrewer.js</code></span> file included in <a class="ulink" href="https://github.com/mbostock/d3/tree/master/lib/colorbrewer" target="_top">the D3 GitHub repository</a>—a collection of perceptually optimized colors, selected by Cynthia Brewer, and based on her research.</p>
+<p id="next_we_need_t">Next, we need to load in some data.  I’ve provided a file <span class="emphasis"><em>us-ag-productivity-2004.csv</em></span>, which looks like this:</p>
+<pre class="screen" id="statevalue_ala">state,value
+Alabama,1.1791
+Arkansas,1.3705
+Arizona,1.3847
+California,1.7979
+Colorado,1.0325
+Connecticut,1.3209
+Delaware,1.4345
+…</pre>
+<p id="this_data_prov">This data, provided by the US Department of Agriculture, reports agricultural productivity by state during the year 2004.  The units are relative to an arbitrary baseline of the productivity of the state of Alabama in 1996 (1.0), so greater values are more productive, and smaller values less so.  (Find lots of open government datasets at <a class="ulink" href="http://data.gov" target="_top">http://data.gov</a>.)  I expect this data will give us a nice map of states’ agricultural productivity.</p>
+<p id="to_load_in_the_">To load in the data, we use <code class="literal">d3.csv()</code>:</p>
+<pre class="programlisting" data-language="javascript" id="dcsvusagp"><code class="nx">d3</code><code class="p">.</code><code class="nx">csv</code><code class="p">(</code><code class="s2">"us-ag-productivity-2004.csv"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">data</code><code class="p">)</code> <code class="p">{</code> <code class="err">…</code></pre>
+<p id="then_in_the_ca">Then, in the callback function, I want to set the <code class="literal">color</code> quantize scale’s input domain (before I forget!):</p>
+<pre class="programlisting" data-language="javascript" id="colordomain_">        <code class="nx">color</code><code class="p">.</code><code class="nx">domain</code><code class="p">([</code>
+                <code class="nx">d3</code><code class="p">.</code><code class="nx">min</code><code class="p">(</code><code class="nx">data</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">d</code><code class="p">)</code> <code class="p">{</code> <code class="k">return</code> <code class="nx">d</code><code class="p">.</code><code class="nx">value</code><code class="p">;</code> <code class="p">}),</code>
+                <code class="nx">d3</code><code class="p">.</code><code class="nx">max</code><code class="p">(</code><code class="nx">data</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">d</code><code class="p">)</code> <code class="p">{</code> <code class="k">return</code> <code class="nx">d</code><code class="p">.</code><code class="nx">value</code><code class="p">;</code> <code class="p">})</code>
+        <code class="p">]);</code></pre>
+<p id="this_uses_dmi">This uses <code class="literal">d3.min()</code> and <code class="literal">d3.max()</code> to calculate and return the smallest and largest data values, so the scale’s domain is dynamically calculated.</p>
+<p id="next_we_load_i">Next, we load in the JSON geodata, as before.  But what’s new here is I want to <span class="emphasis"><em>merge</em></span> the agricultural data <span class="emphasis"><em>into</em></span> the GeoJSON.  Why?  Because we can only bind one set of data to elements at a time.  We definitely need the GeoJSON, from which the <code class="literal">path</code>s are generated, but we also need the new agricultural data.  So if we can smush them into a single, monster array, then we can bind them to the new <code class="literal">path</code> elements all at the same time.  (There are several approaches to this step; what follows is my preferred method.)</p>
+<pre class="programlisting" data-language="javascript" id="djsonussta_id2">    <code class="nx">d3</code><code class="p">.</code><code class="nx">json</code><code class="p">(</code><code class="s2">"us-states.json"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">json</code><code class="p">)</code> <code class="p">{</code>
+
+        <code class="c1">//Merge the ag. data and GeoJSON</code>
+        <code class="c1">//Loop through once for each ag. data value</code>
+        <code class="k">for</code> <code class="p">(</code><code class="kd">var</code> <code class="nx">i</code> <code class="o">=</code> <code class="mi">0</code><code class="p">;</code> <code class="nx">i</code> <code class="o">&lt;</code> <code class="nx">data</code><code class="p">.</code><code class="nx">length</code><code class="p">;</code> <code class="nx">i</code><code class="o">++</code><code class="p">)</code> <code class="p">{</code>
+
+            <code class="c1">//Grab state name</code>
+            <code class="kd">var</code> <code class="nx">dataState</code> <code class="o">=</code> <code class="nx">data</code><code class="p">[</code><code class="nx">i</code><code class="p">].</code><code class="nx">state</code><code class="p">;</code>
+
+            <code class="c1">//Grab data value, and convert from string to float</code>
+            <code class="kd">var</code> <code class="nx">dataValue</code> <code class="o">=</code> <code class="nb">parseFloat</code><code class="p">(</code><code class="nx">data</code><code class="p">[</code><code class="nx">i</code><code class="p">].</code><code class="nx">value</code><code class="p">);</code>
+
+            <code class="c1">//Find the corresponding state inside the GeoJSON</code>
+            <code class="k">for</code> <code class="p">(</code><code class="kd">var</code> <code class="nx">j</code> <code class="o">=</code> <code class="mi">0</code><code class="p">;</code> <code class="nx">j</code> <code class="o">&lt;</code> <code class="nx">json</code><code class="p">.</code><code class="nx">features</code><code class="p">.</code><code class="nx">length</code><code class="p">;</code> <code class="nx">j</code><code class="o">++</code><code class="p">)</code> <code class="p">{</code>
+
+            <code class="kd">var</code> <code class="nx">jsonState</code> <code class="o">=</code> <code class="nx">json</code><code class="p">.</code><code class="nx">features</code><code class="p">[</code><code class="nx">j</code><code class="p">].</code><code class="nx">properties</code><code class="p">.</code><code class="nx">name</code><code class="p">;</code>
+
+            <code class="k">if</code> <code class="p">(</code><code class="nx">dataState</code> <code class="o">==</code> <code class="nx">jsonState</code><code class="p">)</code> <code class="p">{</code>
+
+                <code class="c1">//Copy the data value into the JSON</code>
+                <code class="nx">json</code><code class="p">.</code><code class="nx">features</code><code class="p">[</code><code class="nx">j</code><code class="p">].</code><code class="nx">properties</code><code class="p">.</code><code class="nx">value</code> <code class="o">=</code> <code class="nx">dataValue</code><code class="p">;</code>
+
+                <code class="c1">//Stop looking through the JSON</code>
+                <code class="k">break</code><code class="p">;</code>
+
+        <code class="p">}</code>
+    <code class="p">}</code>
+<code class="p">}</code></pre>
+<p id="read_through_th">Read through that closely.  Basically, for each state, we are finding the GeoJSON element with the same name (e.g., “Colorado”).  Then we take the state’s data value and tuck it in under <code class="literal">json.features[j].properties.value</code>, ensuring it will be bound to the element and available later, when we need it.</p>
+<p id="lastly_we_crea">Lastly, we create the <code class="literal">path</code>s just as before, only we make our <code class="literal">style()</code> value dynamic:</p>
+<pre class="programlisting" data-language="javascript" id="svgselectall_id16">                <code class="nx">svg</code><code class="p">.</code><code class="nx">selectAll</code><code class="p">(</code><code class="s2">"path"</code><code class="p">)</code>
+                   <code class="p">.</code><code class="nx">data</code><code class="p">(</code><code class="nx">json</code><code class="p">.</code><code class="nx">features</code><code class="p">)</code>
+                   <code class="p">.</code><code class="nx">enter</code><code class="p">()</code>
+                   <code class="p">.</code><code class="nx">append</code><code class="p">(</code><code class="s2">"path"</code><code class="p">)</code>
+                   <code class="p">.</code><code class="nx">attr</code><code class="p">(</code><code class="s2">"d"</code><code class="p">,</code> <code class="nx">path</code><code class="p">)</code>
+                   <code class="p">.</code><code class="nx">style</code><code class="p">(</code><code class="s2">"fill"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">d</code><code class="p">)</code> <code class="p">{</code>
+                                <code class="c1">//Get data value</code>
+                                <code class="kd">var</code> <code class="nx">value</code> <code class="o">=</code> <code class="nx">d</code><code class="p">.</code><code class="nx">properties</code><code class="p">.</code><code class="nx">value</code><code class="p">;</code>
+
+                                <code class="k">if</code> <code class="p">(</code><code class="nx">value</code><code class="p">)</code> <code class="p">{</code>
+                                        <code class="c1">//If value exists…</code>
+                                        <code class="k">return</code> <code class="nx">color</code><code class="p">(</code><code class="nx">value</code><code class="p">);</code>
+                                <code class="p">}</code> <code class="k">else</code> <code class="p">{</code>
+                                        <code class="c1">//If value is undefined…</code>
+                                        <code class="k">return</code> <code class="s2">"#ccc"</code><code class="p">;</code>
+                                <code class="p">}</code>
+                   <code class="p">});</code></pre>
+<p id="instead_of_ste">Instead of <code class="literal">"steelblue"</code> for everyone, now each state <code class="literal">path</code> gets a different fill value.  The trick is that we don’t have data for <span class="emphasis"><em>every</em></span> state.  The dataset we’re using doesn’t have information for Alaska, the District of Columbia, Hawaii, or Puerto Rico (which, although not a state, is still included in the GeoJSON and appears in the projection).</p>
+<p id="so_to_accommoda">So to accommodate those exceptions, we include a little logic: an <code class="literal">if()</code> statement that checks to see whether or not the data value has been defined.  If it exists, then we return <code class="literal">color(value)</code>, meaning we pass the data value to our quantize scale, which returns a color.  For undefined values, we set a default of light gray (<code class="literal">#ccc</code>).</p>
+<p id="beautiful_just">Beautiful! Just look at the result in <a class="xref" href="ch12.html#choropleth_map" title="Figure 12-5. A choropleth map showing agricultural productivity by state">Figure 12-5</a>. Check out the final code and try it yourself in <span class="emphasis"><em>05_choropleth.html</em></span>.</p>
+<div class="figure" id="choropleth_map">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1205.png" alt="A choropleth map showing agricultural productivity by state"></div></div>
+<div class="figure-title">Figure 12-5. A choropleth map showing agricultural productivity by state</div>
+</div>
+</div>
+<div class="sect1" data-original-filename="12_geomapping.asciidoc" id="_adding_points">
+<div class="titlepage"><div><div><h2 class="title">Adding Points</h2></div></div></div>
+<p id="wouldnt_it_be_">Wouldn’t it be nice to put some cities on this map, for context?  Maybe it would be interesting or useful to see how many large, urban areas there are in the most (or least) agriculturally productive states.  Again, let’s start by finding the data.<a id="id567093" class="indexterm"></a><a id="id567101" class="indexterm"></a><a id="id567107" class="indexterm"></a><a id="id567112" class="indexterm"></a></p>
+<p id="fortunately_th_id2">Fortunately, the US Census has us covered, once again.  (Your tax dollars at work!)  Here’s the start of a raw CSV dataset from the Census that shows <a class="ulink" href="http://1.usa.gov/XWUSrY" target="_top">“Annual Estimates of the Resident Population for Incorporated Places Over 50,000”</a>.</p>
+<pre class="screen" id="table_with_row_">table with row headers in column A and column headers in rows 3 through 4,,,,,,,
+,,,
+"Table 1. Annual Estimates of the Resident Population for Incorporated Places
+Over 50,000, Ranked by July 1, 2011 Population: April 1, 2010 to July 1, 2011"
+,,,,,,,,,,
+Rank,Geographic Area,,"April 1, 2010",,Population Estimate (as of July 1),,
+,,,,Place,State,Census,Estimates Base,2010,2011,,,,
+1,New York city,New York,"8,175,133","8,175,133","8,186,443","8,244,910",,,,
+2,Los Angeles city,California,"3,792,621","3,792,625","3,795,761","3,819,702"
+,,,,
+3,Chicago city,Illinois,"2,695,598","2,695,598","2,698,283","2,707,120",,,,
+4,Houston city,Texas,"2,099,451","2,099,430","2,108,278","2,145,146",,,,
+5,Philadelphia city,Pennsylvania,"1,526,006","1,526,006","1,528,074","1,536,471"
+,,,,
+6,Phoenix city,Arizona,"1,445,632","1,445,656","1,448,531","1,469,471",,,,
+7,San Antonio city,Texas,"1,327,407","1,327,606","1,334,431","1,359,758",,,,
+8,San Diego city,California,"1,307,402","1,307,406","1,311,516","1,326,179",,,,
+9,Dallas city,Texas,"1,197,816","1,197,816","1,201,715","1,223,229",,,,
+10,San Jose city,California,"945,942","952,612","955,091","967,487",,,,
+…</pre>
+<p id="this_is_quite_m">This is quite messy, and I don’t even need all this data.  So I’ll open the CSV up in my favorite spreadsheet program and clean it up a bit, removing unneeded columns.  (You could use LibreOffice Calc, Apple Numbers, or Microsoft Excel.)  I’m also interested in only the largest 50 cities, so I’ll delete all the others.  Exporting back to CSV, I now have this:</p>
+<pre class="screen" id="rankplacepopu_id1">rank,place,population
+1,New York city,8175133
+2,Los Angeles city,3792621
+3,Chicago city,2695598
+4,Houston city,2099451
+5,Philadelphia city,1526006
+6,Phoenix city,1445632
+7,San Antonio city,1327407
+8,San Diego city,1307402
+9,Dallas city,1197816
+10,San Jose city,945942
+…</pre>
+<p id="this_informatio">This information is useful, but to place it on the map, I’m going to need the latitude and longitude coordinates for each of these places.  Looking this up manually would take <span class="emphasis"><em>forever</em></span>.  Fortunately, we can use a <span class="emphasis"><em>geocoding</em></span> service to speed things up.  Geocoding is the process of taking place names, looking them up on a map (or in a database, really), and returning precise lat/lon coordinates.  “Precise” might be a bit of an overstatement—the geocoder does the best job it can, but it will sometimes be forced to make assumptions given vague data.  For example, if you specify “Paris,” it will probably assume you mean Paris, France and not Paris, Texas.  It’s good practice to eyeball the geocoder’s output once you get it on the map, and manually adjust any erroneous coordinates (using <a class="ulink" href="http://www.teczno.com/squares" target="_top">teczno.com/squares</a> as a reference).<a id="id567219" class="indexterm"></a><a id="id567224" class="indexterm"></a><a id="id567230" class="indexterm"></a><a id="id567236" class="indexterm"></a></p>
+<p id="ill_head_over_">I’ll head over to <a class="ulink" href="http://www.gpsvisualizer.com/geocoder/" target="_top">my favorite batch geocoder</a>, paste in just the place names, and click Start!  A few minutes later, the geocoder spits out some more comma-separated values, which includes lat/lon pairs.  I bring those back into my spreadsheet, and save out a new, unified CSV with coordinates:</p>
+<pre class="screen" id="rankplacepopu_id2">rank,place,population,lat,lon
+1,New York city,8175133,40.71455,-74.007124
+2,Los Angeles city,3792621,34.05349,-118.245323
+3,Chicago city,2695598,45.37399,-92.888759
+4,Houston city,2099451,41.337462,-75.733627
+5,Philadelphia city,1526006,37.15477,-94.486114
+6,Phoenix city,1445632,32.46764,-85.000823
+7,San Antonio city,1327407,37.706576,-122.440612
+8,San Diego city,1307402,37.707815,-122.466624
+9,Dallas city,1197816,40.636,-91.168309
+10,San Jose city,945942,41.209716,-112.003047
+…</pre>
+<p id="that_was_unbeli">That was unbelievably easy.  Ten years ago that step would have taken us hours of research and tedious data entry, not seconds of mindless copying-and-pasting.  Now you see why we’re experiencing an explosion of online mapping.</p>
+<p id="our_data_is_rea">Our data is ready, and we already know how to load it in:</p>
+<pre class="programlisting" data-language="javascript" id="dcsvusciti"><code class="nx">d3</code><code class="p">.</code><code class="nx">csv</code><code class="p">(</code><code class="s2">"us-cities.csv"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">data</code><code class="p">)</code> <code class="p">{</code>
+        <code class="c1">//Do something…</code>
+<code class="p">});</code></pre>
+<p id="in_the_callback">In the callback function, we can specify how to create a new <code class="literal">circle</code> element for each city, and then <span class="emphasis"><em>position each circle</em></span> according to the corresponding city’s geo-coordinates:</p>
+<pre class="programlisting" data-language="javascript" id="svgselectall_id17">        <code class="nx">svg</code><code class="p">.</code><code class="nx">selectAll</code><code class="p">(</code><code class="s2">"circle"</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">data</code><code class="p">(</code><code class="nx">data</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">enter</code><code class="p">()</code>
+           <code class="p">.</code><code class="nx">append</code><code class="p">(</code><code class="s2">"circle"</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">attr</code><code class="p">(</code><code class="s2">"cx"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">d</code><code class="p">)</code> <code class="p">{</code>
+                   <code class="k">return</code> <code class="nx">projection</code><code class="p">([</code><code class="nx">d</code><code class="p">.</code><code class="nx">lon</code><code class="p">,</code> <code class="nx">d</code><code class="p">.</code><code class="nx">lat</code><code class="p">])[</code><code class="mi">0</code><code class="p">];</code>
+           <code class="p">})</code>
+           <code class="p">.</code><code class="nx">attr</code><code class="p">(</code><code class="s2">"cy"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">d</code><code class="p">)</code> <code class="p">{</code>
+                   <code class="k">return</code> <code class="nx">projection</code><code class="p">([</code><code class="nx">d</code><code class="p">.</code><code class="nx">lon</code><code class="p">,</code> <code class="nx">d</code><code class="p">.</code><code class="nx">lat</code><code class="p">])[</code><code class="mi">1</code><code class="p">];</code>
+           <code class="p">})</code>
+           <code class="p">.</code><code class="nx">attr</code><code class="p">(</code><code class="s2">"r"</code><code class="p">,</code> <code class="mi">5</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">style</code><code class="p">(</code><code class="s2">"fill"</code><code class="p">,</code> <code class="s2">"yellow"</code><code class="p">)</code>
+           <code class="p">.</code><code class="nx">style</code><code class="p">(</code><code class="s2">"opacity"</code><code class="p">,</code> <code class="mf">0.75</code><code class="p">);</code></pre>
+<p id="the_magic_here_">The magic here is in those <code class="literal">attr()</code> statements that set the <code class="literal">cx</code> and <code class="literal">cy</code> values.  You see, we can access the raw latitude and longitude values as <code class="literal">d.lat</code> and <code class="literal">d.lon</code>.  But what we really need for positioning these circles are x/y <span class="emphasis"><em>screen coordinates</em></span>, not <span class="emphasis"><em>geo</em></span>-coordinates.<a id="id567828" class="indexterm"></a></p>
+<p id="so_we_bring_bac">So we bring back our magical friend <code class="literal">projection()</code>, which is basically just a two-dimensional scale method.  With D3 scales, we put in one number, and get back another.  With projections, we put in two numbers, and get back two.  (The other main difference is that the behind-the-scenes math for projections is much more complex than the simple normalization of scales.)<a id="id567849" class="indexterm"></a></p>
+<p id="the_map_project">The map projection takes a two-value array as input, with <span class="emphasis"><em>longitude</em></span> first (remember, it’s lon/lat, not lat/lon, in GeoJSON-ville).  Then the projection returns a two-value array with x/y screen values.  So, for <code class="literal">cx</code>, we use <code class="literal">[0]</code> to grab the <span class="emphasis"><em>first</em></span> of those values, which is <span class="emphasis"><em>x</em></span>.  For <code class="literal">cy</code>, we use <code class="literal">[1]</code> to grab the <span class="emphasis"><em>second</em></span> of those values, which is <span class="emphasis"><em>y</em></span>.  Make sense?</p>
+<p id="the_resulting_m">The resulting map in <a class="xref" href="ch12.html#choropleth_with_cities" title="Figure 12-6. The top 50 largest US cities, represented as cute little yellow dots">Figure 12-6</a> is suh-weeeet! Check out the code in <span class="emphasis"><em>06_points.html</em></span>.</p>
+<div class="figure" id="choropleth_with_cities">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1206.png" alt="The top 50 largest US cities, represented as cute little yellow dots"></div></div>
+<div class="figure-title">Figure 12-6. The top 50 largest US cities, represented as cute little yellow dots</div>
+</div>
+<p id="yet_these_dots_">Yet these dots are all the same size.  Let’s link the population data to circle size.  Instead of a static area, we’ll reference the <code class="literal">population</code> value:</p>
+<pre class="programlisting" data-language="javascript" id="attrr_func_id4">           <code class="p">.</code><code class="nx">attr</code><code class="p">(</code><code class="s2">"r"</code><code class="p">,</code> <code class="kd">function</code><code class="p">(</code><code class="nx">d</code><code class="p">)</code> <code class="p">{</code>
+                 <code class="k">return</code> <code class="nb">Math</code><code class="p">.</code><code class="nx">sqrt</code><code class="p">(</code><code class="nb">parseInt</code><code class="p">(</code><code class="nx">d</code><code class="p">.</code><code class="nx">population</code><code class="p">)</code> <code class="o">*</code> <code class="mf">0.00004</code><code class="p">);</code>
+           <code class="p">})</code></pre>
+<p id="here_we_grab_d">Here we grab <code class="literal">d.population</code>, wrap it in <code class="literal">parseInt()</code> to convert it from a string to an integer, scale that value down by an arbitrary amount, and finally take the square root (to convert from an area value to a radius value).  See the code in <span class="emphasis"><em>07_points_sized.html</em></span>.</p>
+<p id="as_you_can_see__id2">As you can see in <a class="xref" href="ch12.html#choropleth_with_cities_sized" title="Figure 12-7. Cities as dots, with area set by population">Figure 12-7</a>, now the largest cities really stand out.  The differences in city size are significant; this representation might be better suited to a log scale, especially if even smaller cities are included.  Instead of multiplying by 0.00004, you could more properly use a custom D3 scale function.  (I’ll leave that to you.)</p>
+<div class="figure" id="choropleth_with_cities_sized">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1207.png" alt="Cities as dots, with area set by population"></div></div>
+<div class="figure-title">Figure 12-7. Cities as dots, with area set by population</div>
+</div>
+<p id="the_point_here_">The point here is to see that we’ve successfully loaded and visualized two different datasets on a map.  (Make that three, counting the geocoded coordinates we merged in!)</p>
+</div>
+<div class="sect1" data-original-filename="12_geomapping.asciidoc" id="_acquiring_and_parsing_geodata">
+<div class="titlepage"><div><div><h2 class="title">Acquiring and Parsing Geodata</h2></div></div></div>
+<p id="if_we_only_ever">If we only ever wanted to make maps of the United States, then we would already have all the GeoJSON we’d ever need.  But the world is much bigger than that, and there are lots of other areas to map.  So allow me to digress for a moment and address how to acquire and parse geodata for the area of your choosing.  The end goal is to produce a GeoJSON file, like <span class="emphasis"><em>us-states.json</em></span>, that can be used with D3.<a id="ix_gapg" class="indexterm"></a></p>
+<div class="sect2" id="_find_shapefiles">
+<div class="titlepage"><div><div><h3 class="title">Find Shapefiles</h3></div></div></div>
+<p id="socalled_shape">So-called <span class="emphasis"><em>shapefiles</em></span> predate the current explosion of online mapping and visualization.  These are documents that essentially contain the same kind of information you could store in GeoJSON—boundaries of geographic areas, and points within those areas—but their contents are not plain text and, therefore, are very hard to read.  The shapefile format grew out of the community of geographers, cartographers, and scientists using Geographic Information Systems (GIS) software.  If you have easy access to expensive GIS software, then shapefiles are your best friend.  But that’s a small group of people, and web browsers can’t make heads or tails of shapefiles, in any case.<a id="id568209" class="indexterm"></a><a id="id568215" class="indexterm"></a></p>
+<p id="if_you_cant_fi">If you can’t find nice GeoJSON describing your area of interest, then hunt down a shapefile.  Government websites are good sources, especially if you’re looking for data on a specific country or region.  My favorite two sources are:</p>
+<div class="variablelist" id="natural_earth_a"><dl class="variablelist">
+<dt><span class="term">
+<a class="ulink" href="http://www.naturalearthdata.com" target="_top">Natural Earth</a>
+</span></dt>
+<dd>
+A massive collection of geographic data for both cultural/political and natural features made available in the public domain.  Mapping countries is highly political, and Natural Earth posts detailed notes explaining their design decisions.
+</dd>
+<dt><span class="term">
+<a class="ulink" href="http://www.census.gov/geo/www/cob/cbf_state.html" target="_top">The United States Census</a>
+</span></dt>
+<dd>
+Boundary data for every US state, plus counties, roadways, water features, and so much more, also in the public domain.
+</dd>
+</dl></div>
+</div>
+<div class="sect2" id="_choose_a_resolution">
+<div class="titlepage"><div><div><h3 class="title">Choose a Resolution</h3></div></div></div>
+<p id="before_you_down">Before you download, check the <span class="emphasis"><em>resolution</em></span> of the data.  All shapefiles are vector data (not bitmap), so by resolution I don’t mean pixels—I mean the level of <span class="emphasis"><em>cartographic detail</em></span> or granularity.<a id="id568295" class="indexterm"></a><a id="id568301" class="indexterm"></a><a id="id568306" class="indexterm"></a><a id="id568312" class="indexterm"></a></p>
+<p id="natural_earths">Natural Earth’s datasets come in three different resolutions, listed here from most detailed to least:</p>
+<div class="itemizedlist" id="itemizedlist_id1"><ul class="itemizedlist">
+<li class="listitem">
+1:10,000,000
+</li>
+<li class="listitem">
+1:50,000,000
+</li>
+<li class="listitem">
+1:110,000,000
+</li>
+</ul></div>
+<p id="that_is_in_the">That is, in the highest resolution data, one unit of measurement in the file corresponds to 10 million such units in the actual, physical world.  Or, to flip that around, every 10 million units in real life is simplified into one.  So 10 million inches (158 miles) would translate to a single inch in data terms.</p>
+<p id="these_resolutio">These resolution ratios can be written more simply as:</p>
+<div class="itemizedlist" id="m_m_"><ul class="itemizedlist">
+<li class="listitem">
+1:10m
+</li>
+<li class="listitem">
+1:50m
+</li>
+<li class="listitem">
+1:110m
+</li>
+</ul></div>
+<p id="for_a_lowdetai">For a low-detail (“zoomed out”) map of the world, the 1:110m resolution could work fine.  But to show detailed outlines of a specific state, 1:10m will be better.  If you’re mapping a very small (“zoomed in”) area, such as a specific city or even neighborhood, then you’ll need much higher resolution data.  (Try local state or city government websites for that information.)</p>
+<p id="different_sourc">Different sources will offer different resolutions.  Many of the US Census shapefiles are available in these three scales:</p>
+<div class="itemizedlist" id="itemizedlist_id2"><ul class="itemizedlist">
+<li class="listitem">
+1:500,000 (1:500k)
+</li>
+<li class="listitem">
+1:5,000,000 (1:5m)
+</li>
+<li class="listitem">
+1:20,000,000 (1:20m)
+</li>
+</ul></div>
+<p id="choose_a_resolu">Choose a resolution, and download the file.  Typically you’ll get a compressed ZIP file that contains several other files.  As an example, I’m going to download Natural Earth’s 1:110m (low detail) ocean file from here: <a class="ulink" href="http://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-ocean/" target="_top">http://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-ocean/</a>.</p>
+<p id="uncompressed_i">Uncompressed, it contains these files:</p>
+<pre class="screen" id="ne_m_oceand">ne_110m_ocean.dbf
+ne_110m_ocean.prj
+ne_110m_ocean.README.html
+ne_110m_ocean.shp
+ne_110m_ocean.shx
+ne_110m_ocean.VERSION.txt</pre>
+<p id="wow_those_are_">Wow, those are some funky extensions.  We’re primarily interested in the file ending with <span class="emphasis"><em>.shp</em></span>, but don’t delete the rest just yet.</p>
+</div>
+<div class="sect2" id="_simplify_the_shapes">
+<div class="titlepage"><div><div><h3 class="title">Simplify the Shapes</h3></div></div></div>
+<p id="ideally_you_ca">Ideally, you can find shapefiles in exactly the resolution you need.  But what if you can only find a super-high-resolution file, say at 1:100k?  The size of the file might be huge.  And now that you’re a JavaScript programmer, you’re really concerned about efficiency, remember?  So no sending multimegabyte geodata to the browser.</p>
+<p id="fortunately_yo_id4">Fortunately, you can <span class="emphasis"><em>simplify</em></span> those shapefiles, in effect converting them into lower-detail versions of themselves.  The process of simplification is illustrated beautifully in <a class="ulink" href="http://bost.ocks.org/mike/simplify/" target="_top">this interactive piece by Mike Bostock</a>.</p>
+<p id="mapshaper_by_m"><a class="ulink" href="http://mapshaper.org" target="_top">MapShaper</a>, by Matt Bloch, is an excellent, easy-to-use interactive tool for this purpose.  It lets you upload your own shapefiles, and then drag sliders around to preview different levels of simplification.  Typically, the trade-off is between good detail and small files.<a id="id568535" class="indexterm"></a><a id="id568541" class="indexterm"></a><a id="id568547" class="indexterm"></a></p>
+<p id="if_you_use_maps">If you use MapShaper, choose the “Shapefile – polygons” option when exporting. This will generate both a <span class="emphasis"><em>.shp</em></span> and a <span class="emphasis"><em>.shx</em></span> file for you. Download both files, and rename them so the filenames match the names of the original <span class="emphasis"><em>.shp</em></span> and <span class="emphasis"><em>.shx</em></span> files. Then, before converting to GeoJSON, make a copy of the original <span class="emphasis"><em>.dbf</em></span> file, and put it in the same folder as the simplified shapefiles. This important step will ensure you don’t lose any of the important metadata that’s stored in the <span class="emphasis"><em>.dbf</em></span>, like country IDs and other path identifiers.</p>
+<p id="other_options_i">Other options include Mike Migurski’s <a class="ulink" href="https://github.com/migurski/Bloch" target="_top">Bloch</a> with a Python implementation of Matt Bloch’s simplification algorithms, and a <code class="literal">d3.simplify</code> plug-in (used for Mike’s demo mentioned earlier).  The dream is one day we could use JavaScript to perform line simplification directly, and then export that simplified JSON to use in projects.  The tools are evolving quickly, so watch this space!  (Literally while I was writing this paragraph, Mr. Bostock posted <a class="ulink" href="http://bl.ocks.org/4090870" target="_top">a demo</a> for a new project for geometry simplification, <a class="ulink" href="https://github.com/mbostock/topojson" target="_top">TopoJSON</a>.  That’s how fast things are changing! By the time you read this, the TopoJSON command-line tool may be your best bet, as it can load shapefiles, perform simplification, <span class="emphasis"><em>and</em></span> convert your data to JSON. As you’d expect, TopoJSON is designed to play well with D3, although it outputs a new TopoJSON format, which is similar to, but more efficient than GeoJSON.)<a id="id568635" class="indexterm"></a></p>
+</div>
+<div class="sect2" id="_convert_to_geojson">
+<div class="titlepage"><div><div><h3 class="title">Convert to GeoJSON</h3></div></div></div>
+<p id="if_you_dont_al">If you don’t already have the right software installed, this can be the hairiest part of the process.  Our end goal is to get a terminal command called <code class="literal">ogr2ogr</code> running on your Mac, Unix, or Windows system.  The problem is that <code class="literal">ogr2ogr</code> depends on several other frameworks, libraries, and so on, so for it to work, they all have to be in place.<a id="id568669" class="indexterm"></a></p>
+<p id="i_wont_cover_t">I won’t cover the intricacies of the installation here, but I’ll point you in the right <span class="keep-together">direction</span>.</p>
+<p id="first_you_need">First, you need <a class="ulink" href="http://www.gdal.org" target="_top">the Geospatial Data Abstraction Library</a>, or GDAL.  The <code class="literal">ogr2ogr</code> utility is part of this package.</p>
+<p id="you_also_need_g">You also need <a class="ulink" href="http://trac.osgeo.org/geos/" target="_top">GEOS</a>, which cleverly stands for Geometry Engine, Open Source.</p>
+<p id="if_you_have_a_w">If you have a Windows or Unix/Linux machine, you can now have fun downloading the source and installing it by typing funny commands like <span class="strong"><strong><code class="literal">build</code></strong></span>, <span class="strong"><strong><code class="literal">make</code></strong></span>, and <span class="strong"><strong><code class="literal">seriously why isn’t this working omg please please please install this time or i will freak out</code></strong></span>.</p>
+<p id="i_dont_remembe">I don’t remember the exact command names, but they are something like that.  (On a serious note, if you get stuck on this step, be aware that there are literally entire other O’Reilly books on how to download and install software packages like this.)</p>
+<p id="if_youre_on_a_">If you’re on a Mac, and you happen to have both Xcode <span class="emphasis"><em>and</em></span> Homebrew installed, then simply type <span class="strong"><strong><code class="literal">brew install gdal</code></strong></span> into the terminal, and you’re done!  (If you don’t have either of these amazing tools, they might be worth getting.  Both tools are free, but could take some time and effort on your part to install.  Xcode is a massive <a class="ulink" href="http://bit.ly/XUTt81" target="_top">download from the App Store</a>.  Once you have Xcode, Homebrew can, in theory, be installed with <a class="ulink" href="http://mxcl.github.com/homebrew/" target="_top">a simple terminal command</a>.  In my experience, some troubleshooting was required to get it working.)</p>
+<p id="to_mac_users_wi">To Mac users without Xcode or Homebrew: you are very lucky that some kind soul has precompiled a friendly GUI installer, which installs GDAL, GEOS, and several other tools whose names you don’t really need to know.  Look for the newest version of the <a class="ulink" href="http://www.kyngchaos.com/software/frameworks" target="_top">“GDAL Complete” package</a>.  Review the GDAL ReadMe file closely.  After installation, you won’t automatically be able to type <span class="strong"><strong><code class="literal">ogr2ogr</code></strong></span> in a terminal window.  You’ll need to add the GDAL programs to your shell path.  The easiest way to do that is:  Open a new terminal window.  Type <span class="strong"><strong><code class="literal">nano .bash_profile</code></strong></span>.  Paste in <code class="literal">export PATH=/Library/Frameworks/GDAL.framework/Programs:$PATH</code> and then Control-X and Control-y to save.  Type <span class="strong"><strong><code class="literal">exit</code></strong></span> to end the session, then open a new terminal window and type <span class="strong"><strong><code class="literal">ogr2ogr</code></strong></span> to see if it worked.</p>
+<p id="no_matter_what_">No matter what system you’re on, once all the tools are installed, open up a new terminal window and navigate to whatever directory contains all the shapefiles (for example, <span class="strong"><strong><code class="literal">cd ~/ocean_shapes/</code></strong></span>.)  Then use the form:</p>
+<pre class="programlisting" data-language="bash" id="ogrogr_f_geo_id1">ogr2ogr -f <code class="s2">"GeoJSON"</code> output.json filename.shp</pre>
+<p id="this_tells_ogr">This tells <code class="literal">ogr2ogr</code> to take <code class="literal">filename</code>, which should be a <span class="emphasis"><em>.shp</em></span> file, convert it to GeoJSON, and finally save it as a file called <span class="emphasis"><em>output.json</em></span>.</p>
+<p id="for_my_sample_o">For my sample ocean data file, using <code class="literal">ogr2ogr</code> looks like the following:</p>
+<pre class="programlisting" data-language="bash" id="ogrogr_f_geo_id2">ogr2ogr -f <code class="s2">"GeoJSON"</code> output.json ne_110m_ocean.shp</pre>
+<p id="type_that_in_a">Type that in, and hopefully you see nothing at all.</p>
+<p id="so_anticlimacti">So anticlimactic!  I know, after the hours you spent hacking the command line to get ol’ <code class="literal">ogr</code> installed, you were expecting some gradiose finale, as though you saved the princess in Super Mario 3, yet again.  (I actually have never done that, but I imagine it is pretty amazing.)</p>
+<p id="but_no_hopeful">But no, hopefully nothing happened at all.  Except there should be a new file in the same directory called <span class="emphasis"><em>output.json</em></span>.</p>
+<p id="heres_the_star">Here’s the start of mine:</p>
+<pre class="programlisting" data-language="javascript" id="type_feat_id3"><code class="p">{</code>
+<code class="s2">"type"</code><code class="o">:</code> <code class="s2">"FeatureCollection"</code><code class="p">,</code>
+<code class="s2">"features"</code><code class="o">:</code> <code class="p">[</code> <code class="p">{</code> <code class="s2">"type"</code><code class="o">:</code> <code class="s2">"Feature"</code><code class="p">,</code> <code class="s2">"properties"</code><code class="o">:</code>
+<code class="p">{</code> <code class="s2">"scalerank"</code><code class="o">:</code> <code class="mi">0</code><code class="p">,</code> <code class="s2">"featurecla"</code><code class="o">:</code> <code class="s2">"Ocean"</code> <code class="p">},</code>
+<code class="s2">"geometry"</code><code class="o">:</code> <code class="p">{</code> <code class="s2">"type"</code><code class="o">:</code> <code class="s2">"Polygon"</code><code class="p">,</code> <code class="s2">"coordinates"</code><code class="o">:</code>
+    <code class="p">[</code> <code class="p">[</code> <code class="p">[</code> <code class="mf">49.110290527343778</code><code class="p">,</code> <code class="mf">41.28228759765625</code> <code class="p">],</code>
+        <code class="p">[</code> <code class="mf">48.584472656250085</code><code class="p">,</code> <code class="mf">41.80889892578125</code> <code class="p">],</code>
+    <code class="p">[</code> <code class="mf">47.492492675781335</code><code class="p">,</code> <code class="mf">42.9866943359375</code> <code class="p">],</code>
+        <code class="p">[</code> <code class="mf">47.590881347656278</code><code class="p">,</code> <code class="mf">43.660278320312528</code> <code class="p">],</code>
+    <code class="p">[</code> <code class="mf">46.682128906250028</code><code class="p">,</code> <code class="mf">44.609313964843807</code> <code class="p">],</code>
+        <code class="p">[</code> <code class="mf">47.675903320312585</code><code class="p">,</code> <code class="mf">45.641479492187557</code> <code class="p">],</code>
+    <code class="p">[</code> <code class="mf">48.645507812500085</code><code class="p">,</code> <code class="mf">45.806274414062557</code> <code class="p">]</code>
+        <code class="err">…</code></pre>
+<p id="hey_finally_t">Hey, finally, this is starting to look familiar!</p>
+<p id="excitedly_now_">Excitedly, now we copy our new GeoJSON into our D3 directory.  I rename mine <span class="emphasis"><em>oceans.json</em></span>, copy an earlier HTML document, and in the D3 code, simply change the reference from <code class="literal">us-states.json</code> to <code class="literal">oceans.json</code>, and then get the result shown in <a class="xref" href="ch12.html#oceans" title="Figure 12-8. GeoJSON showing, um, the world’s oceans?">Figure 12-8</a>.</p>
+<div class="figure" id="oceans">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1208.png" alt="GeoJSON showing, um, the world’s oceans?"></div></div>
+<div class="figure-title">Figure 12-8. GeoJSON showing, um, the world’s oceans?</div>
+</div>
+<p id="blaaa_what_is_">Blaaa!  What is that?!  Whatever it is, you can see it in <span class="emphasis"><em>08_oceans.html</em></span>.</p>
+<p id="in_my_haste_i_">In my haste, I forgot to update the projection!  Let’s make one tiny change, from <span class="keep-together"><code class="literal">albersUsa</code></span> to <code class="literal">mercator</code> (see <a class="xref" href="ch12.html#oceans2" title="Figure 12-9. GeoJSON of the world’s oceans, now properly projected">Figure 12-9</a>).</p>
+<div class="figure" id="oceans2">
+<div class="figure-contents"><div class="mediaobject"><img src="http://orm-chimera-prod.s3.amazonaws.com/1230000000345/images/idvw_1209.png" alt="GeoJSON of the world’s oceans, now properly projected"></div></div>
+<div class="figure-title">Figure 12-9. GeoJSON of the world’s oceans, now properly projected</div>
+</div>
+<p id="see_the_result_">See the result in <span class="emphasis"><em>09_mercator.html</em></span>—oceanic GeoJSON paths, downloaded, parsed, and visualized.<a id="id569480" class="indexterm"></a><a id="id569490" class="indexterm"></a></p>
+</div>
+</div></section><footer><div class="navfooter">
+<hr>
+<table style="width: 100%; ">
+<tr>
+<td style="width: 40%; text-align: left; ">
+<a accesskey="p" href="ch11.html">Prev</a> </td>
+<td style="width: 20%; text-align: center; "> </td>
+<td style="width: 40%; text-align: right; "> <a accesskey="n" href="ch13.html">Next</a>
+</td>
+</tr>
+<tr>
+<td style="width: 40%; text-align: left; vertical-align: top; ">Chapter 11. Layouts </td>
+<td style="width: 20%; text-align: center; "><a accesskey="h" href="index.html">Home</a></td>
+<td style="width: 40%; text-align: right; vertical-align: top; "> Chapter 13. Exporting</td>
+</tr>
+</table>
+</div></footer>
+
+
+	<div class="extra-footer">
+		<p>© 2013, O’Reilly Media, Inc.</p>
+		<ul>
+			<li><a href="http://oreilly.com/terms/">Terms of Service</a></li>
+			<li><a href="http://oreilly.com/oreilly/privacy.csp">Privacy Policy</a></li>
+			<li>Interested in <a href="mailto:scordesse@oreilly.com">sponsoring content?</a></li>
+		</ul>
+	</div>
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
+NREUMQ.push(["load",new Date().getTime()]);
+var e=document.createElement("script");
+e.type="text/javascript";
+e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" +
+  "js-agent.newrelic.com/nr-100.js";
+document.body.appendChild(e);
+if(NREUMQ.a)NREUMQ.a();
+};
+NREUMQ.a=window.onload;window.onload=NREUMQ.f;
+};
+NREUMQ.push(["nrfj","bam.nr-data.net","3e361aebcf","2194180","IApbRUBZXg1WEEoHDAwORh5aQl8N",9,26,new Date().getTime(),"","","","",""]);</script></body>
+</html>
