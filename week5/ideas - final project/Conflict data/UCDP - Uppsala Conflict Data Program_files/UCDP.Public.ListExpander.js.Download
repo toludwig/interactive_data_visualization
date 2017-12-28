@@ -1,0 +1,145 @@
+﻿define('UCDP.Public.ListExpander', ['backbone'], function (backbone) {
+
+    //TODO
+    //?? IMPLEMENT SORTPROPERTY: DIV.listExpander.sortProperty('Name');
+    //?? IMPLEMENT ITEMS_TO_BE_SHOWN
+
+    var ListExpander = function ($el, grouped, selectable, checkedFn, uncheckdFn) {
+        var _expandedHeight;
+        var _$element;
+        var _$button;
+        var _collapsedHeight;
+
+        this.$element = _$element = $el;
+        _$element.addClass('listExpander');
+        _$element.wrap('<div style="position:relative;width:85%;"></div>');
+
+        var _$li = null;
+
+        if (grouped) {
+            _$li = _$element.find('li>ul>li');
+        } else {
+            _$li = _$element.find('li');
+        }
+
+        decorate();
+
+        _expandedHeight = _$element.innerHeight();
+        _collapsedHeight = calculateCollapsedHeight(); 
+
+        if (_expandedHeight > _collapsedHeight) {
+            _$element.innerHeight(_collapsedHeight);
+            addButton();
+            toggleFade();
+        }
+
+        function calculateCollapsedHeight() {
+            var listItems = _$element.find('li');
+            var startTopValue = 0;
+            var collapsedHeight = _$element.outerHeight(true);
+            listItems.each(function (idx, li) {
+                if ($(li).position().top > 0) //next row reached
+                {
+                    var nestedBox = $(li).parentsUntil(_$element).length > 1;
+                    if (nestedBox) //nested box
+                    {
+                        if (isKeypageOfType("conflict")) {
+                            //do nothing
+                        } else {
+                            //only list element in box
+                            if (_$element.find('ul:first li').length === 1) {
+                                collapsedHeight = ($(li).outerHeight(true) * 2.7);
+                            } else {
+                                collapsedHeight = ($(li).outerHeight(true) * 1.9);
+                            }
+                            
+                        }
+                    } else {
+                        collapsedHeight = ($(li).outerHeight(true) * 1.5);
+                    }
+                    return false;
+                }
+            });
+            if (collapsedHeight === startTopValue) {
+                collapsedHeight = $($el + ' li:eq(0)').outerHeight(true) / 2;
+            }
+            return collapsedHeight;
+        }
+
+        function isKeypageOfType(pageType) {
+            return backbone.history.getFragment().indexOf(pageType) >= 0;
+        }
+
+        function decorate() {
+            if (selectable) {
+                var uniqId = _.uniqueId();
+                var html = '<div class="checkbox"><input type="checkbox" id="' + uniqId + '"><label for="' + uniqId + '"></label></div>';
+                _$li.prepend(html);
+                _$li.find('input[type=checkbox]').on('change', function () {
+                    var $li = $(this).closest('li');
+                    var isChecked = $(this).prop('checked');
+                    isChecked ? checkedFn($li) : uncheckdFn($li);
+                });
+            }
+        }
+
+        function isCollapsed() {
+            return _$element.innerHeight() < _expandedHeight
+        }
+
+        function toggleState() {
+            isCollapsed() ? expand() : collapse();
+        }
+
+        function isFaded() {
+            var $div = _$element.parent(".listExpanderFader");
+            return $div.length > 0;
+        }
+
+        function toggleFade() {
+            isFaded() ? fade(false) : fade(true);
+        }
+
+        function fade(shouldFade) {
+            if (shouldFade) {
+                _$element.parent().addClass("listExpanderFader");
+            } else {
+                _$element.parent().removeClass('listExpanderFader');
+            }
+        }
+
+        function expand() {
+            toggleFade();
+            _$element.animate({
+                height: _expandedHeight
+            }, 200, function () {
+                _$button.html('-');
+                
+            });
+        }
+
+        function collapse() {
+            _$element.animate({
+                height: _collapsedHeight
+            }, 200, function () {
+                _$button.html('+');
+                toggleFade();
+            });
+        }
+
+        function addButton() {
+            _$button = $('<span class="toggle-button">+</span>');
+            _$element.parent().prepend(_$button);
+            _$button.click(toggleState);
+        }
+    }
+
+    ListExpander.prototype.highlight = function (style) {
+        this.$element.parent().find(' .toggle-button').css('border-color', style.background);
+        this.$element.parent().find(' .toggle-button').css('color', style.background);
+
+        this.$element.find(' .list-group > span > a').css('text-decoration', style.textDecoration);
+    }
+
+    return ListExpander;
+});

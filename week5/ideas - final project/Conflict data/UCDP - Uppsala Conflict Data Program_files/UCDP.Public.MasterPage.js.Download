@@ -1,0 +1,184 @@
+﻿define('Views/Master/UCDP.Public.MasterPage', [
+        'text!Views/Master/template.html',
+        'Views/Home/UCDP.Public.HomePage',
+        'Views/Encyclopedia/UCDP.Public.EncyclopediaPage',
+        'Views/Header/UCDP.Public.HeaderView',
+        'UCDP.Dispatcher',
+        'backbone', 'jquery', 'underscore'
+],
+    function (template, HomePage, EncyclopediaPage, HeaderView, Dispatcher, Backbone, $, _) {
+
+        return Backbone.View.extend({
+            template: _.template(template),
+
+            tagName: 'div',
+
+            keyPageContainer: '#keypage',
+
+            header: null,
+
+            currentMainPageContainer: null,
+            encyclopediaPageContainer: '#encyclopedia',
+            headerViewContainer: '#master-page .header-view',
+            exploratoryPageContainer: '#exploratory',
+            encyclopediaPage: null,
+            exploratoryPage: null,
+            featuredYear: 2016,
+
+            initialize: function () {
+                this.subview = null;
+            },
+
+            renderEncyclopediaPage: function () {
+                this.removeSubview(this.subview);
+                this.subview = null;
+
+                this.setHeaderColor('rgba(0, 0, 0, 0.6)');
+                this.showLargeUcdpLogo(true);
+                
+                this.showUuLogo(true);
+                this.showLinkButtons(true);
+
+                $(this.exploratoryPageContainer).hide();
+                $('#encyclopedia').show();
+                $('#keypage').hide();
+                $(this.encyclopediaPageContainer).show(); // MUST be here before rendering since the dimensions of the div is not set if hidden
+
+                if (this.exploratoryPage) {
+                    this.exploratoryPage.deactivate();
+                }
+                if (this.encyclopediaPage == null) {
+                    this.encyclopediaPage = new EncyclopediaPage({ el: this.encyclopediaPageContainer });
+                    this.encyclopediaPage.render();
+                } else {
+                    this.encyclopediaPage.activate();
+                }
+
+                this.currentMainPageContainer = this.encyclopediaPageContainer;
+                this.changeActiveTab(EncyclopediaPage);
+            },
+
+            //page takes time to render, show spinner event though no ajax
+            doStuffAndShowSpinner: function (stuff)
+            {
+                $('#loadingSpinner').show();
+                setTimeout(stuff, 500, function() {
+                    if ($.active === 0) {
+                        $('#loadingSpinner').hide();
+                    }
+                });
+            },
+
+            renderExploratoryPage: function () {
+                this.removeSubview(this.subview);
+                this.subview = null;
+
+                this.setHeaderColor('rgba(0, 0, 0, 0.6)');
+                this.showLargeUcdpLogo(true);
+                this.showUuLogo(true);
+                this.showLinkButtons(true);
+                
+                $(this.encyclopediaPageContainer).hide();
+                $('#exploratory').show();
+                $('#keypage').hide();
+                $(this.exploratoryPageContainer).show(); // MUST be here before rendering since the dimensions of the div is not set if hidden
+
+                var self = this;
+
+                if (this.encyclopediaPage) {
+                    this.encyclopediaPage.deactivate();
+                }
+
+                if (this.exploratoryPage == null) {
+
+                    this.doStuffAndShowSpinner(
+                        function(callback) {
+                            self.exploratoryPage = new HomePage({ el: self.exploratoryPageContainer });
+                            self.exploratoryPage.render();
+                            callback();
+                        });
+                } else {
+                    this.exploratoryPage.activate();
+                }
+
+                this.currentMainPageContainer = this.exploratoryPageContainer;
+                this.changeActiveTab(HomePage);
+            },
+
+            renderKeyPage: function (viewFn, viewOptions) {
+                this.removeSubview(this.subview);
+                this.subview = null;
+
+                if (this.encyclopediaPage) {
+                    this.encyclopediaPage.deactivate();
+                }
+
+                if (this.exploratoryPage) {
+                    this.exploratoryPage.deactivate();
+                }
+
+                this.setHeaderColor('#12131A');
+                this.showLargeUcdpLogo(false);
+                
+                this.showUuLogo(false);
+                this.showLinkButtons(false);
+                $('#keypage').show();
+                $('#exploratory').hide();
+                $('#encyclopedia').hide();
+                viewOptions.el = this.keyPageContainer;
+                this.subview = new viewFn(viewOptions);
+                
+            },
+
+            changeActiveTab: function (viewFn) {
+                var buttons = this.$el.find('.main-buttons');
+                var exploratoryTab = buttons.find("[data-id='exploratory']");
+                var encyclopediaTab = buttons.find("[data-id='encyclopedia']");
+                if (viewFn === HomePage) {
+                    exploratoryTab.addClass('active');
+                    encyclopediaTab.removeClass('active');
+                } else {
+                    exploratoryTab.removeClass('active');
+                    encyclopediaTab.addClass('active');
+                }
+            },
+
+            setHeaderColor: function (color) {
+                $('.header-view').css('background-color', color);
+            },
+
+            showLargeUcdpLogo: function (show) {
+                if (show) $('.large-ucdp-logo').show();
+                else $('.large-ucdp-logo').hide();
+            },
+
+            showUuLogo: function (show) {
+                if (show) $('#uu-logo').show();
+                else $('#uu-logo').hide();
+            },
+
+            showLinkButtons: function (show) {
+                if (show) $('.red-box-link-group').show();
+                else $('.red-box-link-group').hide();
+            },
+
+            removeSubview: function (view) {
+                if (view == undefined) return;
+                if (view.destroy) {
+                    view.destroy();
+                }
+                view.$el.empty();
+            },
+
+            render: function () {
+                this.$el.html(this.template({ featuredYear: this.featuredYear }));
+
+                this.header = new HeaderView({ el: this.headerViewContainer });
+                this.header.render();
+                this.$keyPageContainer = this.$el.find('#keypage');
+                this.$mainPageContainer = this.$el.find('#main');
+                return this;
+            }
+        });
+    }
+);

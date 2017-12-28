@@ -1,0 +1,68 @@
+/*
+	Calculates which quarter the date belongs to.
+	Returns a new date object with the start and end date
+	of the quarter.
+*/
+Date.prototype.toQuarterDateSpan = function () {
+    var month = this.getMonth();
+    var q = Math.floor((month + 3) / 3);
+    if (q === 1) month = 0;
+    else if (q === 2) month = 3;
+    else if (q === 3) month = 6;
+    else if (q === 4) month = 9;
+    return [new Date(this.getFullYear(), month), new Date(this.getFullYear(), month + 2)];
+};
+    
+/*
+	Returns the time span of the quarter following the date.
+	2001-02-11 (which is Q1) would return 2001-04-01 - 2001-06-30 (which is Q2).
+	If the given date is Q4 of a certain year the function will return Q1 of the
+	following year.
+*/
+Date.prototype.nextQuarter = function () {
+    var thisQuarter = this.toQuarterDateSpan();
+    var thisYear = thisQuarter[0].getFullYear();
+    var thisMonth = thisQuarter[1].getMonth();
+    thisMonth = thisMonth + 3;
+    if (thisMonth > 11) {
+        thisYear += 1;
+        thisMonth = 0;
+    }
+    var nextQuarter = new Date(thisYear, thisMonth);
+    return nextQuarter.toQuarterDateSpan();
+};
+    
+/*
+	Return the which quarter of the year the date belongs to.
+	0 = 1st quarter, 3 = 4th quarter
+*/
+Date.prototype.toQuarter = function () {
+    return Math.floor((this.getMonth() + 3) / 3);
+};
+
+/*
+	Compares the date with another date and determine if they belong to the same quarter of a year.
+*/
+Date.prototype.isSameQuarter = function (date2) {
+    var q1 = this.toQuarter();
+    var q2 = date2.toQuarter();
+    var y1 = this.getYear();
+    var y2 = date2.getYear();
+    return q1 === q2 && y1 === y2;
+};
+
+/*
+ * Adds a variable number of years to the date.
+ */
+Date.prototype.addYear =  function(years) {
+    var year = this.getFullYear();
+    year = year + years;
+    return new Date(year, this.getMonth(), this.getDate());
+}
+
+/*
+    Compares the date to another date and determine if they are equal.
+*/
+Date.prototype.equals = function (date2) {
+    return this.getTime() === date2.getTime();
+}

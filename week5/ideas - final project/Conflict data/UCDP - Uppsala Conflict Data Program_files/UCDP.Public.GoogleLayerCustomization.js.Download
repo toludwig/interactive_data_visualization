@@ -1,0 +1,83 @@
+﻿define('UCDP.Public.GoogleLayerCustomization', [], function() {
+    var customStyle = [
+              {
+                  "featureType": "water",
+                  "stylers": [
+                    { "color": "#101010" }
+                  ]
+              }, {
+                  "featureType": "landscape",
+                  "stylers": [
+                    { "color": "#999999" }
+                  ]
+              }, {
+                  "featureType": "poi",
+                  "stylers": [
+                    { "visibility": "off" }
+                  ]
+              }, {
+                  "featureType": "road",
+                  "stylers": [
+                    { "visibility": "off" },
+                    { "color": "#DDDDDD" }
+                  ]
+              }, {
+                  "featureType": "transit",
+                  "stylers": [
+                    { "visibility": "off" }
+                  ]
+              },
+             {
+                 "featureType": "administrative.province",
+                 "elementType": "geometry",
+                 "stylers": [
+                   { "visibility": "off" }
+                 ]
+             }, {
+                 "featureType": "administrative.country",
+                 "elementType": "geometry.stroke",
+                 "stylers": [
+                   { "visibility": "on" },
+                   { "color": "#ffffff" },
+                   { "saturation": -63 },
+                   { "lightness": -55 }
+                 ]
+             }, {
+                 "featureType": "administrative.country",
+                 "elementType": "geometry.fill",
+                 "stylers": [
+                   { "visibility": "off" }
+                 ]
+             }, {
+                 "featureType": "administrative.country",
+                 "elementType": "labels.text.stroke",
+                 "stylers": [
+                   { "visibility": "off" }
+                 ]
+             }, {
+                 "featureType": "administrative.country",
+                 "elementType": "labels.text.fill",
+                 "stylers": [
+                   { "hue": "#ffff00" },
+                   { "color": "#d3d3d3" }
+                 ]
+             },
+             {
+                 "featureType": "administrative.locality",
+                 "elementType": "labels.text.stroke",
+                 "stylers": [
+                   { "visibility": "off" }
+                 ]
+             }, {
+                 "featureType": "administrative.locality",
+                 "elementType": "labels.text.fill",
+                 "stylers": [
+                   { "color": "#ffffff" }
+                 ]
+             }
+    ];
+
+    return {
+        style: customStyle
+    };
+});

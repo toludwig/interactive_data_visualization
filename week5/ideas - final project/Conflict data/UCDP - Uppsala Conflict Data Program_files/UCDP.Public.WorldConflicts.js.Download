@@ -1,0 +1,35 @@
+﻿define('UCDP.Public.WorldConflicts', ['UCDP.Public.Enums', 'jquery'], function (enums) {
+
+    var conflicts = [];
+
+    var api = {};
+
+    api.getConflicts = function (callback) {
+        if (conflicts.length === 0) {
+            $.ajax({
+                url: '/api/encyclopedia',
+                dataType: "json",
+                async: true
+            }).done(function (data) {
+                conflicts = data;
+                if (callback) {
+                    callback(conflicts);
+                }
+            })
+            //conflicts = generateTestData();
+            //callback(conflicts);
+        } else if (callback && conflicts.length > 0) {
+            callback(conflicts);
+        }
+        return conflicts;
+    }
+
+    function generateTestData()
+    {
+        var rb = function (num) { return Math.floor(Math.random() * num) + 1; }
+        var result = _.sample(worldPolygons.features.map(function (f) { return [rb(3), rb(10), 1988 + rb(26), +f.id, 615]; }), 15);
+        return result;
+    }
+    
+    return api;
+});

@@ -1,0 +1,244 @@
+//
+// TimeLineChart
+//
+define('UCDP.Public.TimeLineChart', ['UCDP.Public.Graph', 'UCDP.Public.ChartAnimation', 'UCDP.Web.AppSettings', 'd3tip', 'd3', 'underscore', 'jquery', 'UCDP.Public.Enums', 'date-extensions'], function (Graph, Animation, AppSettings, d3tip, d3, _, $, Enums) {
+
+    function sumDeaths(events, typeOfViolence) {
+        if (typeOfViolence) {
+            return d3.sum(events, function (event) { return event[Enums.eventEnum.type_of_violence] === typeOfViolence ? event[Enums.eventEnum.best] : 0; })
+        } else {
+            return d3.sum(events, function (event) { return event[Enums.eventEnum.best]; })
+        }
+    };
+
+    function totalDeathsByYears(groupedEvents, typeOfViolence) {
+        if (typeOfViolence === Enums.typeOfViolence.total) {
+            return groupedEvents.map(function (events, year) {
+                return [addMonths(year), sumDeaths(events)];
+            }).value();
+        } else {
+            return groupedEvents.map(function (events, year) {
+                return [addMonths(year), sumDeaths(events, typeOfViolence)];
+            }).value();
+        }
+    }
+
+    function addMonths(year) {
+        var d = new Date(year);
+
+        return d.setMonth(d.getMonth() + 6);
+    }
+
+    function numberOfDeaths(item) {
+        return item[1];
+    }
+
+    function yearitem(item) {
+        return item[0];
+    }
+
+    function maxYear(total) {
+        return d3.max(total, yearitem);
+    }
+
+    function minYear(total) {
+        return d3.min(total, yearitem);
+    }
+
+    function max(total) {
+        return d3.max(total, numberOfDeaths);
+    }
+
+    function min(total, allowNegative) {
+        var min = d3.min(total, numberOfDeaths);
+        if (min > 0) return min;
+        if (allowNegative) return min;
+        else return 0.1;
+    }
+
+    function convertYear(y) {
+
+        var d = new Date(y);
+
+        return d.getFullYear();
+    }
+
+    function mean(total) {
+        return d3.mean(total, numberOfDeaths);
+    }
+
+    function collectionUnion() {
+        var args = Array.prototype.slice.call(arguments);
+        var it = args.pop();
+
+        return _.uniq(_.flatten(args, true), it);
+    }
+
+    function createYearsWithZero(startyear, range) {
+        return _.range(range).map(function (val) {
+            return [addMonths(new Date(startyear + val, 0, 1, 1)), 0];
+        });
+    };
+
+    function datasetFilterFunc(datasets) {
+        return function (tovId) {
+            return _.find(datasets, function (dataset) { return dataset.typeOfViolenceId === tovId });
+        }
+    }
+
+    function groupAndSortByYear(data) {
+        var getYear = function (event) { return event[Enums.eventEnum.date_start]; };
+        return _.chain(data).sortBy(getYear)
+                            .groupBy(getYear);
+    }
+
+    function fillEmptyYearsWithZero(data) {
+        var test = createYearsWithZero(convertYear(minYear(data)), convertYear(maxYear(data)) - convertYear(minYear(data)));
+
+        return collectionUnion(data,test, function (item) {
+            return item[0];
+        }).sort(function (a, b) {
+            return a[0] - b[0];
+        });
+    }
+
+    var TimelineChart = function (gedEventData, elName, context, entitytype) {
+        this._elName = elName;
+        var groupedEvents = groupAndSortByYear(gedEventData);
+
+        this.context = context;
+
+        this.entitytype = entitytype;
+
+        this.total = totalDeathsByYears(groupedEvents, Enums.typeOfViolence.total);
+
+        this.stateBased = totalDeathsByYears(groupedEvents, Enums.typeOfViolence.stateBased);
+        this.nonState = totalDeathsByYears(groupedEvents, Enums.typeOfViolence.nonState);
+        this.oneSided = totalDeathsByYears(groupedEvents, Enums.typeOfViolence.oneSided);
+
+        this.total = fillEmptyYearsWithZero(this.total);
+        this.stateBased = fillEmptyYearsWithZero(this.stateBased);
+        this.nonState = fillEmptyYearsWithZero(this.nonState);
+        this.oneSided = fillEmptyYearsWithZero(this.oneSided);
+    
+        function yearsHasDeaths(years) {
+            return _.reduce(years, function (memo, year) { return memo += year[1]; }, 0) > 0;
+        }
+
+        var datasets = [];
+        if (yearsHasDeaths(this.total)) {
+            datasets.push({ order: 1, label: 'Total', id: 'total', data: this.total, typeOfViolenceId: Enums.typeOfViolence.total });
+        }
+        if (yearsHasDeaths(this.stateBased)) {
+            datasets.push({ order: 0, label: 'State based', id: 'state-based', data: this.stateBased, typeOfViolenceId: Enums.typeOfViolence.stateBased });
+        }
+        if (yearsHasDeaths(this.nonState)) {
+            datasets.push({ order: 0, label: 'Non state', id: 'non-state', data: this.nonState, typeOfViolenceId: Enums.typeOfViolence.nonState });
+        }
+        if (yearsHasDeaths(this.oneSided)) {
+            datasets.push({ order: 0, label: 'One-sided', id: 'one-sided', data: this.oneSided, typeOfViolenceId: Enums.typeOfViolence.oneSided });
+        }
+
+        this.data = {
+            max: max(this.total),
+            min: min(this.total),
+            mean: mean(this.total),
+            datasets: _.sortBy(datasets, function (x) { return x.order; })
+        }
+
+        if (this.entitytype === Enums.entityType.statebased || this.entitytype === Enums.entityType.actor || this.entitytype === Enums.entityType.conflict || this.entitytype === Enums.entityType.country) {
+            if (convertYear(minYear(this.stateBased)) < 1989) {
+                this.domain = AppSettings.timeSpanFrom75;
+                this.context = 'keypage75';
+            }
+            else {
+                this.domain = AppSettings.timeSpanFrom89;
+                this.context = 'keypage89';
+            }
+        }
+        else
+        {
+            this.domain = AppSettings.timeSpanFrom89;
+        }
+
+        this._graph = new Graph();
+        this._graph.data(this.data.datasets)
+            .axis({
+                orient: 'right',
+                scale: this._graph.Scale.Linear(),
+                domain: [0, this.data.max],
+                tick: [5, ",.0f"],
+                gridTick: [20, ""],
+                func: function (d, i) { return d[1]; }
+            })
+            .axis({
+                orient: 'bottom',
+                context: this.context,
+                scale: this._graph.Scale.Time(),
+                domain: this.domain,
+                tick: this._graph.Tick.Time.Year(),
+                func: function (d, i) { return d[0]; }
+            })
+            .tooltip({
+                offset: [-10, 0],
+                func: function (d, i) {
+                    return "<span style='color:white'>" + d[1] + "</span>";
+                }
+            })
+            .title({
+                func: function (extent) {
+                    if (extent[1].getFullYear() - extent[0].getFullYear() === 0) {
+                        return extent[0].getFullYear();
+                    } else {
+                        return extent[0].getFullYear() + '-' + extent[1].getFullYear();
+                    }                
+                }
+            })
+            .line({
+                markers: true
+            })
+            .zoom(true)
+            .call(this._elName);
+
+        var self = this;
+
+        this.resizeFunc = _.throttle(function () { self._graph.call(self._elName); }, 50);
+
+        window.addEventListener("resize", this.resizeFunc, false);
+    }
+
+    TimelineChart.prototype.update = function (typesOfViolenceList) {
+        var datasetFilter = datasetFilterFunc(this.data.datasets);
+        var datasets = _.chain(typesOfViolenceList).map(datasetFilter).compact().sortBy(function (x) { return x.order; }).value();
+        this._graph.update(datasets);
+    }
+
+    TimelineChart.prototype.playAnimation = function () {
+        this._animation.play();
+    },
+
+    TimelineChart.prototype.pauseAnimation = function () {
+        this._animation.pause();
+    }
+
+    TimelineChart.prototype.highlight = function (color) {
+        $(this._elName + ' .drag-handle>path').css('stroke', color.background);
+        $(this._elName + ' .drag-handle>path').css('fill', color.background);
+        $(this._elName + '>button').css('background-color', color.background);
+        $(this._elName + '>button').css('color', color.foreground);
+    }
+
+    TimelineChart.prototype.destroy = function () {
+        window.removeEventListener('resize', this.resizeFunc);
+    }
+
+    TimelineChart.prototype.stopListening = function () {
+        window.removeEventListener('resize', this.resizeFunc);
+    }
+
+    TimelineChart.prototype.startListening = function () {
+        window.addEventListener('resize', this.resizeFunc, false);
+    }
+
+    return TimelineChart;
+});

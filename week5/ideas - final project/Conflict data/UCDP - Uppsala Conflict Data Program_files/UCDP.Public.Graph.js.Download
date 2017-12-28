@@ -1,0 +1,715 @@
+/*
+
+	TODO:
+	*	Split this file up in modules.
+	*	Implement the chart like this:http://bost.ocks.org/mike/chart/
+*/
+
+define('UCDP.Public.Graph', ['d3', 'underscore', 'd3tip', 'jquery', 'backbone', 'UCDP.Dispatcher', 'foundation', 'debug', 'date-extensions'], function (d3, _, d3tip, $, Backbone, Dispatcher, foundation, debug) {
+
+    var Zoom = function (graph) {
+        var zoomInDef = { text: '+', zoom: 1, klass: 'in' };
+        var zoomOutDef = { text: '\u2013', zoom: -1, klass: 'out' };
+        var buttonDefs = [zoomInDef, zoomOutDef];
+        var buttons = graph.el.selectAll('button')
+            .data(buttonDefs)
+            .enter()
+            .append('button')
+            .attr('class', function (d) { return 'zoom-button ' + d.klass; })
+            .text(function (d) { return d.text; });
+
+        var zoom = d3.behavior.zoom()
+            .y(graph._axes[0].scale)
+            .scaleExtent([1, 10])
+            .on('zoom', zoomed2);
+
+        graph.el.selectAll('button').on('click', zoomed);
+
+        graph.svg.call(zoom);
+
+        var minZoom = zoom.scaleExtent()[0];
+        var maxZoom = zoom.scaleExtent()[1];
+
+        var lowY = graph._axes[0].scale(graph._axes[0].scale.domain()[0]);
+
+        function zoomed(d) {
+            graph._brush.clear();
+
+            var newZoomScale = zoom.scale() + d.zoom;
+            newZoomScale = Math.max(newZoomScale, minZoom);
+            newZoomScale = Math.min(newZoomScale, maxZoom);
+            zoom.scale(newZoomScale);
+            graph.svg.call(zoom.event);
+        }
+
+        function zoomed2() {
+            if (graph._brush._hasSelection) return;
+
+            var t = zoom.translate(),
+                tx = t[0],
+                ty = t[1];
+
+            ty = Math.max(ty, -(lowY * (zoom.scale() - 1)));
+            zoom.translate([tx, ty]);
+
+            graph.svg.select('.y.axis').call(graph._axes[0].svgAxis);
+            graph.svg.select(".x.axis").call(graph._axes[1].svgAxis);
+
+            graph.svg.selectAll('path.line').attr('d', graph.line);
+            graph.svg.selectAll('circle.marker')
+                .attr('cx', graph.line.x())
+                .attr('cy', graph.line.y());
+        }
+
+        function coordinates(point) {
+            var scale = zoom.scale(), translate = zoom.translate();
+            return [(point[0] - translate[0]) / scale, (point[1] - translate[1]) / scale];
+        }
+
+        function point(coordinates) {
+            var scale = zoom.scale(), translate = zoom.translate();
+            return [coordinates[0] * scale + translate[0], coordinates[1] * scale + translate[1]];
+        }
+    }
+
+    /*
+     * Brush component.
+     * Handles the selection in the graph.
+     */
+    var Brush = function (graph) {
+        this._d3brush = null;
+        this._hasSelection = false;
+        this._graph = graph;
+        this._minX = 0;
+        this._minY = 0;
+        this._maxX = 0;
+        this._maxY = 0;
+        var self = this;
+
+        this._start = function () {
+            d3.select(this).select('.extent').classed('show', true);
+        };
+
+        this._update = function () {
+            var extent0 = self._d3brush.extent(),
+                extent1;
+
+            // if dragging, preserve the width of the extent
+            if (d3.event.mode === "move") {
+                var d0 = d3.time.year.round(extent0[0]),
+                    d1 = d3.time.year.offset(d0, Math.round((extent0[1] - extent0[0]) / 31536e6));
+                extent1 = [d0, d1];
+                self._hasSelection = true;
+
+            } else if (d3.event.mode === "resize") {
+                if (extent0[0].equals(extent0[1])) {
+                    // this is a clear event (click on the background)
+                    self._clear();
+                    return;
+                } else {
+                    extent1 = extent0.map(d3.time.year.round);
+
+                    // if empty when rounded, use floor & ceil instead
+                    if (extent1[0] >= extent1[1]) {
+                        extent1[0] = d3.time.year.floor(extent0[0]);
+                        extent1[1] = d3.time.year.ceil(extent0[1]);
+                    }
+                    self._hasSelection = true;
+                }
+            }
+
+            extent1[1] = new Date(extent1[1] - 60);
+
+            d3.select(this).call(self._d3brush.extent(extent1));
+            //Oj, jag har glömt låsa min dator!
+
+            self._updateMask(extent1);
+            self._graph._updateTitle(extent1);
+
+            self._graph._broadcast(extent1);
+        };
+
+        this._updateMask = function (extent) {
+            var x = graph._axes[1].scale(extent[0]);
+            var w = graph._axes[1].scale(extent[1]) - x;
+            var overlayMask = graph.svg.select('#Mask');
+            overlayMask.attr('x', x).attr('width', w);
+        };
+
+        this._clear = function (animate) {
+            var extent = graph._axes[1].scale.domain();
+            this._d3brush.clear();
+            this._graph.svg.selectAll(".brush").call(this._d3brush.extent(extent));
+            this._updateMask(extent);
+            this._graph._broadcast(extent);
+            this._graph._updateTitle(extent);
+            this._hasSelection = false;
+            this._graph.svg.select('.brush').select('.extent').classed('show', true)
+            return false;
+        };
+
+        /*
+            Store the bounding box coords of the graph.
+        */
+        this._minX = graph._axes[1].scale(graph._axes[1].domain[0]);
+        this._maxX = graph._axes[1].scale(graph._axes[1].domain[1]);
+        this._minY = graph._axes[0].scale(graph._axes[0].domain[1]);
+        this._maxY = graph._axes[0].scale(graph._axes[0].domain[0]);
+
+        var scale = graph._axes[1].scale;
+
+        var timespanSelectorHeight = 3;
+        var timespanSelectorPadding = 30;
+        var timespanSelectorYPos = graph.height + timespanSelectorPadding;
+        var timespanSelector = graph._graphContainer.append('rect')
+            .attr('class', 'timespan-selector')
+            .attr("height", timespanSelectorHeight)
+            .attr('width', graph.width)
+            .attr('transform', 'translate(0,' + timespanSelectorYPos + ')');
+
+        /*
+            Create a brush and the graphical representation of it.
+            Also, hook up the brush events.
+        */
+        this._d3brush = d3.svg.brush()
+            .x(scale)
+            .extent([scale.domain()[0], scale.domain()[1]])
+            .on("brush", this._update)
+            .on("brushstart", this._start);
+
+        var brushg = graph._graphContainer.append("g")
+            .attr("class", "brush")
+            .call(this._d3brush);
+
+        /*
+            Style the whole extent by setting the 'show' class
+            on it. This is to 'highlight' the selected area of the graph.
+         */
+        brushg.select('.extent').classed('show', true);
+
+        /*
+            Select the SVG rect of the brush container and size it according
+            to the height of the graph.
+        */
+        brushg.selectAll("rect")
+            .attr("height", timespanSelectorHeight)
+            .attr('transform', 'translate(0, ' + timespanSelectorYPos + ')');
+
+        brushg.selectAll(".extent")
+            .attr("height", graph.height + timespanSelectorHeight + timespanSelectorPadding)
+            .attr('transform', 'translate(0, 0)')
+            .attr('mask', 'url(#Mask)')
+
+        /*
+            Select all elements inside the brush that has a class
+            of .resize. For each found element, create SVG grouping
+            element for the brush handle bars.
+        */
+        var handlebars = brushg.selectAll(".resize")
+            .append("g")
+            .attr('class', 'drag-handle');
+
+        /*
+            Add a SVG path to create the triangle symbol ornament on the handle.
+        */
+        handlebars.append("path")
+            .attr("d", d3.svg.symbol().type("triangle-up").size(50))
+            .attr("transform", "translate(0, " + (timespanSelectorYPos + (timespanSelectorHeight / 2)) + ")");
+
+        var overlayMask = graph.svg.select('#Mask>rect');
+        overlayMask.attr('height', brushg.selectAll(".extent").attr('height'))
+            .attr('width', brushg.selectAll(".extent").attr('width'));
+    };
+
+    Brush.prototype.clear = function (animate) {
+        return this._clear(animate)
+    };
+
+    Brush.prototype.set = function (timespan, duration) {
+        this._graph.svg.select(".brush")
+            .transition()
+            .duration(duration)
+            .call(this._d3brush.extent(timespan))
+            .call(this._d3brush.event);
+    };
+
+    /*
+     * The graph component.
+     * Sets up the graph, domain and scales.
+     */
+    var Graph = function () {
+        this.el = null;
+        this.svg = null;
+        this._axes = [];
+        this._type = {};
+        this._tooltip = {};
+        this._title = null;
+        this._markerSel = null;
+        this._hasSelection = false;
+        this._fullExtent = [];
+        this._brush = null;
+        this._maskLeft = null;
+        this._maskRight = null;
+        this._shouldZoom = false;
+
+        this._broadcast = _.throttle(function (extent) {
+            Dispatcher.trigger(this.TimespanChangedEvent, extent[0], extent[1]);
+        }, 100);
+
+        this._tooltipEnabled = function () { return _.keys(this._tooltip).length !== 0; };
+
+        this._transform = function (el, left, top) {
+            el.attr('transform', 'translate(' + left + ', ' + top + ')');
+        };
+
+        this._addBackground = function (container) {
+            var g = container.append("g");
+            g.append("rect")
+             .attr("width", container.attr("width"))
+             .attr("height", container.attr("height"))
+             .attr("class", "chart-background");
+            return g;
+        };
+
+        this._addClipPath = function (container, width, height) {
+            container.append("clipPath")
+                .attr("id", "clip")
+                .append("rect")
+                .attr("width", width)
+                .attr("height", height);
+        };
+
+        this._createTitle = function (container) {
+            this._titleEl = container.append('text').attr('x', this.width / 2)
+                .attr('y', this._padding - 10);
+        };
+
+        this._updateTitle = function (extent) {
+            if (this._title === null) return;
+            this._titleEl.text(this._title.func(extent));
+        };
+
+        this._renderGraph = function (data, graph, animate) {
+            /*
+                Set up two line generators.
+                One for the initial flat line that will be transitioned into
+                the second one with the actual data points.
+            */
+            var line = graph.line = d3.svg.line()
+                .interpolate("linear")
+                .y(function (d, i) { return graph._axes[0].scale(graph._axes[0].func(d, i)); })
+                .x(function (d, i) { return graph._axes[1].scale(graph._axes[1].func(d, i)); });
+
+            var flatLine = d3.svg.line()
+                .interpolate("linear")
+                .y(function (d, i) { return graph.height; })
+                .x(function (d, i) { return graph._axes[1].scale(graph._axes[1].func(d, i)); });
+
+            /*
+                For each data set in this._data, draw the acutal graph
+                A SVG group is added
+                The line path is added (with a transition from flat line to data points and opacity 0 to 1)
+                If markers should be drawn, draw them
+            */
+
+            var g = graph._graphContainer.append('g').attr('class', 'overlay');
+            _.each(data, function (d) {
+                if (d.data.length === 0 || d.data[0].length === 0) return;
+                drawLines(d, g, 'overlay', false);
+            });
+
+            var lineG = graph._graphContainer.append('g').attr('class', 'lines');
+
+            _.each(data, function (d) {
+                if (d.data.length === 0 || d.data[0].length === 0) return;
+                var klass = d.id !== undefined ? d.id : '';
+                var g = lineG.append('g').attr('class', klass);
+                g.attr('mask', 'url(#Mask)');
+                drawLines(d, g, klass, true);
+            });
+
+
+            function drawLines(d, g, klass, tooltip) {
+                var path = g.append('path').data([d.data])
+                    .attr('class', 'line ' + klass)
+                    .attr("clip-path", "url(#clip)");
+
+                if (animate) {
+                    path.style('opacity', 0)
+                        .attr('d', flatLine)
+                        .transition().duration(1000)
+                        .style('opacity', 1)
+                        .attr('d', line);
+                } else {
+                    path.style('opacity', 1)
+                        .attr('d', line);
+                }
+
+                /*
+                    If the data points along the line graph should have markers
+                    they are drawn and animated.
+                    Also, add tooltip if they are enabled.
+                */
+                if (graph._type.markers) {
+                    var marker = g.selectAll('.marker .' + klass)
+                        .data(d.data)
+                        .enter().append('circle')
+                        .attr('class', 'marker ' + klass)
+                        .attr("clip-path", "url(#clip)")
+                        .attr('r', 3);
+
+                    if (animate) {
+                        marker.style('opacity', 1)
+                              .attr('cy', graph.height)
+                              .attr('cx', line.x())
+                              .transition().duration(1000)
+                              .style('opacity', 1)
+                              .attr('cy', line.y());
+                    } else {
+                        marker.style('opacity', 1)
+                              .attr('cx', line.x())
+                              .attr('cy', line.y());
+                    }
+
+                    if (graph._tooltipEnabled() && tooltip) {
+                        var tip = d3tip().attr('class', 'graph-tooltip ' + klass).offset(graph._tooltip.offset).html(function (d, i) { return graph._tooltip.func(d, i); });
+                        graph._graphContainer.call(tip);
+                        marker.on('mouseover', tip.show)
+                              .on('mouseout', tip.hide);
+                    }
+                }
+            }
+        }
+    };
+
+    Graph.prototype.axis = function (options) {
+        options = options || {};
+        var scale = options.scale;
+        var gridScale = options.scale;
+        var domain = options.domain || [];
+        var orient = options.orient;
+        var context = options.context;
+        var tick = options.tick || this.Tick.default();
+        var gridTick = options.gridTick || undefined;
+        var tickFormat = options.tickFormat;
+        var func = options.func;
+
+        var axis = {
+            scale: scale(),
+            gridScale: gridScale(),
+            domain: domain,
+            orient: orient,
+            context: context,
+            tick: tick,
+            gridTick: gridTick,
+            tickFormat: tickFormat,
+            func: func,
+            svgAxis: null
+        };
+
+        this._axes.push(axis);
+        return this;
+    };
+
+    Graph.prototype.data = function (data) {
+        this._data = data;
+        return this;
+    };
+
+    Graph.prototype.update = function (data) {
+        this._data = data;
+
+        this._graphContainer.select('.overlay').remove();
+        this._graphContainer.select('.lines').remove();
+
+        this._renderGraph(this._data, this, false);
+        return this;
+    };
+
+    Graph.prototype.line = function (options) {
+        options = options || {};
+        var markers = options.markers || false;
+        var type = 'line';
+
+        this._type = {
+            markers: markers,
+            type: type
+        };
+        return this;
+    };
+
+    Graph.prototype.tooltip = function (options) {
+        options = options || {};
+        var offset = options.offset || [0, 0];
+        var func = options.func || function () { };
+
+        this._tooltip = {
+            offset: offset,
+            func: func
+        };
+
+        return this;
+    };
+
+    Graph.prototype.zoom = function (shouldZoom) {
+        this._shouldZoom = shouldZoom;
+        return this;
+    }
+
+    Graph.prototype.title = function (options) {
+        options = options || {};
+        var func = options.func || function () { };
+
+        this._title = {
+            func: func
+        };
+        return this;
+    };
+
+    Graph.prototype.setSelection = function (timespan, duration) {
+        this._brush.set(timespan, duration);
+    };
+
+    Graph.prototype.clearSelection = function (animate) {
+        this._brush.clear(true);
+    };
+
+    Graph.prototype.call = function (el, w, h) {
+        var self = this;
+
+        this._margin = {
+            top: 30,
+            bottom: 30,
+            left: 30,
+            right: 30
+        };
+        this._padding = 45;
+
+        this.el = d3.select(el);
+        if (this.el[0][0] === null) throw el + ' element not found';
+
+        this.svg = this.el.select('svg');
+        if (this.svg[0][0] === null) throw el + ' element not found';
+
+        /*
+            Get the width and height of the SVG element or set the default.
+        */
+        this.svgWidth = w || this.svg.node.clientWidth || this.svg.node().parentNode.clientWidth || 200;
+        this.svgHeight = h || this.svg.node.clientHeight || this.svg.node().parentNode.clientHeight || 200;
+
+        this.svg.attr('width', this.svgWidth);
+        this.svg.attr('height', this.svgHeight);
+
+        /*
+            Subtract the padding for both sides to get the actual
+            space available for the graph.
+        */
+        this.width = this.svgWidth - (this._padding * 2);
+        this.height = this.svgHeight - (this._padding * 2);
+
+        /*
+            Remove children below the svg element. Removes only specific elements, g and text since the svg
+            may have its own children (like <defs> elements).
+         */
+        this.el.selectAll('svg > g').remove();
+        this.el.selectAll('svg > text').remove();
+
+        /*
+            Add a background and the grid lines before anything else.
+         */
+        this._background = this._addBackground(this.svg);
+
+        /*
+            Add a grouping element for where the graph and the axis
+            will be drawn.
+        */
+        this._graphContainer = this.svg.append('g');
+
+        /*
+            Add a SVG clip path to clip the content outside of the graph.
+        */
+        this._addClipPath(this._graphContainer, this.width, this.height);
+
+        if (this._axes.length === 0) throw 'No axes set';
+
+        var axisTransform = {
+            'right': 'translate(' + this.width + ',0)',
+            'left': 'translate(0,0)',
+            'top': 'translate(0,0)',
+            'bottom': 'translate(0, ' + this.height + ')'
+        };
+
+        var axisGridTransform = {
+            'right': 'translate(0,' + this._padding + ')',
+            'left': 'translate(0,0)',
+            'top': 'translate(0,0)',
+            'bottom': 'translate(' + this._margin.left + ', 0)'
+        };
+
+        var axesClass = ['y', 'x', 'x2', 'y2'];
+        var axesRange = [
+            [this.height, 0],
+            [0, this.width],
+            [this.height, 0],
+            [0, this.width]
+        ];
+
+        var axesGridInvert = [
+            [this.svgHeight, this.height - this.svgHeight],
+            [this.width - this.svgWidth, this.svgWidth],
+            [this.svgHeight, this.height - this.svgHeight],
+            [this.width - this.svgWidth, this.svgWidth],
+        ];
+
+        var tickSizes = [this.svgWidth, this.svgHeight, this.svgWidth, this.svgHeight];
+
+        /*
+            For each axis the domain and the range is set.
+            Also a d3.svg.axis is added.
+        */
+        _.each(this._axes, function (axis, i) {
+            if (axis.domain.length === 0) throw 'No domain set';
+
+            axis.scale.domain(axis.domain);
+            axis.scale.range(axesRange[i]);
+
+            axis.svgAxis = d3.svg.axis()
+                .scale(axis.scale)
+                .orient(axis.orient);
+
+            var minD = axis.scale.invert(axesGridInvert[i][0]);
+            var maxD = axis.scale.invert(axesGridInvert[i][1]);
+            axis.gridScale.domain([minD, maxD]);
+            axis.gridScale.range(axesGridInvert[i]);
+            axis.svgGridAxis = d3.svg.axis()
+                .scale(axis.gridScale)
+                .orient(axis.orient)
+                .tickSize(tickSizes[i], 0, 0)
+                .tickFormat("");
+
+            if (axis.gridTick) {
+                axis.svgGridAxis.ticks(axis.gridTick[0], axis.gridTick[1]);
+            } else {
+                axis.svgGridAxis.ticks(axis.tick);
+            }
+
+            if (axis.tick instanceof Array && axis.tick.length === 2) {
+                axis.svgAxis.ticks(axis.tick[0], axis.tick[1]);
+            } else {
+                axis.svgAxis.ticks(axis.tick);
+            }
+
+            if (axis.tickFormat !== undefined) {
+                axis.svgAxis.tickFormat(axis.tickFormat);
+            }
+
+            if (foundation.MediaQuery.atLeast('xlarge') && axis.orient === "bottom")
+            {
+                var text;
+                switch (axis.context) {
+                    case "keypage75":
+                        text = 2;
+                        break;
+                    case "keypage89":
+                        text = 10;
+                        break;
+                    case "homepage":
+                        text = 13;
+                        break;
+                    case "encyclopediapage":
+                        text = 4;
+                        break;
+                }
+
+                self._graphContainer.append('g')
+                    .attr('class', 'axis ' + axesClass[i])
+                    .attr('transform', axisTransform[axis.orient])
+                    .call(axis.svgAxis)
+                    .selectAll("text")
+                    .attr("x", text)
+                    .style("text-anchor", "start");
+
+                }                 
+            else {
+
+            if (foundation.MediaQuery.atLeast('xlarge') || axis.orient === "right") {
+                self._graphContainer.append('g')
+                    .attr('class', 'axis ' + axesClass[i])
+                    .attr('transform', axisTransform[axis.orient])
+                    .call(axis.svgAxis);
+            } else {
+                self._graphContainer.append('g')
+                    .attr('class', 'axis ' + axesClass[i])
+                    .attr('transform', axisTransform[axis.orient])
+                    .call(axis.svgAxis)
+                    .selectAll("text")
+                    .style("text-anchor", "end")
+                    .attr("dy", "0.8em")
+                    .attr("transform", function (d) {
+                        return "rotate(-45)";
+                    });
+            }
+
+            }
+
+            self._background.append("g")
+                            .attr("class", "grid")
+                            .attr('transform', axisGridTransform[axis.orient])
+                            .call(axis.svgGridAxis);
+        });
+
+
+        /*
+            Create the brush used in selecting part of the graph.
+            The creation of the brush must come before the tooltip (below)
+            code since the brush will otherwise position itself
+            ontop of the tooltips.
+        */
+        this._brush = new Brush(this);
+
+        /*
+            Create the zoom behaviour.
+        */
+        if (this._shouldZoom) {
+            this._zoom = new Zoom(this);
+        }
+
+        /*
+            Render lines and overlay lines
+         */
+        this._renderGraph(this._data, this, true);
+
+        /*
+        * Add graph title element.
+        */
+        if (this._title !== null) {
+            this._createTitle(this.svg);
+            this._updateTitle(this._axes[1].scale.domain());
+        }
+
+        /*
+            Move the graph container within the SVG element
+            to create a padding.
+        */
+        this._transform(this._graphContainer, this._margin.left, this._padding);
+
+        return this;
+    };
+
+    Graph.prototype.Scale = {
+        Linear: function () { return d3.scale.linear; },
+        Time: function () { return d3.time.scale; },
+        Log: function () { return d3.scale.log; }
+    };
+
+    Graph.prototype.Tick = {
+        Time: {
+            Year: function () { return d3.time.year; }
+        },
+        default: function () { return 10; }
+    };
+
+    Graph.prototype.TimespanChangedEvent = 'timespan-changed';
+
+    return Graph;
+});

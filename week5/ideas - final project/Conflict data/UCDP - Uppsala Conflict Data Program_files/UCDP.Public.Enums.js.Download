@@ -1,0 +1,58 @@
+﻿define('UCDP.Public.Enums', function () {
+
+    var eventEnum = {
+        latitude: 0,
+        longitude: 1,
+        best: 2,
+        date_start: 3,
+        type_of_violence: 4,
+        conflict_new_id: 5,
+        Id: 6,
+        dyad_new_id: 7,
+        side_a_new_id: 8,
+        side_b_new_id: 9,
+        country_id: 10
+    };
+
+    var entityType = {
+        actor: 0,
+        conflict: 1,
+        dyad: 2,
+        country: 3,
+        statebased: 4,
+        nonstate: 5,
+        onesided: 6,
+        year: 7,
+    };
+
+    var entityTypeToString = {
+        0: 'actor',
+        1: 'conflict',
+        2: 'dyad',
+        3: 'country',
+        4: 'statebased',
+        5: 'nonstate',
+        6: 'onesided',
+        7: 'year',
+    }
+
+    var typeOfViolence = {
+        stateBased: 1,
+        nonState: 2,
+        oneSided: 3,
+        total: 4
+    };
+
+    var clusterRenderingType = {
+        remainingEvents: 0,
+        entityEvents: 1
+    };
+
+    return {
+        eventEnum: eventEnum,
+        entityType: entityType,
+        entityTypeToString: entityTypeToString,
+        typeOfViolence: typeOfViolence,
+        clusterRenderingType: clusterRenderingType
+    };
+});

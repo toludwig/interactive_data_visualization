@@ -28,6 +28,21 @@
 
     <!-- D3 & JS -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+    <script src='https://d3js.org/d3.v3.min.js'></script>
+    <!-- TopoJSON: <script src="https://d3js.org/topojson.v3.min.js"></script> -->
+    <script src="drawmap.js"></script>
+    <script src="drawpoint.js"></script>
+    <script>
+        d3.select(window).on('load', init);
+        function init() {
+            drawMap();
+            crimeData = d3.json("sf_crime.geojson");
+            drawPoint(crimeData);
+            
+        }
+            
+    </script>
 
 </head>
 <body>
@@ -57,6 +72,7 @@
             <ol>
                 <p>e.g., Stacked Barplot</p>
                 <svg style="width:800px; height:500px" id="barplot"></svg>
+                <svg id = "map"></svg>
             </ol>
     </p>
 </div>

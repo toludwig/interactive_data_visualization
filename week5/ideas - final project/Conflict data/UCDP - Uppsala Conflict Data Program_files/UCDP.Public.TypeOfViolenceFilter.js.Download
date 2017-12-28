@@ -1,0 +1,38 @@
+﻿define('UCDP.Public.TypeOfViolenceFilter', ['underscore', 'jquery', 'UCDP.Dispatcher', 'UCDP.Public.Enums', 'UCDP.Web.AppSettings', 'UCDP.Public.Helpers', 'UCDP.Web.AppSettings'], function (_, $, Dispatcher, Enums, AppSettings, Helpers, appSettings) {
+
+    var Filter = function ($el, model) {
+        this.$el = $el.find('.type-of-violence-filter');
+        this.model = model;
+
+        $(this.$el).find('*[id*=total-number-of-deaths]').val(Enums.typeOfViolence.total);
+        $(this.$el).find('*[id*=state-based-violence]').val(Enums.typeOfViolence.stateBased);
+        $(this.$el).find('*[id*=non-state-violence]').val(Enums.typeOfViolence.nonState);
+        $(this.$el).find('*[id*=one-sided-violence]').val(Enums.typeOfViolence.oneSided);
+
+        this.$el.find('.total-color').css('background-color', '#FFF');
+        this.$el.find('.statebased-color').attr('style', 'background-color: ' +  appSettings.violenceColors.stateBased + ' !important');
+        this.$el.find('.nonstate-color').attr('style', 'background-color: ' + appSettings.violenceColors.nonState + ' !important');
+        this.$el.find('.onesided-color').attr('style', 'background-color: ' + appSettings.violenceColors.oneSided + ' !important');
+
+        var checkboxes = $el.find(':checkbox');
+        checkboxes.click(function () {
+            var typeOfViolenceList = _.chain(checkboxes).map(function (c) { return c.checked ? parseInt(c.value) : null; }).compact().value();
+            Dispatcher.trigger('type-of-violence-filter', typeOfViolenceList);
+        });
+
+        this.update(this.model);
+    }
+
+    Filter.prototype.update = function (model) {
+        $(this.$el).find('*[id*=totalDeaths]').html(Helpers.numberWithSpaces(model.totalDeaths));
+        $(this.$el).find('*[id*=nonStateDeaths]').html(Helpers.numberWithSpaces(model.nonStateDeaths));
+        $(this.$el).find('*[id*=oneSidedDeaths]').html(Helpers.numberWithSpaces(model.oneSidedDeaths));
+        $(this.$el).find('*[id*=stateBasedDeaths]').html(Helpers.numberWithSpaces(model.stateBasedDeaths));
+    }
+
+    Filter.prototype.highlight = function (color) {
+        $(this.$el).toggleClass('highlight');
+    }
+
+	return Filter;
+});
