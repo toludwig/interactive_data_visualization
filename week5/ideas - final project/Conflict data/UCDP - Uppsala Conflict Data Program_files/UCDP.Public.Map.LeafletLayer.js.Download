@@ -1,0 +1,171 @@
+﻿define('UCDP.Public.Map.LeafletLayer', [
+    'UCDP.Public.App',
+    'UCDP.Public.GoogleLayerCustomization',
+    'backbone',
+    'UCDP.Web.AppSettings',
+    'UCDP.Dispatcher',
+    'underscore',
+    'debug',
+    'leaflet',
+    'GoogleLayer',
+    'async!http://maps.google.com/maps/api/js'],
+    function (app, googleLayerCustomization, backbone, AppSettings, dispatcher, _, debug) {
+
+
+        var Layer = function (shouldHighlight) {
+            this.uid = _.uniqueId();
+            debug("New layer instance = " + this.uid);
+            this._geoJsonLayer = null;
+            this._isInCountryMode = false;
+            this._zoomLevel = 0;
+
+            var _defaultShouldHighlight = true;
+            this._shouldHighlight = shouldHighlight === undefined ? _defaultShouldHighlight : shouldHighlight;
+
+
+            var self = this;
+            this.timespanChangedHandler = function (time1, time2) {
+                debug('country highlight - timespan changed ' + self.uid);
+                self.highlightCountriesByTimespan(time1.getFullYear(), time2.getFullYear());
+            };
+        }
+
+        Layer.prototype.createWithGoogleTiles = function (type) {
+            return new L.Google(type, {
+                mapOptions: {
+                    styles: googleLayerCustomization.style,
+                    backgroundColor: '#000'
+                }
+            });
+        };
+
+        Layer.prototype.createWithGeoJson = function (data) {
+            var self = this;
+            this._geoJsonLayer = L.geoJson(data, {
+                onEachFeature: function (feature, layer) {
+
+                    layer.on('mouseout', function () {
+                        $('#countryTooltip').css('display', 'none');
+                    });
+
+                    layer.on('mousemove', function (e) {
+                        $('#countryTooltip').html(feature.title);
+                        $('#countryTooltip').css('left', e.originalEvent.pageX + 5).css('top', e.originalEvent.pageY - 25).css('display', 'block');
+                    });
+
+                    if (self._shouldHighlight) {
+                        layer.on({
+                            mouseover: function (e) {
+                                if (e.target.feature.isHighlighted) {
+                                    e.target.setStyle({ fillColor: AppSettings.encyclopediaMap.hover });
+                                }
+                            },
+                            mouseout: function (e) {
+                                if (e.target.feature.isHighlighted) {
+                                    e.target.setStyle({ fillColor: AppSettings.encyclopediaMap.highlight });
+                                }
+
+                            },
+                            click: function (e) {
+                                if (e.target.feature.isHighlighted) {
+                                    backbone.history.navigate('country/' + this.feature.gleditsch, { trigger: true });
+                                }
+                            }
+                        });
+                    }
+                },
+                style: {
+                    fillColor: AppSettings.encyclopediaMap.nonHighlight,
+                    fillOpacity: 1,
+                    color: AppSettings.encyclopediaMap.lineColor,
+                    weight: 1,
+                    opacity: 0.5
+                }
+            });
+            return this._geoJsonLayer;
+        };
+
+        Layer.prototype.highLight = function (layer) {
+            layer.setStyle({
+                weight: 2,
+                fillColor: AppSettings.encyclopediaMap.highlight,
+                dashArray: '',
+                fillOpacity: 1
+            });
+
+            layer.feature.isHighlighted = true;
+
+            if (!L.Browser.ie && !L.Browser.opera) {
+                layer.bringToFront();
+            }
+        }
+
+        Layer.prototype.resetHighlight = function (layer) {
+            this._geoJsonLayer.resetStyle(layer);
+            layer.feature.isHighlighted = false;
+        }
+
+        Layer.prototype.highlightCountries = function () {
+            this.highlightCountriesByTimespan(AppSettings.timeSpanFrom75[0].getFullYear(), AppSettings.timeSpanFrom75[1].getFullYear());
+        }
+
+        Layer.prototype.highlightCountriesByTimespan = function (time1, time2) {
+            var self = this;
+            _.each(this._geoJsonLayer.getLayers(), function (layer) {
+
+                var yearExistInInterval = _.find(layer.feature.year, function(year) {
+                    return year >= time1 && year <= time2;
+                });
+
+                if (yearExistInInterval)
+                {
+                    self.highLight(layer);
+                } else {
+                    self.resetHighlight(layer);
+                }
+            });
+        }
+
+        Layer.prototype.instantiateCountryHighlightYears = function (conflictObjs) {
+            _.each(this._geoJsonLayer.getLayers(), function (layer) {
+                layer.feature.year = [];
+                _.each(conflictObjs, function(conflict) {
+                    var idArr = conflict.countryIds.split(',');
+                    if (_.find(idArr, function(id) {
+                        return id === layer.feature.gleditsch;
+                    })) {
+                        layer.feature.year.push(conflict.year);
+                    }
+                });
+
+                layer.feature.year = _.chain(layer.feature.year)
+                    .sortBy(function (num) {
+                        return num;
+                    })
+                    .unique(true)
+                    .value();
+            });
+        }
+
+        Layer.prototype.setZoomLevel = function (value) {
+            this._zoomLevel = value;
+        }
+
+        Layer.prototype.stopListeningToEvents = function () {
+            debug('stop listening in layer uid = ' + this.uid);
+
+            this.stopListening(dispatcher, "timespan-changed", this.timespanChangedHandler);
+        }
+
+        Layer.prototype.startListeningToEvents = function () {
+            debug('start listening in layeruid = ' + this.uid);
+
+            if (this._shouldHighlight) {
+                this.listenTo(dispatcher, "timespan-changed", this.timespanChangedHandler);
+            }
+        }
+
+        _.extend(Layer.prototype, Backbone.Events);
+
+        return Layer;
+    });

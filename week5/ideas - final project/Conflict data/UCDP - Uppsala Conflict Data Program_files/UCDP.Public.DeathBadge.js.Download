@@ -1,0 +1,107 @@
+﻿define('UCDP.Public.DeathBadge', ['UCDP.Web.AppSettings', 'UCDP.Public.Enums', 'UCDP.Public.Helpers'], function (AppSettings, Enums, Helpers) {
+
+    var _currentClusterDeathsByCategory, _currentClusterDeaths;
+    var pi2 = Math.PI * 2;
+
+    function create(elementId, width, height, clusterDeathsByCategory, clusterDeaths) {
+        var c = document.getElementById(elementId);
+
+        _currentClusterDeathsByCategory = clusterDeathsByCategory;
+        _currentClusterDeaths = clusterDeaths;
+
+        c.width = width;
+        c.height = height;
+        draw(c.getContext('2d'), width, height);
+    }
+
+    function draw(canvas, width, height) {
+        var circleContentSize = width;
+        var lol = 0;
+        var start = 0;
+        var halfCircleContentSize = circleContentSize / 2;
+        var lineThickness = 10;
+        var size = 0;
+
+        if (_currentClusterDeathsByCategory) {
+            for (var i = 0, l = 3; i < l; ++i) {
+                size = _currentClusterDeathsByCategory[i] / _currentClusterDeaths;
+
+                if (size > 0) {
+                    canvas.beginPath();
+                    canvas.moveTo(halfCircleContentSize, halfCircleContentSize);
+                    canvas.fillStyle = AppSettings.violenceColorsAsArray[i];
+                    var from = start,
+                        to = start + size * pi2;
+
+                    if (to < from) {
+                        from = start;
+                    }
+                    canvas.arc(halfCircleContentSize, halfCircleContentSize, halfCircleContentSize, from, to);
+
+                    start = start + size * pi2;
+                    canvas.lineTo(halfCircleContentSize, halfCircleContentSize);
+                    canvas.fill();
+                    canvas.closePath();
+                }
+            }
+        } else {
+            canvas.beginPath();
+            canvas.moveTo(halfCircleContentSize, halfCircleContentSize);
+            canvas.fillStyle = AppSettings.violenceColorsAsArray[this.category - 1];
+            canvas.arc(halfCircleContentSize, halfCircleContentSize, halfCircleContentSize, 0, Math.PI * 2);
+            canvas.fill();
+        }
+
+        canvas.globalCompositeOperation = 'destination-out';
+        canvas.beginPath();
+        canvas.fillStyle = 'rgba(255,255,255,1)';
+        canvas.arc(halfCircleContentSize, halfCircleContentSize, halfCircleContentSize - lineThickness, 0, Math.PI * 2);
+        canvas.fill();
+
+        var fillColor = 'rgba(0,0,0,1)';
+
+        canvas.globalCompositeOperation = 'source-over';
+        canvas.beginPath();
+        canvas.fillStyle = fillColor;
+        canvas.arc(halfCircleContentSize, halfCircleContentSize, halfCircleContentSize - lineThickness, 0, Math.PI * 2);
+        canvas.fill();
+
+        canvas.fillStyle = '#FFF';
+        canvas.textAlign = 'center';
+        canvas.textBaseline = 'middle';
+        canvas.font = 'bold 24px sans-serif';
+
+        canvas.fillText(Helpers.numberWithSpaces(_currentClusterDeaths), halfCircleContentSize, halfCircleContentSize, 80);
+
+        canvas.closePath();
+    }
+
+    function splitIntoTypeOfViolence(events) {
+        var stateBased = 0;
+        var nonState = 0;
+        var oneSided = 0;
+
+        for (var i = 0, len = events.length; i < len; i++) {
+
+            var deathNumbers = events[i][Enums.eventEnum.best];
+
+            switch (events[i][Enums.eventEnum.type_of_violence]) {
+                case Enums.typeOfViolence.stateBased:
+                    stateBased += deathNumbers;
+                    break;
+                case Enums.typeOfViolence.nonState:
+                    nonState += deathNumbers;
+                    break;
+                case Enums.typeOfViolence.oneSided:
+                    oneSided += deathNumbers;
+                    break;
+            }
+        }
+        return [stateBased, nonState, oneSided];
+    }
+
+    return {
+        create: create,
+        splitIntoTypeOfViolence: splitIntoTypeOfViolence
+    };
+});

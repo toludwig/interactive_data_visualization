@@ -28,8 +28,12 @@
 
     <!-- D3 & JS -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- simple diagrams -->
     <script src="stacked_bars.js"></script>
     <script src="time_profile.js"></script>
+    <!-- TopoJSON: <script src="https://d3js.org/topojson.v3.min.js"></script> -->
+    <script src="drawmap.js"></script>
+    <script src="drawpoint.js"></script>
 
     <script>
         d3.select(window).on('load', init);
@@ -52,6 +56,10 @@
                 time_profile(time_of_day);
             });
 
+            // MAP (Johannes)
+            drawMap();
+            crimeData = d3.json("sf_crime.geojson");
+            drawPoint(crimeData);
         }
     </script>
 </head>
@@ -79,11 +87,8 @@
     <h3>Time profile</h3>
     <svg style="width:800px; height:400px" id="time_profile"></svg>
 
-
     <h3>Crime categories over the years</h3>
     <svg style="width:800px; height:500px" id="barplot"></svg>
-
-
 </div>
 
 </body>

@@ -1,0 +1,70 @@
+﻿@media print {
+    .related-entities, .main-buttons, .red-box-link-group, #explore-teaser, .header-view {
+        display: none !important;
+    }
+
+    .description-section a {
+        text-decoration: none;
+    }
+
+        .description-section a[href]:after {
+            content: none !important;
+        }
+
+    .axis text {
+        fill: #000;
+    }
+
+    .chart-background {
+        fill: #fff;
+        fill-opacity: 1;
+    }
+
+    circle {
+        fill: #555 !important;
+        stroke: #555 !important;
+    }
+
+    .total-color, .line.total {
+        background-color: #BBB !important;
+        stroke: #BBB;
+    }
+
+
+    #keypage-chart-container {
+        position: relative;
+    }
+
+    .deaths-badge {
+        text-align: left !important;
+    }
+
+    .deaths-badge-and-info {
+        margin-bottom: 4rem;
+    }
+
+    .header-print {
+        margin-left: 0;
+    }
+
+    .header-view {
+        margin-left: -1.5rem;
+    }
+
+    .deaths-badge-and-info, .deaths-badge-and-info .columns {
+        width: initial !important;
+    }
+
+
+    #uu-logo {
+        -webkit-filter: invert(100%);
+    }
+
+    div.columns {
+        width: 100%;
+    }
+
+    .large-4 {
+        width: 40% !important;
+    }
+}

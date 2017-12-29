@@ -1,0 +1,62 @@
+﻿define('Views/UCDP.Public.NonStateKeyPageViewModel', ['Views/UCDP.Public.KeyPageViewModel', 'UCDP.Public.GedEvents', 'UCDP.Public.Enums', 'underscore', 'showdown'],
+    function (ViewModel, GEDEvents, Enums, _, showdown) {
+        return ViewModel.extend({
+            init: function (id, callback, view) {
+                this.id = id;
+                var self = this;
+                $.ajax({
+                    url: '/api/nonstate/' + id,
+                    dataType: "json",
+                    async: true
+                }).done(function (data) {
+                    self.data = data;
+                    self.title = data.EntityName;
+
+                    var converter = new showdown.Converter();
+                    self.description = converter.makeHtml(data.EntityDescription);
+
+                    self.relatedConflicts = data.Conflicts;
+                    self.relatedStateBasedDyads = _.where(data.Dyads, { TypeOfViolence: Enums.typeOfViolence.stateBased });
+                    self.relatedNonStateDyads = _.where(data.Dyads, { TypeOfViolence: Enums.typeOfViolence.nonState });
+                    self.relatedOneSideDyads = _.where(data.Dyads, { TypeOfViolence: Enums.typeOfViolence.oneSided });
+                    self.relatedActors = data.Actors;
+                    self.relatedCountries = data.Countries;
+
+                    self.conflicts = self.relatedConflicts;
+                    self.nonStateDyads = self.relatedNonStateDyads;
+                    self.oneSidedDyads = self.relatedOneSideDyads;
+                    self.stateBasedDyads = self.relatedStateBasedDyads;
+                    self.actors = self.relatedActors;
+                    self.countries = self.relatedCountries;
+
+
+                    GEDEvents.getEvents(function (events) {
+                        var groupedEvents = GEDEvents.filter(events, function (x) {
+                            return x[Enums.eventEnum.dyad_new_id] == self.id && x[Enums.eventEnum.type_of_violence] == Enums.typeOfViolence.nonState;
+                        });
+                        self.entityEvents = groupedEvents[0];
+                        self.remainingEvents = groupedEvents[1];
+
+                        self.deaths = GEDEvents.sumNumberOfDeaths(self.entityEvents);
+                        self.filteredEvents = self.entityEvents;
+                        self.entityType = Enums.entityType.nonstate;
+                        self.calculateDeaths();
+                        callback.apply(view);
+                    });
+                });
+            }
+        });
+    });
+
+define('Views/NonState/UCDP.Public.NonStateKeyPage', ['Views/UCDP.Public.KeyPage', 'Views/UCDP.Public.NonStateKeyPageViewModel'],
+    function (Keypage, ViewModel) {
+        return Keypage.extend({
+            initialize: function () {
+                Keypage.prototype.initialize.call(this, new ViewModel());
+                this.model.init(this.id, this.render, this);
+            },
+            postActions: function () {
+                $('#read-more-button').data("href", "/additionalinfo?id=" + this.model.id + '&entityType=' + this.model.entityType);
+            }
+        });
+    });

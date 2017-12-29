@@ -1,0 +1,39 @@
+﻿require.config({
+    baseUrl: 'scripts',
+    urlArgs: "bust=v0.94", 
+    //urlArgs: "bust=" + (new Date()).getTime(),
+    waitSeconds: 200,
+    paths: {
+        'jquery': 'lib/jquery/dist/jquery',
+        'underscore': 'lib/underscore/underscore',
+        'pruneCluster': 'lib/PruneCluster/dist/PruneCluster',
+        'leaflet': 'lib/leaflet/dist/leaflet',
+        'd3': 'lib/d3/d3',
+        'd3tip': 'lib/d3-tip/index',
+        'async': 'lib/requirejs-plugins/src/async',
+        'GoogleLayer': 'LeafletPlugins/GoogleLayer',
+        'backbone': 'lib/backbone/backbone',
+        'text': 'lib/requirejs-plugins/lib/text',
+        'modernizr': 'lib/modernizr/modernizr',
+        'foundation': 'lib/foundation-sites/dist/foundation',
+        'showdown': 'lib/showdown/dist/showdown',
+        'notify': 'lib/notifyjs/dist/notify',
+        'select2': 'lib/select2/dist/js/select2'
+    },
+    shim: {
+        'pruneCluster': ['leaflet'],
+        'GoogleLayer': ['leaflet'],
+        'foundation': {
+            deps: ['jquery'],
+            exports:'Foundation'
+        },
+        'notify': {
+            deps: ['jquery'],
+            exports: 'jQuery.notify'
+        }
+    }
+});
+
+require(["UCDP.Public.App"], function (app) {
+    app.init();
+});

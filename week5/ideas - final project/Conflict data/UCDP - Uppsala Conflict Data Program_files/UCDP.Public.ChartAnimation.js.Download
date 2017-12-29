@@ -1,0 +1,102 @@
+define('UCDP.Public.ChartAnimation', ['jquery', 'underscore', 'd3'], function ($, _, d3) {
+    return function (graph, _timespan) {
+        var self = this;
+        this.graph = graph;
+        this.AnimationState = {
+            STOPPED: 0,
+            PLAYING: 1,
+            PAUSE: 2
+        };
+        this.state = this.AnimationState.STOPPED;
+        this.currentTimeSpan = null;
+        this.minDate = _timespan[0];
+        this.maxDate = _timespan[1];
+
+        /*
+            This runs the animation using a timer.
+            Each iteration the quarter of the year is calculated
+            and the playhead moved accordingly.
+        */
+        this.run = function (timespan, animate, speed) {
+            if (this.state === this.AnimationState.PAUSE) return;
+
+            if (timespan[1] >= this.maxDate) {
+                this.finished();
+                return;
+            }
+
+            /*
+                Set the brush to the timespan and animate it if requested.
+            */
+            if (animate === true) {
+                graph.setSelection(this.currentTimeSpan, 3500);
+            } else {
+                graph.setSelection(this.currentTimeSpan, 0);
+            }
+
+            this.currentTimeSpan = [timespan[0], timespan[1].addYear(5)];
+
+            setTimeout(function () { self.run(self.currentTimeSpan, false, speed); }, speed);
+        };
+
+        this.finished = function () {
+            this.clear();
+        };
+
+        this.clear = function () {
+            this.stop();
+            this.currentTimeSpan = null;
+        };
+
+        this.stop = function () {
+            this.state = this.AnimationState.STOPPED;
+            this.changeButtonState();
+            this.hideTimespanIndicator();
+        };
+
+        this.pause = function () {
+            this.state = this.AnimationState.PAUSE;
+            this.changeButtonState();
+        };
+
+        this.play = function () {
+
+            this.state = this.AnimationState.PLAYING;
+
+            /*
+                If the 'movie' hasn't been played before, start it off with the start of the domain.
+            */
+            this.currentTimeSpan = _timespan[0].toQuarterDateSpan();
+
+            this.run(this.currentTimeSpan, false, 10);
+        };
+
+        this.showTimespanIndicator = function () {
+            $('#timespan-indicator-anim').show();
+            $('#timespan-indicator').hide();
+        };
+
+        this.hideTimespanIndicator = function () {
+            $('#timespan-indicator-anim').hide();
+            $('#timespan-indicator').show();
+        };
+
+        this.changeButtonState = function () {
+            if (this.state === this.AnimationState.PLAYING) {
+                $('.play-button').addClass("pause");
+                $('.play-button img').attr("src", "content/pause-button.svg");
+                $('.play-button span').text('Pause');
+            } else {
+                $('.play-button').removeClass("pause");
+                $('.play-button img').attr("src", "content/play-button.svg");
+                $('.play-button span').text('Play');
+            }
+        };
+
+        var publicAPI = {
+            play: function () { self.play(); },
+            pause: function () { self.pause(); },
+        };
+        return publicAPI;
+    };
+});

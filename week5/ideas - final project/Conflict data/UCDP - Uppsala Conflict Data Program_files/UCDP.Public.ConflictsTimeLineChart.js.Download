@@ -1,0 +1,176 @@
+//
+// TimeLineChart consists of the histogram, the year and quarter label and the animation functions (play, pause and drag)
+//
+// TODO: Refactor and optimize calculation of data points
+//
+define('UCDP.Public.ConflictsTimeLineChart', ['UCDP.Public.Graph', 'UCDP.Public.ChartAnimation', 'UCDP.Web.AppSettings', 'd3tip', 'd3', 'underscore', 'jquery', 'UCDP.Public.Enums', 'date-extensions'], function (Graph, Animation, AppSettings, d3tip, d3, _, $, Enums) {
+
+    var lowestValue = 0.1;
+
+    function arrangeData(data, typeOfViolenceList) {
+
+        var toObj = function (conflict) {
+            return {
+                year: new Date(conflict[1], 0, 1),
+                conflictsCount: conflict[2],
+                typeOfViolence: conflict[0],
+                //countryIds: conflict[3]
+            }
+        };
+
+        //
+        // This expression does the following:
+        //  1. Converts all conflicts in 'data' from array to objects
+        //  2. Group all conflicts objs by typeOfViolence
+        //  3. For all types of violence, group conflicts by year
+        //  4. For each year calculate the sum of deaths for that year
+        //
+        var graphData = _.chain(data)
+            .map(toObj)
+            .sortBy('year')
+            .groupBy('typeOfViolence')
+            .map(function (conflicts, tov) { return { tovId: tov, years: _.groupBy(conflicts, 'year') }; })
+            .map(function (obj) {
+                return {
+                    tovId: parseInt(obj.tovId),
+                    years: _.map(obj.years, function (conflicts, year) {
+                        var total = _.reduce(conflicts, function (sum, curr) { return sum + curr.conflictsCount; }, 0);
+                        return [addMonths(year), total];
+                    })
+                }
+            })
+            .value();
+
+        function addMonths(year) {
+            var d = new Date(year);
+
+            return d.setMonth(d.getMonth() + 6);
+        }
+
+        var getTovDef = function (tovId) {
+            if (tovId === Enums.typeOfViolence.stateBased) {
+                return {
+                    label: 'State based',
+                    id: 'state-based',
+                };
+            } else if (tovId === Enums.typeOfViolence.nonState) {
+                return {
+                    label: 'Non state',
+                    id: 'non-state',
+                };
+            } else if (tovId === Enums.typeOfViolence.oneSided) {
+                return {
+                    label: 'One-sided',
+                    id: 'one-sided',
+                };
+            }
+        };
+
+        var datasets = _.map(typeOfViolenceList, function (tovId) {
+            var dataset = _.find(graphData, function (d) { return d.tovId === tovId; });
+            if (dataset == undefined) return undefined;
+            var tovDef = getTovDef(tovId);
+            return {
+                label: tovDef.label,
+                id: tovDef.id,
+                data: dataset.years
+            }
+        });
+
+        datasets = _.compact(datasets);
+
+        var max = d3.max(_.map(datasets, function (dataset) { return d3.max(dataset.data, function (year) { return year[1]; }); }));
+        var min = d3.min(_.map(datasets, function (dataset) { return d3.min(dataset.data, function (year) { return year[1]; }); }));
+        var mean = d3.mean(_.map(datasets, function (dataset) { return d3.mean(dataset.data, function (year) { return year[1]; }); }));
+        if (min <= 0) min = lowestValue;
+        return {
+            max: max,
+            min: min,
+            mean: mean,
+            datasets: datasets
+        }
+    }
+
+    var resizeFunc = null;
+
+    function createGraph(elName, data, timespan, context) {
+        var arrangedData = arrangeData(data, [undefined, Enums.typeOfViolence.stateBased, Enums.typeOfViolence.nonState, Enums.typeOfViolence.oneSided]);
+        this.context = context;
+        var graph = new Graph();
+        graph.data(arrangedData.datasets)
+            .axis({
+                orient: 'right',
+                scale: graph.Scale.Linear(),
+                domain: [arrangedData.min, arrangedData.max],
+                tick: [5, ",.0f"],
+                gridTick: [20, ""],
+                func: function (d, i) { return d[1]; }
+            })
+            .axis({
+                orient: 'bottom',
+                context: this.context,
+                scale: graph.Scale.Time(),
+                domain: timespan,
+                tick: graph.Tick.Time.Year(),
+                func: function (d, i) { return d[0]; }
+            })
+            .tooltip({
+                offset: [-10, 0],
+                func: function (d, i) {
+                    return "<span style='color:white'>" + d[1] + "</span>";
+                }
+            })
+            .title({
+                func: function (extent) {
+                    if (extent[1].getFullYear() - extent[0].getFullYear() === 0) {
+                        return extent[0].getFullYear();
+                    } else {
+                        return extent[0].getFullYear() + '-' + extent[1].getFullYear();
+                    }
+                }
+            })
+            .line({
+                markers: true
+            })
+            .call(elName);
+
+        resizeFunc = _.throttle(function () { graph.call(elName); }, 50);
+        return graph;
+    }
+
+
+    var animation, graph;
+
+    return {
+        create: function (conflictData, elName, context) {
+            var timespan = AppSettings.timeSpanFrom75;
+            graph = createGraph(elName, conflictData, timespan, context);
+            animation = new Animation(graph, timespan);
+            return this;
+        },
+
+        update: function (data) {
+            graph.update(data);
+        },
+
+        playAnimation: function () {
+            animation.play();
+        },
+
+        pauseAnimation: function () {
+            animation.pause();
+        },
+
+        destroy: function () {
+            window.removeEventListener('resize', resizeFunc);
+        },
+
+        stopListening: function () {
+            window.removeEventListener('resize', resizeFunc);
+        },
+
+        startListening: function () {
+            window.addEventListener('resize', resizeFunc, false);
+        }
+    }
+});

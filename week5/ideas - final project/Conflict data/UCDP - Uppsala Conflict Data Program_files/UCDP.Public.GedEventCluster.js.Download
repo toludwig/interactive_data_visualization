@@ -1,0 +1,382 @@
+﻿define('UCDP.Public.GedEventCluster', ['UCDP.Public.Enums', 'UCDP.Web.AppSettings', 'UCDP.Dispatcher', 'debug', 'leaflet', 'pruneCluster', 'jquery', 'underscore'], function (enums, appSettings, dispatcher, debug) {
+
+    var pi2 = Math.PI * 2;
+    PruneCluster.Cluster.ENABLE_MARKERS_LIST = true;
+
+    function GedEventCluster(gedEvents, renderingType, pageType) {
+        var uid = _.uniqueId();
+        this.uid = uid;
+        var _pruneClusterForLeaflet;
+        var typeOfViolenceList = [1, 2, 3];
+        var currentTimeSpan = appSettings.timeSpanFrom75;
+
+        if (gedEvents == null) {
+            return;
+        }
+
+        var zoomHandler = function (e, zoomLevel) {
+            if (zoomLevel === 3) {
+                _pruneClusterForLeaflet.Cluster.Size = 10;
+            } else if (zoomLevel > 3) {
+                _pruneClusterForLeaflet.Cluster.Size = 100;
+            }
+        };
+        this.zoomHandler = zoomHandler;
+
+        var timespanChangedHandler = function (time1, time2) {
+            debug('cluster - timespan changed ' + uid);
+            currentTimeSpan = [time1, time2];
+            performFiltering();
+            _pruneClusterForLeaflet.ProcessView();
+        };
+        this.timespanChangedHandler = timespanChangedHandler;
+
+        function typeOfViolenceChangedHandler(incomingtypeOfViolenceList) {
+            debug('cluster - type of violence changed ' + uid);
+            typeOfViolenceList = incomingtypeOfViolenceList;
+            performFiltering();
+            _pruneClusterForLeaflet.ProcessView();
+        };
+        this.typeOfViolenceChangedHandler = typeOfViolenceChangedHandler;
+
+        function performFiltering() {
+            _.forEach(_pruneClusterForLeaflet.GetMarkers(), function (marker) {
+                if (!_.contains(typeOfViolenceList, marker.category)) {
+                    marker.filtered = true;
+                }
+                else if (marker.data.endDate >= currentTimeSpan[0].getFullYear() && marker.data.endDate <= currentTimeSpan[1].getFullYear()) {
+                    marker.filtered = false;
+                }
+                else {
+                    marker.filtered = true;
+                }
+            });
+        };
+
+        function clusterDeaths(cluster, category) {
+            var markers = _.filter(cluster._clusterMarkers, function (m) { return category === undefined ? true : m.category === category; });
+            return _.reduce(markers, function (memo, num) { return memo + num.data.deaths; }, 0);
+        }
+
+        /*******/
+        /* PIN */
+        /*******/
+        function createCustomLeafletMarker(pruneMarker, position) {
+            var icon = createCustomPinIcon(pruneMarker.data.deaths, pruneMarker.category, pruneMarker.data.type);
+            var stats = [0, 0, 0, 0, 0, 0, 0];
+            stats[pruneMarker.category] = 1; //increase current category with 1.
+            icon.stats = stats;
+
+            var options = { icon: icon };
+
+            var leafletMarker = new L.Marker(position, options);
+
+            leafletMarker.on('click', function () {
+                    buildPopup(pruneMarker, leafletMarker);
+                });
+            return leafletMarker;
+        }
+
+        /* Single event/bottom level ICON */
+        function createCustomPinIcon(currentClusterDeaths, category, type) {
+
+            var markerSize = calculateMarkerSize(currentClusterDeaths);
+
+            var icon = new L.Icon.MarkerCluster();
+            icon.population = 1;
+            icon.currentClusterDeaths = currentClusterDeaths;
+            icon.options.iconSize = new L.Point(markerSize, markerSize);
+            icon.options.type = type;
+            icon.category = category;
+            return icon;
+        };
+
+        function buildPopup(pruneMarker, leafletMarker) {
+            $.ajax({
+                url: '/api/events/' + pruneMarker.data.id,
+                async: true,
+                success: function (data) {
+                    leafletMarker.unbindPopup();
+                    _.extend(data, PopupTemplate);
+                    leafletMarker.bindPopup(PopupTemplate.template(data[0]), {
+                        maxWidth: '500px',
+                        minWidth: '300px',
+                        closeButton: true
+                    });
+                    leafletMarker.openPopup();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        };
+
+
+        /***********/
+        /* CLUSTER */
+        /***********/
+        function createLeafletClusterIcon(cluster) {
+            var currentClusterDeaths = clusterDeaths(cluster);
+            var markerSize = calculateMarkerSize(currentClusterDeaths);
+
+            var icon = new L.Icon.MarkerCluster();
+
+            icon.options.type = cluster._clusterMarkers[0].data.type;
+            icon.options.iconSize = new L.Point(markerSize, markerSize);
+            icon.options.cluster = cluster;
+            icon.stats = cluster.stats;
+            icon.population = cluster.population;
+            icon.currentClusterDeaths = currentClusterDeaths;
+            icon.currentClusterDeathsByCategory = [clusterDeaths(cluster, enums.typeOfViolence.stateBased), clusterDeaths(cluster, enums.typeOfViolence.nonState), clusterDeaths(cluster, enums.typeOfViolence.oneSided)];
+            return icon;
+        };
+
+        function calculateMarkerSize(currentClusterDeaths) {
+            var markerSize;
+
+            var clusterSizeConstant = 0.7;
+
+            switch (true) {
+                case (currentClusterDeaths < 1000):
+                    markerSize = 40 + (0.01 * currentClusterDeaths);
+                    break;
+                case (currentClusterDeaths < 10000):
+                    markerSize = 50 + (0.001 * currentClusterDeaths);
+                    break;
+                case (currentClusterDeaths < 100000):
+                    markerSize = 70 + (0.000222 * currentClusterDeaths);
+                    break;
+                case (currentClusterDeaths < 500000):
+                    markerSize = 100 + (0.000075 * currentClusterDeaths);
+                    break;
+                default:
+                    markerSize = 100;
+            }
+            markerSize = markerSize * clusterSizeConstant;
+            return markerSize;
+        };
+
+        _pruneClusterForLeaflet = new PruneClusterForLeaflet();
+        this._pruneClusterForLeaflet = _pruneClusterForLeaflet;
+        _pruneClusterForLeaflet.Cluster.Size = 10;
+        _pruneClusterForLeaflet.BuildLeafletMarker = createCustomLeafletMarker;
+        _pruneClusterForLeaflet.customPinIcon = createCustomPinIcon;
+        _pruneClusterForLeaflet.BuildLeafletClusterIcon = createLeafletClusterIcon;
+
+        for (var i = 0, l = gedEvents.length; i < l; ++i) {
+            var m = new PruneCluster.Marker(gedEvents[i][enums.eventEnum.latitude],
+                                            gedEvents[i][enums.eventEnum.longitude],
+                                            {
+                                                deaths: gedEvents[i][enums.eventEnum.best],
+                                                endDate: gedEvents[i][enums.eventEnum.date_start],
+                                                id: gedEvents[i][enums.eventEnum.Id]
+                                            });
+            m.category = parseInt(gedEvents[i][enums.eventEnum.type_of_violence]);
+            m.data.type = renderingType;
+            _pruneClusterForLeaflet.RegisterMarker(m);
+        }
+        _pruneClusterForLeaflet.ProcessView();
+    }
+
+    GedEventCluster.prototype.destroy = function () {
+        debug('destroying GedEventCluster ' + this.uid);
+        this.stopListening();
+    }
+
+    GedEventCluster.prototype.stopListening = function () {
+        debug('stopListening GedEventCluster ' + this.uid);
+        $(document).off("map-zoom-level-changed", this.zoomHandler);
+        dispatcher.off("type-of-violence-filter", this.typeOfViolenceChangedHandler);
+        dispatcher.off("timespan-changed", this.timespanChangedHandler);
+    }
+    
+    GedEventCluster.prototype.startListening = function () {
+        debug('startListening GedEventCluster ' + this.uid);
+        $(document).on("map-zoom-level-changed", this.zoomHandler);
+        dispatcher.on("type-of-violence-filter", this.typeOfViolenceChangedHandler);
+        dispatcher.on("timespan-changed", this.timespanChangedHandler);
+    }
+
+    GedEventCluster.prototype.pruneCluster = function () {
+        return this._pruneClusterForLeaflet;
+    }
+
+    L.Icon.MarkerCluster = L.Icon.extend({
+        options: {
+            className: 'prunecluster leaflet-markercluster-icon',
+        },
+
+        createIcon: function () {
+            //
+            // based on L.Icon.Canvas from shramov/leaflet-plugins (BSD licence)
+            //
+
+            var type = this.options.type;
+
+            var customStyle = '';
+            if (type == enums.clusterRenderingType.remainingEvents) {
+                customStyle = ' blur';
+            }
+
+            this.options.className += customStyle;
+
+            var s = this.options.iconSize;
+            var canvas = document.createElement('canvas');
+            canvas.width = s.x;
+            canvas.height = s.y;
+            this._setIconStyles(canvas, 'icon');
+
+            this.draw(canvas.getContext('2d'), s.x, s.y, type);
+
+            return canvas;
+        },
+
+        createShadow: function () {
+            return null;
+        },
+
+        draw: function (canvas, width, height, type) {
+            var lol = 0;
+            var start = 0;
+            var halfContentSize = width / 2;
+            var lineThickness = 3;
+            var size = 0;
+
+            if (this.currentClusterDeathsByCategory) {
+                for (var i = 0, l = 3; i < l; ++i) {
+                    size = this.currentClusterDeathsByCategory[i] / this.currentClusterDeaths;
+
+                    if (size > 0) {
+                        canvas.beginPath();
+                        canvas.moveTo(halfContentSize, halfContentSize);
+                        canvas.fillStyle = appSettings.violenceColorsAsArray[i];
+                        var from = start,
+                            to = start + size * pi2;
+
+                        if (to < from) {
+                            from = start;
+                        }
+                        canvas.arc(halfContentSize, halfContentSize, halfContentSize, from, to);
+
+                        start = start + size * pi2;
+                        canvas.lineTo(halfContentSize, halfContentSize);
+                        canvas.fill();
+                        canvas.closePath();
+                    }
+                }
+            } else {
+                size = this.currentClusterDeaths;
+                canvas.beginPath();
+                canvas.moveTo(halfContentSize, halfContentSize);
+                canvas.fillStyle = appSettings.violenceColorsAsArray[this.category - 1];
+                canvas.arc(halfContentSize, halfContentSize, halfContentSize, 0, Math.PI * 2);
+                canvas.fill();
+            }
+
+            canvas.globalCompositeOperation = 'destination-out';
+            canvas.beginPath();
+            canvas.fillStyle = 'rgba(255,255,255,1)';
+            canvas.arc(halfContentSize, halfContentSize, halfContentSize - lineThickness, 0, Math.PI * 2);
+            canvas.fill();
+
+            var fillColor = 'rgba(50, 0, 0, 0.5)';
+
+            canvas.globalCompositeOperation = 'source-over';
+            canvas.beginPath();
+            canvas.fillStyle = fillColor;
+            canvas.arc(halfContentSize, halfContentSize, halfContentSize - lineThickness, 0, Math.PI * 2);
+            canvas.fill();
+
+            canvas.fillStyle = '#FFF';
+            canvas.textAlign = 'center';
+            canvas.textBaseline = 'middle';
+            canvas.font = 'bold 10px PT Sans';
+
+            canvas.fillText(this.currentClusterDeaths, halfContentSize, halfContentSize, 40);
+            canvas.closePath();
+
+        }
+    });
+
+    /* jshint multistr: true */
+    var PopupTemplate = {
+        template: _.template("\
+            <span class='<%= this.typeOfViolenceCssClass(obj.type_of_violence) %>'><%=this.conflictName(obj)%></span><br/> \
+            <span class='popupLabel'>Side A:</span> <span class='popupDynamicText'><a href='/#/actor/<%= obj.side_a_new_id %>'><%= obj.side_a %></a></span><br/> \
+            <span class='popupLabel'>Side B:</span> <span class='popupDynamicText'><a href='/#/actor/<%= obj.side_b_new_id %>'><%= obj.side_b %></a></span><br/> \
+            <span class='popupLabel'>Type of violence:</span> <span class='popupDynamicText'><%= this.typeOfViolenceLabel(obj.type_of_violence) %></span><br/> \
+            <span class='popupLabel'>Date:</span> <span class='popupDynamicText'><%= this.eventDate(obj)%></span><br/> \
+            <span class='popupLabel'>Fatalities:</span> <span class='popupDynamicText'><%= obj.best %> <%=this.highValue(obj)%></span><br/> \
+            <span class='popupLabel'>Location:</span> <span class='popupDynamicText'><%= this.findBestLocation(obj) %></span> <br/>"),
+
+        conflictName: function(obj) {
+            var typeUrl; 
+            switch(obj.type_of_violence) {
+                case enums.typeOfViolence.stateBased:
+                    typeUrl = "statebased";
+                    break;
+                case enums.typeOfViolence.nonState:
+                    typeUrl = "nonstate";
+                    break;
+                case enums.typeOfViolence.oneSided:
+                    typeUrl = "onesided";
+                    break;
+            }
+            return "<a href='/#/" + typeUrl + "/" + obj.dyad_new_id +"'>" + obj.dyad_name + "</a>";
+        },
+
+        findBestLocation: function (obj) {
+            if (obj.Where !== "") {
+                return obj.where_coordinates;
+            } else if (obj.adm_2 !== "") {
+                return obj.adm_2;
+            } else if (obj.adm_1 === "") {
+                return obj.adm_1;
+            } else {
+                return obj.country;
+            }
+        },
+
+        eventDate: function (obj) {
+            var d1 = new Date(obj.date_start);
+            var d2 = new Date(obj.date_end);
+            if (d1 - d2 === 0) {
+                return d1.toLocaleDateString();
+            } else {
+                return d1.toLocaleDateString() + ' - ' + d2.toLocaleDateString();
+            }
+        },
+
+        typeOfViolenceCssClass: function (id) {
+            if (id === 1) {
+                return "stateBased";
+            } else if (id === 2) {
+                return "nonState";
+            } else if (id === 3) {
+                return "oneSided";
+            }
+        },
+
+        typeOfViolenceLabel: function (id) {
+            if (id === 1) {
+                return "State-Based";
+            } else if (id === 2) {
+                return "Non-State";
+            } else if (id === 3) {
+                return "One-Sided";
+            }
+        },
+
+        highValue: function (obj) {
+        if (obj.best === 0) {
+            return "(high estimate: " + obj.high + ")";
+        } else {
+            return "";
+        }
+    }
+        
+
+    };
+
+    return GedEventCluster;
+});

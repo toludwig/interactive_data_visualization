@@ -1,0 +1,143 @@
+﻿/* global worldPolygons */
+/* global gedEvents */
+define('Views/Home/UCDP.Public.HomePage', ['UCDP.Public.GedEventCluster',
+    'UCDP.Public.TimeLineChart',
+    'UCDP.Public.Map',
+    'UCDP.Public.Map.LeafletLayer',
+    'text!Views/Home/template.html',
+    'UCDP.Public.GedEvents',
+    'UCDP.Public.TypeOfViolenceFilter',
+    'Views/Home/UCDP.Public.HomePageViewModel',
+    'UCDP.Dispatcher',
+    'backbone', 'jquery', 'underscore'],
+    function (GedEventCluster, Timeline, Map, Layer, template, events, TypeOfViolenceFilter, ViewModel, Dispatcher, Backbone, $, _) {
+
+        return Backbone.View.extend({
+            template: _.template(template),
+            tagName: 'div',
+            timeline: undefined,
+
+            initialize: function () {
+                this.model = new ViewModel();
+                this.listenTo(this.model, 'view-model-filtered-on-timespan', this.onTimespanChanged);
+                this.listenTo(this.model, 'view-model-filtered-by-type-of-violence', this.onTypeOfViolenceChanged);
+                Dispatcher.on('entering-small-size', this.changePropertiesToSmallSize.bind(this));
+                Dispatcher.on('entering-large-size', this.changePropertiesToLargeSize.bind(this));
+            },
+            
+            changePropertiesToSmallSize: function () {
+                this.map._map.options.minZoom = 1;
+                this.map._map.options.maxZoom = 4;
+                this.map._map.options.zoomControl = true;
+                this.mobileInfoText();
+            },
+            changePropertiesToLargeSize: function () {
+                this.map._map.options.minZoom = 3;
+                this.map._map.options.maxZoom = 12;
+                this.map._map.options.zoomControl = true;
+                this.mobileInfoText();
+                
+            },
+
+            mobileInfoText: function() {
+                if (Foundation.MediaQuery.current === "small" || Foundation.MediaQuery.current === "medium") {
+                    $('#mobileInfoText').html('Recorded fatalities in UCDP organized violence 1989-2016');
+                } else {
+                    $('#mobileInfoText').html('');
+                }
+            },
+
+            onTypeOfViolenceChanged: function () {
+                this.renderTimeLine.apply(this);
+            },
+
+            onTimespanChanged: function () {
+                this.renderTypeOfViolenceFilter.apply(this);
+            },
+
+            makeElemVisible: function (element) {
+                element.css('visibility', 'visible');
+            },
+
+            showHiddenUIControls: function () {
+                this.makeElemVisible($('.chart-container'));
+                this.makeElemVisible($('#exploratory-type-of-violence-filter'));
+            },
+
+            render: function () {
+                this.$el.html(this.template());
+                this.model.init(this.onEventsLoaded, this);
+                this.mobileInfoText();
+                return this;
+            },
+
+            onEventsLoaded: function () {
+                this.renderTimeLine();
+                this.renderMap();
+                this.renderTypeOfViolenceFilter();
+                this.showHiddenUIControls();
+            },
+
+            renderTimeLine: function () {
+                if (this.timeline === undefined) {
+                    this.timeline = new Timeline(this.model.filteredEvents, '#exploratory-chart','homepage');
+                } else {
+                    this.timeline.update(this.model.typeOfViolenceList);
+                }
+            },
+
+            renderMap: function () {
+                var layer = new Layer(false);
+                var geoJsonLayer = layer.createWithGeoJson(worldPolygons);
+                var tileLayer = layer.createWithGoogleTiles('ROADMAP');
+                this.clusterLayer = new GedEventCluster(this.model.filteredEvents, 1, 'homepage');
+
+                var options = null;
+                var initialZoom = 3;
+                if (Foundation.MediaQuery.current == "small" || Foundation.MediaQuery.current == "medium") {
+                    options = {
+                        maxZoom: 12,
+                        minZoom: 1,
+                        zoomControl: true
+                    };
+                    initialZoom = 1;
+                } 
+                
+                this.map = new Map(layer, geoJsonLayer, tileLayer, [this.clusterLayer.pruneCluster()], 'exploratory-map', options);
+                this.map._map.setZoom(initialZoom);
+
+                this.activate();
+
+            },
+
+            renderTypeOfViolenceFilter: function () {
+                var model = {
+                    totalDeaths: this.model.deaths,
+                    nonStateDeaths: this.model.nonStateDeaths,
+                    oneSidedDeaths: this.model.oneSidedDeaths,
+                    stateBasedDeaths: this.model.stateBasedDeaths
+                };
+                if (this.typeOfViolenceFilter) {
+                    this.typeOfViolenceFilter.update(model);
+                } else {
+                    this.typeOfViolenceFilter = new TypeOfViolenceFilter($('#exploratory-type-of-violence-filter'), model);
+                }
+            },
+
+            deactivate: function () {
+                this.clusterLayer.stopListening();
+                this.model.stopListeningToEvents();
+                this.map.stopListening();
+                this.timeline.stopListening();
+            },
+
+            activate: function () {
+                Dispatcher.trigger('show-clickable-logo', false);
+                this.clusterLayer.startListening();
+                this.model.startListeningToEvents();
+                this.map.startListening();
+                this.map.activate();
+                this.timeline.startListening();
+            }
+        });
+    });

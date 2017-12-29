@@ -1,0 +1,122 @@
+﻿
+input[type="checkbox"] + span,
+input[type="checkbox"] + span::before
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+ 
+label *
+{
+    cursor: pointer;
+}
+ 
+input[type="checkbox"]
+{
+    opacity: 0;
+    position: absolute;
+}
+ 
+input[type="checkbox"] + span
+{
+    font: normal 11px/14px Arial, Sans-serif;
+    color: #fff;
+}
+ 
+label:hover span::before
+{
+    -moz-box-shadow: 0 0 2px #fff;
+    -webkit-box-shadow: 0 0 2px #fff;
+    box-shadow: 0 0 2px #fff;
+}
+ 
+label:hover span
+{
+    color: #fff;
+}
+ 
+input[type="checkbox"] + span::before
+{
+    content: "";
+    width: 12px;
+    height: 12px;
+    margin: 0 4px 0 0;
+    border: solid 1px #999;
+    line-height: 14px;
+    text-align: center;
+     
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+}
+ 
+input[type="checkbox"]:checked + span::before
+{
+    color: #999;
+}
+
+input[type="checkbox"]:disabled + span
+{
+    cursor: default;
+    -moz-opacity: .4;
+    -webkit-opacity: .4;
+    opacity: .4;
+}
+ 
+input[type="checkbox"] + span::before
+{
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+}
+ 
+ 
+input[type="checkbox"]:checked + span::before
+{
+    content: "\2714";
+    font-size: 12px;
+}
+
+/* Highlight modifications */
+.highlight input[type="checkbox"] + span::before
+{
+    content: "";
+    width: 12px;
+    height: 12px;
+    margin: 0 4px 0 0;
+    border: solid 1px white;
+    line-height: 14px;
+    text-align: center;
+     
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+}
+ 
+.highlight input[type="checkbox"]:checked + span::before
+{
+    color: white;
+}
+
+.highlight input[type="checkbox"]:disabled + span
+{
+    cursor: default;
+    -moz-opacity: .4;
+    -webkit-opacity: .4;
+    opacity: .4;
+}
+ 
+.highlight input[type="checkbox"] + span::before
+{
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+}
+ 
+ 
+.highlight input[type="checkbox"]:checked + span::before
+{
+    content: "\2714";
+    font-size: 12px;
+}
+

@@ -1,0 +1,36 @@
+﻿define('UCDP.Public.GedEvents', ['UCDP.Public.Enums', 'jquery', 'underscore'], function (enums, $, _) {
+
+    var eventCollection = [];
+
+    function getEvents(callback) {
+        if (eventCollection.length === 0) {
+            $.ajax({
+                url: '/api/events',
+                dataType: "json",
+                async: true
+            }).done(function (data) {
+                eventCollection = data;
+                if (callback) {
+                    callback(eventCollection);
+                }
+            })
+        } else if (callback && eventCollection.length > 0) {
+            callback(eventCollection);
+        }
+        return eventCollection;
+    }
+
+    function filter(events, compare) {
+        return _.partition(events, compare);
+    }
+
+    function sumNumberOfDeaths(events) {
+        return _.reduce(events, function (sum, n) { return sum + n[enums.eventEnum.best]; }, 0);
+    }
+
+    return {
+        getEvents: getEvents,
+        filter: filter,
+        sumNumberOfDeaths: sumNumberOfDeaths
+    };
+});

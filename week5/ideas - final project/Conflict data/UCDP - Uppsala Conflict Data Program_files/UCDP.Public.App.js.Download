@@ -1,0 +1,46 @@
+﻿define("UCDP.Dispatcher", ['backbone'], function (Backbone) {
+    return _.clone(Backbone.Events);
+});
+
+define("debug", ['UCDP.Web.AppSettings'], function (AppSettings) {
+
+    return function (msg) {
+        if (AppSettings.debug) {
+            console.log(msg);
+        }
+    }
+
+});
+
+define("UCDP.Public.App", ['UCDP.Public.Router', 'backbone', 'foundation'], function (Router, Backbone) {
+
+    function init() {
+        this.routes = new Router();
+
+        //
+        // Reset the Foundation namespace. Not sure why this is needed but without it
+        // jQuery is complaining about some error.
+        // See:
+        // http://ilikekillnerds.com/2014/07/foundation-v5-unrecognized-expression-syntax-namespace-fix/
+        // http://jelaniharris.com/2014/fixing-foundation-5s-unrecognized-expression-syntax-error/
+        //
+        //Foundation.global.namespace = '';
+        $(document).foundation();
+
+        var $loading = $('#loadingSpinner');
+        $loading.hide();
+        $(document)
+          .ajaxStart(function () {
+              $loading.show();
+          })
+          .ajaxStop(function () {
+              $loading.hide();
+          });
+
+        Backbone.history.start();
+    };
+
+    return {
+        init: init,
+    };
+});

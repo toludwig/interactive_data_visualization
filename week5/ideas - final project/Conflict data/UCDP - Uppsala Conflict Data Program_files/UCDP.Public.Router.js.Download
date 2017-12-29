@@ -1,0 +1,110 @@
+﻿define('UCDP.Public.Router', [
+    'Views/Master/UCDP.Public.MasterPage',
+    'Views/Home/UCDP.Public.HomePage',
+    'Views/Encyclopedia/UCDP.Public.EncyclopediaPage',
+    'Views/Actor/UCDP.Public.ActorKeyPage',
+    'Views/NonState/UCDP.Public.NonStateKeyPage',
+    'Views/OneSided/UCDP.Public.OneSidedKeyPage',
+    'Views/StateBased/UCDP.Public.StateBasedKeyPage',
+    'Views/Country/UCDP.Public.CountryKeyPage',
+    'Views/Conflict/UCDP.Public.ConflictKeyPage',
+    'Views/Year/UCDP.Public.YearKeyPage',
+    'UCDP.Dispatcher'],
+    function (MasterPage, HomePage, EncyclopediaPage, ActorKeyPage, NonStateKeyPage, OneSidedKeyPage, StateBasedKeyPage, CountryKeyPage, ConflictKeyPage, YearKeyPage, Dispatcher) {
+
+        var ViewHandler = {
+            _master: undefined,
+
+            displayKeyPage: function (viewFn, viewOptions) {
+                    Dispatcher.trigger('close-mobile-menu');
+                    if (this.master === undefined) {
+                        this.master = new MasterPage({ el: $('#master-page') }).render();
+                    }
+                    this.master.renderKeyPage(viewFn, viewOptions);
+            },
+
+            displayEncyclopediaPage: function () {
+                    if (this.master === undefined) {
+                        this.master = new MasterPage({ el: $('#master-page') }).render();
+                    }
+                    this.master.renderEncyclopediaPage();
+                
+            },
+
+            displayExploratoryPage: function() {
+                    if (this.master === undefined) {
+                        this.master = new MasterPage({ el: $('#master-page') }).render();
+                    }
+                    this.master.renderExploratoryPage();
+            }
+        };
+
+        var pageContainer = '#keypage';
+        var viewOptions = { el: $(pageContainer) };
+
+        return Backbone.Router.extend({
+            routes: {
+                '': 'home',
+                'encyclopedia': 'encyclopedia',
+                'exploratory': 'exploratory',
+                'actor/:id': 'actor',
+                'nonstate/:id': 'nonstate',
+                'onesided/:id': 'onesided',
+                'statebased/:id': 'statebased',
+                'country/:id': 'country',
+                'conflict/:id': 'conflict',
+                'year/:year': 'year'
+            },
+
+            home: function () {
+                if (Foundation.MediaQuery.current === "small" || Foundation.MediaQuery.current === "medium") {
+                    window.location = "/#/exploratory";
+                } else {
+                    ViewHandler.displayEncyclopediaPage();
+                }
+            },
+
+            encyclopedia: function () {
+                ViewHandler.displayEncyclopediaPage();
+            },
+
+            exploratory: function () {
+                ViewHandler.displayExploratoryPage();
+            },
+
+            actor: function (id) {
+                _.extend(viewOptions, { id: id });
+                ViewHandler.displayKeyPage(ActorKeyPage, viewOptions);
+            },
+
+            country: function (id) {
+                _.extend(viewOptions, { id: id });
+                ViewHandler.displayKeyPage(CountryKeyPage, viewOptions);
+            },
+
+            nonstate: function (id) {
+                _.extend(viewOptions, { id: id });
+                ViewHandler.displayKeyPage(NonStateKeyPage, viewOptions);
+            },
+
+            onesided: function (id) {
+                _.extend(viewOptions, { id: id });
+                ViewHandler.displayKeyPage(OneSidedKeyPage, viewOptions);
+            },
+
+            statebased: function (id) {
+                _.extend(viewOptions, { id: id });
+                ViewHandler.displayKeyPage(StateBasedKeyPage, viewOptions);
+            },
+
+            conflict: function (id) {
+                _.extend(viewOptions, { id: id });
+                ViewHandler.displayKeyPage(ConflictKeyPage, viewOptions);
+            },
+
+            year: function (id) {
+                _.extend(viewOptions, { id: id });
+                ViewHandler.displayKeyPage(YearKeyPage, viewOptions);
+            },
+        });
+    });

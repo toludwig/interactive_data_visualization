@@ -1,0 +1,244 @@
+﻿define('Views/Header/UCDP.Public.HeaderView', [
+        'text!Views/Header/template.html',
+        'backbone', 'jquery', 'underscore', 'foundation', 'UCDP.Public.DownloadList', 'UCDP.Web.AppSettings', 'UCDP.Public.Enums', 'UCDP.Dispatcher', 'select2'
+],
+    function (template, Backbone, $, _, foundation, DownloadList, AppSettings, Enums, Dispatcher) {
+
+        return Backbone.View.extend({
+            template: _.template(template),
+
+            tagName: 'div',
+
+            initialize: function () {
+                this.subview = null;
+                Dispatcher.on('download-list-item-added', this.updateDownloadList.bind(this));
+                Dispatcher.on('close-mobile-menu', this.closeMobileMenu);
+                Dispatcher.on('show-clickable-logo', this.showClickableLogo);
+                Dispatcher.on('remove-active-from-header-buttons', this.removeActiveFromHeaderButtons);
+                
+            },
+
+            removeActiveFromHeaderButtons: function () {
+                $('.main-buttons a').removeClass('active')
+            },
+
+            showClickableLogo: function(shouldShow) {
+                var $el = $('.header-home-link');
+
+                shouldShow ? $el.show() : $el.hide();
+                console.log('Clickable-logo: ' + shouldShow);
+            },
+
+            
+
+            closeMobileMenu: function () {
+                var currentRes = Foundation.MediaQuery.current;
+                if (currentRes === "small" || currentRes === "medium") {
+                    if ($('.top-bar:visible').length > 0) {
+                        $('.top-bar').toggle();
+                    }
+                }
+            },
+
+            changeActiveTab: function (viewFn) {
+                var buttons = this.$el.find('.main-buttons');
+                var exploratoryTab = buttons.find("[data-id='exploratory']");
+                var encyclopediaTab = buttons.find("[data-id='encyclopedia']");
+                if (viewFn === HomePage) {
+                    exploratoryTab.addClass('active');
+                    encyclopediaTab.removeClass('active');
+                } else {
+                    exploratoryTab.removeClass('active');
+                    encyclopediaTab.addClass('active');
+                }
+            },
+
+            removeSubview: function (view) {
+                if (view == undefined) return;
+                if (view.destroy) {
+                    view.destroy();
+                }
+                view.$el.empty();
+            },
+
+
+            handleSize: function (newSize, oldSize) {
+                var self = this;
+                if (newSize != oldSize) {
+                    if (newSize === "small" || newSize === "medium") {
+
+                        Dispatcher.trigger('entering-small-size');
+
+                        //move red-box-link-group in DOM
+                        if (!$('.main-buttons').find('.red-box-link-group').length > 0) {
+                            self.$el.find('.main-buttons').append($('.red-box-link-group'));
+                        }
+
+                        //if logo is in large-header, move it to mobile-top-bar
+                        if ($('.top-bar').find('.header-home-link').length > 0) {
+                            self.$el.find('#mobile-top-bar').append($('.header-home-link'));
+                        }
+
+                        //take care of searchbox
+                        if ($('.main-buttons').find('.select2-container').length > 0) {
+                            self.$el.find('#mobile-top-bar').append($('.select2-container'));
+                        }
+
+                        //take care of menu item
+                        $('.main-buttons a:contains("FATALITIES VIEW")').text('HOME');
+                    }
+                    else //large and up
+                    {
+                        Dispatcher.trigger('entering-large-size');
+                        //take care of menu item
+                        $('.main-buttons a:contains("HOME")').text('FATALITIES VIEW');
+
+                        //if logo is in mobile-header, move it to large-top-bar
+                        if ($('#mobile-top-bar').find('.header-home-link').length > 0) {
+                            self.$el.find('.top-bar').append($('.header-home-link'));
+                        }
+
+                        //move search to original position
+                        if ($('.main-buttons').find('.select2-container').length === 0) {
+                            self.$el.find('.main-buttons').prepend($('.select2-container'));
+                        }
+
+                        //move red-box-link-group to original position
+                        if ($('.main-buttons').find('.red-box-link-group').length > 0) {
+                            $('#master-page').append($('.red-box-link-group'));
+                        }
+                    }
+                }
+            },
+
+            setupMenuToggle: function () {
+                var self = this;
+                $('#app-menu a').click(function () {
+                    self.closeMobileMenu();
+                });
+
+                var self = this;
+                $(window).on('changed.zf.mediaquery', function (event, newSize, oldSize) {
+                    self.handleSize(newSize, oldSize);
+                });
+
+                //run once and change according to current size
+                self.handleSize(foundation.MediaQuery.current);
+            },
+
+            configureSelect2: function () {
+                var mySelect2 = $(".entity-search-box").select2({
+                    ajax: {
+                        url: "api/autocomplete/search",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                q: params.term // search term
+                            };
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: data.data
+                            };
+                        },
+
+                        cache: true
+                    },
+                    minimumInputLength: 2,
+                    placeholder: 'Search for actors, conflicts...'
+                });
+
+                mySelect2.on("select2:select", function (e) {
+                    var entity = e.params.data.entity;
+                    var id = e.currentTarget.value;
+                    var url = entity + '/' + id;
+                    mySelect2.empty().trigger('change')
+                    Backbone.history.navigate(url, { trigger: true });
+                });
+
+                //Hack to bring up ios-keyboard on click
+                $(".select2-container").on("click", function () {
+                    $('.select2-search__field').trigger('focus');
+
+                });
+
+
+            },
+
+            downloadDownloadListClicked: function (e) {
+                e.preventDefault();
+                DownloadList.download();
+            },
+
+            updateDownloadList: function () {
+                this.updateDownloadListBadge();
+                this.updateDownloadTable();
+            },
+
+            updateDownloadListBadge: function () {
+                var length = DownloadList.getDownloadList().length;
+                if (length > 0) {
+                    this.$el.find('#items-in-download-list-badge').html(length);
+                    this.$el.find('#items-in-download-list-badge').removeClass('hide');
+                } else {
+                    this.$el.find('#items-in-download-list-badge').html('');
+                    this.$el.find('#items-in-download-list-badge').addClass('hide');
+                }
+            },
+
+            downloadTableTemplate: _.template(' \
+                <table style="width:100%;"> \
+                    <thead> \
+                        <tr> \
+                            <th colspan="2">Keypages</th> \
+                        </tr> \
+                    </thead> \
+                    <tbody> \
+                        <% _.each(items, function (item) { %> \
+                            <tr> \
+                                <td><i class="fi-x download-list-delete" data-uid="<%= item.uid %>"></i></td> \
+                                <td><a href="/#/<%= enums.entityTypeToString[item.entityType] %>/<%= item.id %>"><%= item.title %></a></td> \
+                            </tr> \
+                        <% }); %> \
+                    </tbody> \
+                </table>'),
+
+            updateDownloadTable: function () {
+                var $tableDiv = this.$el.find('#download-list-table').empty();
+                var items = DownloadList.getDownloadList();
+
+                if (items && items.length > 0) {
+                    $tableDiv.html(this.downloadTableTemplate({ items: items, enums: Enums }));
+                    this.$el.find('.download-list-delete').on('click', this.removeFromDownloadListClicked.bind(this));
+                } else {
+                    $tableDiv.append('<p style="color: black;">No downloads</p>');
+                }
+            },
+
+            removeFromDownloadListClicked: function (e) {
+                var $el = $(e.target);
+                var uid = e.target.dataset['uid'];
+                if (uid) {
+                    DownloadList.remove(uid);
+                    $el.off('click');
+                    this.updateDownloadList();
+                }
+            },
+
+            render: function () {
+                this.$el.html(this.template({ downloadListOn: AppSettings.features.downloadList }));
+                this.configureSelect2();
+
+                if (AppSettings.features.downloadList) {
+                    this.updateDownloadList();
+                    this.$el.find('#download-list-download-button').on('click', this.downloadDownloadListClicked.bind(this));
+                }
+                this.setupMenuToggle();
+                this.$el.foundation();
+                return this;
+
+            }
+        });
+    }
+);

@@ -1,0 +1,58 @@
+﻿define('UCDP.Public.DownloadList', ['underscore', 'UCDP.Dispatcher'], function (_, dispatcher) {
+
+    var downloadList = [];
+
+    Array.prototype.contains = function (i) {
+        return _.contains(this, i);
+    };
+
+    /*
+     * Adds a keypage to the download list.
+     * @param viewModel A KeyPageViewModel
+     */
+    function add(viewModel) {
+        if (downloadList.contains(viewModel)) return false;
+        downloadList.push(viewModel);
+        dispatcher.trigger('download-list-item-added', viewModel);
+        return true;
+    }
+
+    /*
+     * Removes a keypage to the download list.
+     * @param uuid The unique id of a KeyPageViewModel
+     */
+    function remove(uid) {
+        downloadList = _.reject(downloadList, function (item) { return item.uid === uid; });
+    }
+
+    /*
+     * Get all keypages in the download list.
+     * @result List of KeyPageViewModels
+     */
+    function getDownloadList() {
+        return downloadList;
+    }
+
+    /*
+     * Downloads all keypages in the download list.
+     * All keypages will be combined into one large file.
+     */
+    function download() {
+        if (downloadList.length < 1) return;
+
+        var apiHost = 'http://ucdpapi.pcr.uu.se';
+        var location = apiHost + '/api/export/?';
+        var qParams = _.map(downloadList, function (viewModel, i) {
+            return 'data[' + i + '].type=' + viewModel.entityType + '&data[' + i + '].value=' + viewModel.id;
+        });
+        location = location + qParams.join('&');
+        window.open(location, '_blank');
+    }
+
+    return {
+        add: add,
+        remove: remove,
+        getDownloadList: getDownloadList,
+        download: download
+    };
+});

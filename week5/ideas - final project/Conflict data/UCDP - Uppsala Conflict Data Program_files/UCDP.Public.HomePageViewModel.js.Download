@@ -1,0 +1,95 @@
+﻿define('Views/Home/UCDP.Public.HomePageViewModel', ['UCDP.Public.GedEvents', 'UCDP.Public.Enums', 'underscore', 'UCDP.Dispatcher', 'debug', 'backbone'],
+    function (GEDEvents, Enums, _, Dispatcher, debug, Backbone) {
+
+        var Model = function () {
+            this.uid = _.uniqueId();
+        };
+
+        _.extend(Model.prototype, Backbone.Events, {
+            deaths: 0,
+            stateBasedDeaths: 0,
+            oneSidedDeaths: 0,
+            nonStateDeaths: 0,
+
+            init: function (callback, view) {
+                var self = this;
+
+                GEDEvents.getEvents(function (eventCollection) {
+
+                    self.filteredEvents = eventCollection;
+                    self.calculateDeaths();
+
+                    callback.apply(view);
+                });
+            },
+
+            stopListeningToEvents: function () {
+                debug('stop listening HomePageViewModel ' + this.uid);
+                this.stopListening(Dispatcher, "timespan-changed");
+                this.stopListening(Dispatcher, "type-of-violence-filter");
+            },
+
+            startListeningToEvents: function () {
+
+                debug('start listening HomePageViewModel ' + this.uid);
+                var self = this;
+                this.listenTo(Dispatcher, "timespan-changed", function (from, to) {
+                    self.filterOnTimespan.apply(self, [from, to]);
+                });
+
+                this.listenTo(Dispatcher, "type-of-violence-filter", function (typeOfViolenceList) {
+                    self.filterOnTypeOfViolence.apply(self, [typeOfViolenceList]);
+                });
+            },
+
+            calculateDeaths: function () {
+                var numberOfDeaths = 0;
+                var stateBasedDeaths = 0;
+                var nonStateDeaths = 0;
+                var oneSidedDeaths = 0;
+
+                for (var i = 0, len = this.filteredEvents.length; i < len; i++) {
+                    numberOfDeaths += this.filteredEvents[i][Enums.eventEnum.best];
+                    stateBasedDeaths += this.filteredEvents[i][Enums.eventEnum.type_of_violence] == Enums.typeOfViolence.stateBased ? this.filteredEvents[i][Enums.eventEnum.best] : 0;
+                    nonStateDeaths += this.filteredEvents[i][Enums.eventEnum.type_of_violence] == Enums.typeOfViolence.nonState ? this.filteredEvents[i][Enums.eventEnum.best] : 0;
+                    oneSidedDeaths += this.filteredEvents[i][Enums.eventEnum.type_of_violence] == Enums.typeOfViolence.oneSided ? this.filteredEvents[i][Enums.eventEnum.best] : 0;
+                }
+
+                this.deaths = numberOfDeaths;
+                this.stateBasedDeaths = stateBasedDeaths;
+                this.oneSidedDeaths = oneSidedDeaths;
+                this.nonStateDeaths = nonStateDeaths;
+            },
+
+            filterOnTimespan: function (from, to) {
+                this.filterEventsOnTimespan(from, to);
+                this.calculateDeaths();
+                this.trigger('view-model-filtered-on-timespan');
+            },
+
+            filterOnTypeOfViolence: function (typeOfViolenceList) {
+                this.typeOfViolenceList = typeOfViolenceList;
+                this.filterEventsOnTypeOfViolence(typeOfViolenceList);
+                this.calculateDeaths();
+                this.trigger('view-model-filtered-by-type-of-violence');
+            },
+
+            filterEventsOnTimespan: function (from, to) {
+                from = from.getFullYear();
+                to = to.getFullYear();
+                this.filteredEvents = _.filter(GEDEvents.getEvents(), function (e) {
+                    var eventDate = e[Enums.eventEnum.date_start];
+                    return eventDate >= from && eventDate <= to;
+                });
+            },
+
+            filterEventsOnTypeOfViolence: function (typeOfViolenceList) {
+                this.filteredEvents = _.filter(GEDEvents.getEvents(), function (e) {
+                    return _.contains(typeOfViolenceList, e[Enums.eventEnum.type_of_violence]);
+                });
+            },
+
+        });
+
+        return Model;
+    });

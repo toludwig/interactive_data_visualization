@@ -1,0 +1,80 @@
+﻿define('Views/Encyclopedia/UCDP.Public.EncyclopediaPage',
+    ['UCDP.Public.ConflictsTimeLineChart',
+    'UCDP.Public.Map',
+    'UCDP.Public.Map.LeafletLayer',
+    'UCDP.Public.WorldConflicts',
+    'text!Views/Encyclopedia/template.html',
+    'UCDP.Public.GedEvents',
+    'UCDP.Dispatcher',
+    'backbone', 'jquery', 'underscore'],
+    function (TimeLineChart, Map, Layer, WorldConflicts, template, GEDEvents, Dispatcher, Backbone, $, _) {
+
+        return Backbone.View.extend({
+            template: _.template(template),
+            tagName: 'div',
+            
+            renderMap: function () {
+                var layer = new Layer();
+                var geoJsonLayer = layer.createWithGeoJson(worldPolygons);
+                this.map = new Map(layer, geoJsonLayer, null, null, 'encyclopedia-map', {
+                    maxZoom: 3,
+                    minZoom: 3,
+                    zoomControl: false
+                });
+            },
+
+            onConflictsLoaded: function (conflicts) {
+                var conflictsMapInfo = conflicts.map(function(c) {
+                    return {
+                        year: c[1],
+                        count: c[2],
+                        countryIds: c[3]
+                    };
+                });
+                this.map.instantiateCountryHighlightYears(conflictsMapInfo);
+                this.map.highlightCountries(conflictsMapInfo);
+
+                this.timelineChart = TimeLineChart.create(conflicts, '#encyclopedia-chart','encyclopediapage');
+
+                this.showHiddenUIControls();
+                this.activate();
+            },
+
+            getEvents: function () {
+                GEDEvents.getEvents();
+            },
+
+            makeElemVisible: function (element) {
+                element.css('visibility', 'visible');
+            },
+
+            showHiddenUIControls: function () {
+                this.makeElemVisible($('.main-buttons'));
+                this.makeElemVisible($('.chart-container'));
+                this.makeElemVisible($('#encyclopedia-map-legend'));
+            },
+
+            render: function () {
+                this.$el.html(this.template());
+
+                this.renderMap();
+                this.getEvents();
+
+                WorldConflicts.getConflicts(this.onConflictsLoaded.bind(this));
+
+                return this;
+            },
+
+            deactivate: function () {
+                this.map.stopListening();
+                this.timelineChart.stopListening();
+            },
+
+            activate: function () {
+                Dispatcher.trigger('show-clickable-logo', false);
+                this.map.startListening();
+                this.map.activate();
+                this.timelineChart.startListening();
+            }
+        });
+    });

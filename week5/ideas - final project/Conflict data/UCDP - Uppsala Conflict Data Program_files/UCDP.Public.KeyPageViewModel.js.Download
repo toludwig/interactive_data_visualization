@@ -1,0 +1,163 @@
+﻿define('Views/UCDP.Public.KeyPageViewModel', ['underscore', 'backbone', 'UCDP.Public.Enums', 'UCDP.Dispatcher', 'debug'], function (_, Backbone, Enums, Dispatcher, debug) {
+    var Model = function () {
+        this.uid = _.uniqueId();
+
+        this.startListeningToEvents();
+    };
+
+    Model.extend = Backbone.Model.extend;
+
+    _.extend(Model.prototype, Backbone.Events, {
+        data: {},
+        title: '',
+        description: 'no description set',
+        deaths: 0,
+        totalDeaths: 0,
+        stateBasedDeaths: 0,
+        nonStateDeaths: 0,
+        oneSidedDeaths: 0,
+        conflicts: [],
+        nonStateDyads: [],
+        oneSidedDyads: [],
+        stateBasedDyads: [],
+        actors: [],
+        countries: [],
+        filteredEvents: [],
+        entityEvents: [],
+        remainingEvents: [],
+        entityType: '',
+        typeOfViolenceList: [],
+
+        initialize: function () { },
+
+        stopListeningToEvents: function () {
+            debug('stop listening KeyPageViewModel ' + this.uid);
+            this.stopListening(Dispatcher, "timespan-changed");
+            this.stopListening(Dispatcher, "type-of-violence-filter");
+        },
+
+        startListeningToEvents: function () {
+            debug('start listening KeyPageViewModel ' + this.uid);
+            var self = this;
+            this.listenTo(Dispatcher, "timespan-changed", function (from, to) {
+                self.filterOnTimespan.apply(self, [from, to]);
+            });
+
+            this.listenTo(Dispatcher, "type-of-violence-filter", function (typeOfViolenceList) {
+                self.filterOnTypeOfViolence.apply(self, [typeOfViolenceList]);
+            });
+        },
+
+        destroy: function () {
+            debug('destroying KeyPageViewModel ' + this.uid);
+            this.stopListeningToEvents();
+        },
+
+        filterEventsOnTimespan: function (from, to) {
+            this.filteredEvents = _.filter(this.entityEvents, function (e) {
+                var eventDate = new Date(e[Enums.eventEnum.date_start], 0, 1);
+                return eventDate >= from && eventDate <= to;
+            });
+        },
+
+        filterEventsOnTypeOfViolence: function (typeOfViolenceList) {
+            this.filteredEvents = _.filter(this.entityEvents, function (e) {
+                return _.contains(typeOfViolenceList, e[Enums.eventEnum.type_of_violence]);
+            });
+        },
+
+        filterActors: function () {
+            var sideA = _.uniq(this.filteredEvents, function (e) { return e[Enums.eventEnum.side_a_new_id]; });
+            var sideB = _.uniq(this.filteredEvents, function (e) { return e[Enums.eventEnum.side_b_new_id]; });
+            var actorsA = _.map(sideA, function (e) {
+                var actorId = e[Enums.eventEnum.side_a_new_id];
+                return _.find(this.relatedActors, function (actor) {
+                    return actor.Id == actorId;
+                });
+            }.bind(this));
+            var actorsB = _.map(sideB, function (e) {
+                var actorId = e[Enums.eventEnum.side_b_new_id];
+                return _.find(this.relatedActors, function (actor) {
+                    return actor.Id == actorId;
+                });
+            }.bind(this));
+            this.actors = _.uniq(_.compact(actorsA.concat(actorsB)));
+        },
+
+        calculateDeaths: function () {
+            var numberOfDeaths = 0;
+            var stateBasedDeaths = 0;
+            var nonStateDeaths = 0;
+            var oneSidedDeaths = 0;
+
+            for (var i = 0, len = this.filteredEvents.length; i < len; i++) {
+                numberOfDeaths += this.filteredEvents[i][Enums.eventEnum.best];
+                stateBasedDeaths += this.filteredEvents[i][Enums.eventEnum.type_of_violence] == Enums.typeOfViolence.stateBased ? this.filteredEvents[i][Enums.eventEnum.best] : 0;
+                nonStateDeaths += this.filteredEvents[i][Enums.eventEnum.type_of_violence] == Enums.typeOfViolence.nonState ? this.filteredEvents[i][Enums.eventEnum.best] : 0;
+                oneSidedDeaths += this.filteredEvents[i][Enums.eventEnum.type_of_violence] == Enums.typeOfViolence.oneSided ? this.filteredEvents[i][Enums.eventEnum.best] : 0;
+            }
+
+            this.deaths = numberOfDeaths;
+            this.stateBasedDeaths = stateBasedDeaths;
+            this.oneSidedDeaths = oneSidedDeaths;
+            this.nonStateDeaths = nonStateDeaths;
+        },
+
+        filterDyads: function (relatedData, typeOfViolence) {
+            var events = _.uniq(_.where(this.filteredEvents, function (e) { return e[Enums.eventEnum.type_of_violence] == typeOfViolence; }), function (e) { return e[Enums.eventEnum.dyad_new_id]; });
+            return _.compact(_.map(events, function (event) {
+                var dyadId = event[Enums.eventEnum.dyad_new_id];
+                return _.find(relatedData, function (data) { return data.Id == dyadId; });
+            }.bind(this)));
+        },
+
+        filterCountries: function () {
+            var countries = _.uniq(_.where(this.filteredEvents, function (e) { return e[Enums.eventEnum.country_id] != 0; }), function (e) { return e[Enums.eventEnum.country_id]; });
+            this.countries  = _.compact(_.map(countries, function (event) {
+                var countryId = event[Enums.eventEnum.country_id];
+                return _.find(this.relatedCountries, function (data) { return data.Id == countryId; });
+            }.bind(this)));
+        },
+
+        filterConflicts: function () {
+            this.conflicts = this.filterDyads(this.relatedConflicts, Enums.typeOfViolence.stateBased);
+        },
+
+        filterStateBasedDyads: function () {
+            this.stateBasedDyads = this.filterDyads(this.relatedStateBasedDyads, Enums.typeOfViolence.stateBased);
+        },
+
+        filterNonStateDyads: function () {
+            this.nonStateDyads = this.filterDyads(this.relatedNonStateDyads, Enums.typeOfViolence.nonState);
+        },
+
+        filterOneSidedDyads: function () {
+            this.oneSidedDyads = this.filterDyads(this.relatedOneSideDyads, Enums.typeOfViolence.oneSided);
+        },
+
+        filter: function () {
+            this.filterActors();
+            this.filterCountries();
+            this.calculateDeaths();
+            this.filterConflicts();
+            this.filterStateBasedDyads();
+            this.filterNonStateDyads();
+            this.filterOneSidedDyads();
+        },
+
+        filterOnTimespan: function (from, to) {
+            this.filterEventsOnTimespan(from, to);
+            this.filter();
+            this.trigger('view-model-filtered-on-timespan');
+        },
+
+        filterOnTypeOfViolence: function (typeOfViolenceList) {
+            this.typeOfViolenceList = typeOfViolenceList;
+            this.filterEventsOnTypeOfViolence(typeOfViolenceList);
+            this.filter();
+            this.trigger('view-model-filtered-by-type-of-violence');
+        },
+    });
+
+    return Model;
+});

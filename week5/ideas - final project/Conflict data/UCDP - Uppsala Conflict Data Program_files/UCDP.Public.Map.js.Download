@@ -1,0 +1,150 @@
+define('UCDP.Public.Map', ['UCDP.Web.AppSettings', 'leaflet', 'underscore'], function (appSettings, L) {
+
+    var layerTypeEnum = {
+        Google: 0,
+        GeoJson: 1
+    };
+
+    var Map = function (leafletLayer, geoJsonLayer, googleTileLayer, clusters, elName, options) {
+        var defaultOptions = {
+            maxZoom: 12,
+            minZoom: 3,
+            zoomControl: true,
+            attributionControl: false,
+            centerToClusterEvents: false
+        };
+        options = _.extend(defaultOptions, options);
+
+        var _leafletLayer = leafletLayer;
+        var _geoJsonLayer = geoJsonLayer;
+        var _googleTileLayer = googleTileLayer;
+
+        this._geoJsonLayer = _geoJsonLayer;
+        this._googleTileLayer = _googleTileLayer;
+
+        _map = L.map(elName, options);
+        this._map = _map;
+
+        this._leafletLayer = _leafletLayer;
+
+        if (googleTileLayer) {
+            _map.addLayer(_googleTileLayer);
+        }
+        _geoJsonLayer.addTo(_map);
+
+        if (options.zoomControl) {
+            _map.zoomControl.setPosition('bottomright');
+        }
+
+        if (clusters && clusters.length !== 0) {
+            _map.addLayer(L.layerGroup(clusters));
+            this.clusters = clusters;
+        }
+
+        if (options.centerToClusterEvents) {
+            fitMapToEvents(clusters[0]);
+        }
+        else {
+            _map.setView([10, 30], 3);
+        }
+
+        var zoom = function zoom(e, map) {
+            zoomHandler(e.target._zoom);
+            $(document).trigger("map-zoom-level-changed", e.target._zoom);
+        };
+
+        this.zoom = zoom;
+
+        _map.on('zoomend', this.zoom);
+
+        renderLegendColors();
+
+
+        function fitMapToEvents(cluster) {
+            if (!clusters || clusters.length === 0) return;
+
+            var clusterMarkers = cluster.GetMarkers();
+            var markerGroup = new L.featureGroup(convertPruneClusterMarkersToLeafletMarkers(clusterMarkers));
+            if (clusterMarkers.length > 0) {
+                _map.fitBounds(markerGroup);
+                zoomHandler(_map._zoom);
+            }
+        }
+
+        function convertPruneClusterMarkersToLeafletMarkers(pruneMarkers) {
+            var leafletMarkers = [];
+            _.each(pruneMarkers, function (pruneMarker) {
+                leafletMarkers.push(new L.Marker([pruneMarker.position.lat, pruneMarker.position.lng]));
+            });
+            return leafletMarkers;
+        }
+
+        function renderLegendColors() {
+            $('#' + elName + '-legend .legendColor').eq(0).css('background-color', appSettings.violenceColors.stateBased);
+            $('#' + elName + '-legend .legendColor').eq(1).css('background-color', appSettings.violenceColors.nonState);
+            $('#' + elName + '-legend .legendColor').eq(2).css('background-color', appSettings.violenceColors.oneSided);
+        };
+
+        function zoomHandler(zoomLevel) {
+            if (zoomLevel > 5) {
+                $('.leaflet-google-layer').css('visibility', 'visible');
+                $('.leaflet-overlay-pane').css('visibility', 'hidden');
+            } else {
+                $('.leaflet-google-layer').css('visibility', 'hidden');
+                $('.leaflet-overlay-pane').css('visibility', 'visible');
+            }
+            _leafletLayer.setZoomLevel(zoomLevel);
+        };
+
+        function setLayerOpacity(layer, opacity, layerType) {
+            if (layerType == layerTypeEnum.GeoJson) {
+                layer.setStyle({ opacity: opacity });
+                layer.setStyle({ fillOpacity: opacity });
+            } else if (layerType == layerTypeEnum.Google) {
+                layer.setOpacity(opacity);
+            }
+        }
+    }
+
+    Map.prototype.highlightCountries = function (countryIds) {
+        this._leafletLayer.highlightCountries(countryIds);
+    }
+
+    Map.prototype.instantiateCountryHighlightYears = function (conflicts) {
+        this._leafletLayer.instantiateCountryHighlightYears(conflicts);
+    }
+
+    Map.prototype.destroy = function () {
+        var self = this;
+        this.stopListening();
+        this._map.remove();
+        this._map.removeLayer(this._geoJsonLayer);
+        this._map.removeLayer(this._googleTileLayer);
+        _.each(this.clusters, function (cluster) {
+            self._map.removeLayer(cluster);
+        });
+    }
+
+    Map.prototype.stopListening = function () {
+        this._leafletLayer.stopListeningToEvents();
+        this._map.off('zoomend', this.zoom);
+    }
+
+    Map.prototype.startListening = function () {
+        this._leafletLayer.startListeningToEvents();
+        this._map.on('zoomend', this.zoom);
+    }
+
+    Map.prototype.activate = function() {
+        if (this._map.getZoom() > 5) {
+            $('#exploratory .leaflet-google-layer').css('visibility', 'visible');
+            $('.leaflet-overlay-pane').css('visibility', 'hidden');
+        } else {
+            $('#exploratory .leaflet-google-layer').css('visibility', 'hidden');
+            $('.leaflet-overlay-pane').css('visibility', 'visible');
+        }
+        this._map.invalidateSize();
+    }
+
+    return Map;
+});

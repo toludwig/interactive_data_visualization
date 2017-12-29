@@ -1,0 +1,80 @@
+﻿define('Views/UCDP.Public.YearKeyPageViewModel', ['Views/UCDP.Public.KeyPageViewModel', 'UCDP.Public.GedEvents', 'UCDP.Public.Enums', 'underscore', 'showdown'],
+    function (ViewModel, GEDEvents, Enums, _, showdown) {
+        return ViewModel.extend({
+            init: function (id, callback, view) {
+                this.id = id;
+                var self = this;
+                $.ajax({
+                    url: '/api/year/' + id,
+                    dataType: "json",
+                    async: true
+                }).done(function (data) {
+                    self.data = data;
+                    self.title = data.EntityName;
+
+                    /*
+                     * This function initializes the model.
+                     * It is put in a separate function since it needs to be called
+                     * by the require callback below.
+                     */
+                    function initModel(article) {
+                        data.EntityDescription = article;
+
+                        var converter = new showdown.Converter();
+                        self.description = converter.makeHtml(data.EntityDescription);
+
+                        self.relatedConflicts = data.Conflicts;
+                        self.relatedStateBasedDyads = _.where(data.Dyads, { TypeOfViolence: Enums.typeOfViolence.stateBased });
+                        self.relatedNonStateDyads = _.where(data.Dyads, { TypeOfViolence: Enums.typeOfViolence.nonState });
+                        self.relatedOneSideDyads = _.where(data.Dyads, { TypeOfViolence: Enums.typeOfViolence.oneSided });
+                        self.relatedActors = data.Actors;
+
+                        self.conflicts = self.relatedConflicts;
+                        self.nonStateDyads = self.relatedNonStateDyads;
+                        self.oneSidedDyads = self.relatedOneSideDyads;
+                        self.stateBasedDyads = self.relatedStateBasedDyads;
+                        self.actors = self.relatedActors;
+
+                        GEDEvents.getEvents(function (events) {
+                            var groupedEvents = GEDEvents.filter(events, function (x) {
+                                return x[Enums.eventEnum.date_start] == self.id;
+                            });
+                            self.entityEvents = groupedEvents[0];
+                            self.remainingEvents = groupedEvents[1];
+
+                            self.deaths = GEDEvents.sumNumberOfDeaths(self.entityEvents);
+                            self.filteredEvents = self.entityEvents;
+                            self.entityType = Enums.entityType.year;
+
+                            self.calculateDeaths();
+                            callback.apply(view);
+                        });
+                    }
+
+                    /*
+                     * Use requirejs to load the a file with the name <year>.txt.
+                     * This is the article text for the given year.
+                     * If the file does not exist the article is set to the empty string.
+                     */
+                    require(['text!Views/Year/' + data.EntityName + '.txt'], function (article) {
+                        initModel(article);
+                    }, function (err) {
+                        initModel('');
+                    });
+                });
+            },
+        });
+    });
+
+define('Views/Year/UCDP.Public.YearKeyPage', ['Views/UCDP.Public.KeyPage', 'Views/UCDP.Public.YearKeyPageViewModel'], function (Keypage, ViewModel) {
+    return Keypage.extend({
+        initialize: function () {
+            Keypage.prototype.initialize.call(this, new ViewModel());
+            this.model.init(this.id, this.render, this);
+        },
+        postActions: function () {
+            $('.header-home-link').prop('href', '#/exploratory');
+            $('#read-more-button').data("href", "/additionalinfo?id=" + this.model.id + '&entityType=' + this.model.entityType);
+        }
+    });
+});

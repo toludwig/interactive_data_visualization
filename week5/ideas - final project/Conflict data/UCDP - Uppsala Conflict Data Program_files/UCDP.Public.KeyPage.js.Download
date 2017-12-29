@@ -1,0 +1,363 @@
+﻿define('Views/UCDP.Public.KeyPage', [
+    'backbone',
+    'underscore',
+    'jquery',
+    'notify',
+    'text!Views/keypage_template.html',
+    'Views/UCDP.Public.KeyPageViewModel',
+    'UCDP.Public.TimeLineChart',
+    'UCDP.Public.Map',
+    'UCDP.Public.Map.LeafletLayer',
+    'UCDP.Public.GedEventCluster',
+    'UCDP.Public.GedEvents',
+    'UCDP.Public.DeathBadge',
+    'UCDP.Public.DownloadList',
+    'UCDP.Public.ListExpander',
+    'UCDP.Public.Enums',
+    'UCDP.Dispatcher',
+    'UCDP.Web.AppSettings',
+    'UCDP.Public.TypeOfViolenceFilter',
+],
+    function (Backbone, _, $, notify, htmlTemplate, ViewModel, Timeline, Map, Layer,
+              GedEventCluster, GEDEvents, DeathBadge, DownloadList, ListExpander,
+              Enums, Dispatcher, AppSettings, TypeOfViolenceFilter) {
+
+        return Backbone.View.extend({
+            htmlTemplate: htmlTemplate,
+            template: _.template(htmlTemplate),
+            model: null,
+            timeline: undefined,
+            actorExpander: undefined,
+
+            initialize: function (model) {
+                this.model = model;
+
+                this.listenTo(this.model, 'view-model-filtered-on-timespan', this.timespanChanged);
+                this.listenTo(this.model, 'view-model-filtered-by-type-of-violence', this.typeOfViolenceChanged);
+            },
+
+            typeOfViolenceChanged: function () {
+                this.renderActors.apply(this);
+                this.renderCountries.apply(this);
+                this.renderDeathBadge.apply(this);
+                this.renderStateBasedViolence.apply(this);
+                this.renderNonStateViolence.apply(this);
+                this.renderOneSidedViolence.apply(this);
+                this.renderTimeLine.apply(this);
+                this.highlighter.apply(this);
+            },
+
+            timespanChanged: function () {
+                this.renderActors.apply(this);
+                this.renderCountries.apply(this);
+                this.renderDeathBadge.apply(this);
+                this.renderStateBasedViolence.apply(this);
+                this.renderNonStateViolence.apply(this);
+                this.renderOneSidedViolence.apply(this);
+                this.renderTypeOfViolenceFilter.apply(this);
+                this.highlighter.apply(this);
+            },
+
+            renderDeathBadge: function () {
+                DeathBadge.create('badge', 150, 150, DeathBadge.splitIntoTypeOfViolence(this.model.filteredEvents), this.model.deaths);
+            },
+
+            stateBasedViolenceTemplate: _.template('<h5>State Based Violence</h5> \
+                        <ul id="state-based-list"> \
+                            <% _.each(conflicts, function(conflict) { %> \
+                                <% if (conflict === null) {%> \
+                                    <li class="list-group"><span></span> \
+                                <%} else {%> \
+                                    <li class="list-group"><span><a href="/#/conflict/<%=_.first(conflict).ConflictId %>"><%=_.first(conflict).ConflictName %></a></span> \
+                                <% } %> \
+                                <ul> \
+                                  <% _.each(conflict, function (conf) { %> \
+                                    <li class="list-item" data-item="<%- conf.Id %>" > \
+                                       <span class="confText"><a href="/#/statebased/<%- conf.Id %>"><%- conf.Name %></a><span class="confToolTip"><%=conf.Name%></span></span> \
+                                     </li> \
+                                 <% }); %> \
+                               </ul> \
+                             </li> \
+                            <% }); %> \
+                        </ul>'),
+            renderStateBasedViolence: function () {
+                if (this.model.entityType === Enums.entityType.nonstate || this.model.entityType === Enums.entityType.onesided) {
+                    return;
+                }
+
+                var conflicts = _.chain(this.model.stateBasedDyads).sortBy('Name').sortBy('ConflictName').groupBy('ConflictName').value();
+                conflicts = _.map(conflicts, function (value) { return value; });
+
+                var firstItem = _.find(conflicts,
+                    function (item) {
+                        return (item[0].ConflictName.toLowerCase().indexOf(':government') != -1 && item[0].ConflictName.toLowerCase().indexOf(this.model.title.toLowerCase()) != -1);
+                    }, this);
+
+                var allGovernmentConflictsWithoutfirst = _.filter(conflicts,
+                   function (item) {
+                       return (item[0].ConflictName.toLowerCase().indexOf(this.model.title.toLowerCase()) != -1) && item[0].ConflictName.toLowerCase().indexOf(':government') == -1;
+                   }, this);
+
+                if (!firstItem) {
+                    firstItem = _.find(conflicts, 
+                    function (item) {
+                        return (item[0].ConflictName.toLowerCase().indexOf(this.model.title.toLowerCase()) !== -1);
+                    }, this);
+                }
+
+
+                if (allGovernmentConflictsWithoutfirst) {
+
+                    _.sortBy(allGovernmentConflictsWithoutfirst, 'Name');
+                    conflicts = _.filter(conflicts,
+                   function (item) {
+                       return (allGovernmentConflictsWithoutfirst.indexOf(item) === -1);
+                   }, this);
+
+                    conflicts = allGovernmentConflictsWithoutfirst.concat(conflicts);
+                }
+
+                if (firstItem) {
+                    conflicts = _.without(conflicts, firstItem);
+                    conflicts.unshift(firstItem);
+                }
+
+                this.$el.find('.statebased>div').html(this.stateBasedViolenceTemplate({ conflicts: conflicts }));
+                this.stateBasedExpander = new ListExpander(this.$el.find('#state-based-list'), true);
+            },
+
+            nonStateViolenceTemplate: _.template('<h5>Non-State Violence</h5> \
+                <ul id="non-state-list"> \
+                    <% _.each(nonStateDyads, function(listItem) { %> \
+                    <li class="list-item" data-item="<%- listItem.Id %>"> \
+                        <span><a href="/#/nonstate/<%- listItem.Id %>"><%- listItem.Name %></a></span> \
+                    </li> \
+                    <% }); %> \
+                </ul>'),
+            renderNonStateViolence: function () {
+                if (this.model.entityType !== Enums.entityType.actor && this.model.entityType !== Enums.entityType.country) {
+                    return;
+                }
+
+                this.$el.find('.nonstate>div').html(this.nonStateViolenceTemplate({ nonStateDyads: _.sortBy(this.model.nonStateDyads, 'Name') }));
+                this.nonStateExpander = new ListExpander(this.$el.find('#non-state-list'));
+            },
+
+            oneSidedViolenceTemplate: _.template('<h5>One-Sided Violence</h5> \
+                <ul id="one-sided-list"> \
+                    <% _.each(oneSidedDyads, function(listItem) { %> \
+                    <li class="list-item" data-item="<%- listItem.Id %>"> \
+                        <span><a href="/#/onesided/<%- listItem.Id %>"><%- listItem.Name %></a></span> \
+                    </li> \
+                    <% }); %> \
+                </ul>'),
+            renderOneSidedViolence: function () {
+                if (this.model.entityType !== Enums.entityType.actor && this.model.entityType !== Enums.entityType.country) {
+                    return;
+                }
+
+
+                this.$el.find('.onesided>div').html(this.oneSidedViolenceTemplate({ oneSidedDyads: _.sortBy(this.model.oneSidedDyads, 'Name') }));
+                this.oneSidedExpander = new ListExpander(this.$el.find('#one-sided-list'), false, false, null);
+            },
+            countriesTemplate: _.template('<h5>Countries</h5> \
+                <ul id="related-countries-list"> \
+                    <% _.each(countries, function(listItem) { %> \
+                    <li class="list-item" data-item="<%- listItem.Id %>"> \
+                        <span><a href="/#/country/<%- listItem.Id %>"><%- listItem.Name %></a></span> \
+                    </li> \
+                    <% }); %> \
+                </ul>'),
+            renderCountries: function () {
+
+                if (this.model.entityType === Enums.entityType.country) {
+                    $('.related-countries.row.panel').hide();
+                } else {
+
+                    this.$el.find('.related-countries>div').html(this.countriesTemplate({ countries: _.sortBy(this.model.countries, 'Name') }));
+                    this.CountryExpander = new ListExpander(this.$el.find('#related-countries-list'), false, false, null);
+                }
+                
+            },
+
+            actorsTemplate: _.template('<div class="entitiesHelpText">(Hold Ctrl and click entities below to open in new tab)</div><h5>Actors</h5> \
+                <ul id="related-actors-list"> \
+                    <% _.each(actors, function(listItem) { %> \
+                    <li class="list-item" data-item="<%- listItem.Id %>" > \
+                        <span><a href="/#/actor/<%= listItem.Id %>"><%- listItem.Name %></a></span> \
+                    </li> \
+                    <% }); %> \
+                </ul>'),
+            renderActors: function () {
+                var self = this;
+                this.model.actors = _.sortBy(this.model.actors, 'Name');
+
+
+                var currentItem;
+                if (this.model.entityType === Enums.entityType.country) {
+                    currentItem = _.find(this.model.actors, function (item) { return item.Name.toLowerCase().trim() === "government of " + self.model.title.toLowerCase(); });
+                } else {
+                    currentItem = _.find(this.model.actors, function (item) { return item.Name === self.model.title; });
+                }
+
+                if (currentItem) {
+                    this.model.actors = _.without(this.model.actors, currentItem);
+                    this.model.actors.unshift(currentItem);
+                }
+
+                this.$el.find('.related-actors>div').html(this.actorsTemplate({ actors: this.model.actors }));
+                this.actorExpander = new ListExpander(this.$el.find('#related-actors-list'), false, false);
+            },
+
+            renderTimeLine: function () {
+                if (this.timeline) {
+                    this.timeline.update(this.model.typeOfViolenceList);
+                } else {
+                    this.timeline = new Timeline(this.model.entityEvents, '#keypage-chart', 'keypage',this.model.entityType);
+                }
+            },
+
+            renderTypeOfViolenceFilter: function () {
+                var model = {
+                    totalDeaths: this.model.deaths,
+                    nonStateDeaths: this.model.nonStateDeaths,
+                    oneSidedDeaths: this.model.oneSidedDeaths,
+                    stateBasedDeaths: this.model.stateBasedDeaths
+                };
+                if (this.typeOfViolenceFilter) {
+                    this.typeOfViolenceFilter.update(model);
+                } else {
+                    this.typeOfViolenceFilter = new TypeOfViolenceFilter($('#keypage-type-of-violence-filter'), model);
+                }
+            },
+
+            destroy: function () {
+                this.clusterLayerWithEntityEvents.destroy();
+                this.clusterLayerWithRemainingEvents.destroy();
+                this.map.destroy();
+                this.stopListening(this.model);
+                this.model.destroy();
+                this.timeline.destroy();
+            },
+
+            entityTypeString: function () {
+                switch (this.model.entityType) {
+                    case (Enums.entityType.actor):
+                        return "actor";
+                    case (Enums.entityType.country):
+                        return "country";
+                    case (Enums.entityType.conflict):
+                        return "conflict";
+                    case (Enums.entityType.year):
+                        return "year";
+                    case (Enums.entityType.nonstate):
+                    case (Enums.entityType.onesided):
+                    case (Enums.entityType.statebased):
+                        return "dyad";
+                }
+            },
+
+            render: function () {
+                this.$el.html(this.template({ model: this.model, typeOfViolence: Enums.typeOfViolence, downloadListOn: AppSettings.features.downloadList }));
+
+                this.$el.foundation();
+
+                this.renderActors();
+                this.renderCountries();
+                this.renderDeathBadge();
+                this.renderStateBasedViolence();
+                this.renderNonStateViolence();
+                this.renderOneSidedViolence();
+                this.renderTimeLine();
+                this.renderTypeOfViolenceFilter();
+
+                var layer = new Layer(false);
+                var geoJsonLayer = layer.createWithGeoJson(worldPolygons);
+                var tileLayer = layer.createWithGoogleTiles('ROADMAP');
+
+                this.clusterLayerWithEntityEvents = new GedEventCluster(this.model.filteredEvents, Enums.clusterRenderingType.entityEvents, 'keypage');
+                this.clusterLayerWithRemainingEvents = new GedEventCluster(this.model.remainingEvents, Enums.clusterRenderingType.remainingEvents, 'keypage');
+
+                this.clusterLayerWithEntityEvents.startListening();
+                this.clusterLayerWithRemainingEvents.startListening();
+
+                this.map = new Map(layer, geoJsonLayer, tileLayer, [this.clusterLayerWithEntityEvents.pruneCluster(), this.clusterLayerWithRemainingEvents.pruneCluster()], 'keypage-map', { centerToClusterEvents: true });
+
+                if (AppSettings.features.downloadList) {
+                    $('#add-to-download-list-button').on('click', this.addToDownloadListClicked.bind(this));
+                }
+
+                $('#read-more-button').on('click', this.readMoreClicked.bind(this));
+                this.highlighter();
+
+                if (!this.model.title) {
+                    $('#no-recorded-deaths').css('display', 'block');
+                    $('#no-recorded-deaths').html('The ' + this.entityTypeString() + ' does not exist.');
+                } else if (this.model.deaths < 1) {
+                    //$('#no-recorded-deaths').css('display', 'block');
+                    //$('#no-recorded-deaths').html('No recorded fatalities for this ' + this.entityTypeString() + '.');
+                }
+
+                if (this.postActions) {
+                    this.postActions();
+                }
+                Dispatcher.trigger('show-clickable-logo', true);
+                Dispatcher.trigger('remove-active-from-header-buttons', true);
+
+                $(document).ready(function () {
+                    setTimeout(function () {
+                        window.scrollTo(0, 0);
+                    }, 1);
+                });
+
+                return this;
+            },
+
+            highlighter: function () {
+                this.highlightOnHover($('#keypage-graph'), this.timeline);
+                this.highlightOnHover($('.section.deaths-badge-and-info'), this.typeOfViolenceFilter);
+                this.highlightOnHover($('.related-actors'), this.actorExpander);
+                this.highlightOnHover($('.related-countries'), this.countryExpander);
+                this.highlightOnHover($('.related-info > .statebased'), this.stateBasedExpander);
+                this.highlightOnHover($('.related-info > .nonstate'), this.nonStateExpander);
+                this.highlightOnHover($('.related-info > .onesided'), this.oneSidedExpander);
+            },
+
+            highlightOnHover: function ($el, obj) {
+                $el.hover(
+                    function (e) {
+                        if (obj && obj.highlight) {
+                            obj.highlight(AppSettings.interactiveElementStyle.highlight);
+                        }
+                    },
+                    function (e) {
+                        if (obj && obj.highlight) {
+                            obj.highlight(AppSettings.interactiveElementStyle.nonHighlight)
+                        }
+                    }
+                );
+            },
+
+            readMoreClicked: function (e) {
+                e.preventDefault();
+
+                var win = window.open($(e.currentTarget).data("href"), '_blank');
+                if (win) {
+                    //Browser has allowed it to be opened
+                    win.focus();
+                } else {
+                    //Broswer has blocked it
+                    alert('Please allow popups for this site');
+                }
+            },
+
+            addToDownloadListClicked: function (e) {
+                e.preventDefault();
+                var added = DownloadList.add(this.model);
+                if (added) {
+                    $.notify('Added page to download list');
+                    //this.header.updateDownloadList();
+                }
+            },
+        });
+    });

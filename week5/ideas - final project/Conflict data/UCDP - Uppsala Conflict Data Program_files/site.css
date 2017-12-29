@@ -1,0 +1,1574 @@
+﻿html, body, #exploratory-map, #encyclopedia-map {
+    font-size: 10pt;
+    background: #00000a;
+    color: white;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body, #exploratory-map, #encyclopedia-map {
+    font-family: 'PT Sans', sans-serif !important;
+}
+
+#additionalInfoContent br {
+    line-height: 30px;
+}
+
+#exploratory-map, #encyclopedia-map {
+    z-index: 0;
+}
+
+.leaflet-google-layer {
+    visibility: hidden;
+}
+
+#exploratory, #encyclopedia, #keypage, #master-page {
+    height: inherit;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#keypage {
+    top: 63px;
+}
+
+#uu-logo {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    bottom: 60px;
+    left: 60px;
+    z-index: 100;
+}
+
+#explore-teaser {
+    position: absolute;
+    top: 50px;
+    right: 70px;
+    width: 140px;
+    height: 140px;
+}
+
+#additionalInfoContent {
+    margin: 17px 30px;
+}
+
+.main-buttons {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    z-index: 1000; /* or the map will position itself over it */
+}
+
+    .main-buttons .button {
+        background-color: #786e62;
+        border-radius: 6px !important;
+    }
+
+        .main-buttons .button.active {
+            background-color: #b0a058;
+        }
+
+h1, h2, h3, h4, h5 {
+    font-family: 'PT Sans', sans-serif !important;
+    color: #FFFFFF;
+}
+
+.panel {
+    background-color: #12131a;
+    border: none;
+}
+
+.section {
+    background-color: #12131a;
+    color: white;
+}
+
+    .section h5 {
+        text-transform: uppercase;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+#keypage-map {
+    height: 450px;
+    background: #12131a;
+    color: white;
+}
+
+a {
+    color: #FF8B8B;
+}
+
+.large-ucdp-logo {
+    color: white;
+    position: absolute;
+    top: 10px;
+    font-size: 20pt;
+    padding-left: 20px;
+    z-index: 1000;
+    line-height: 0.8;
+}
+
+/*#header h4 {
+        color: inherit;
+        font-size: 13pt;
+    }
+
+    #header h5 {
+        color: inherit;
+        font-size: 9pt;
+    }*/
+
+h1, h2 {
+    color: white;
+}
+
+
+
+.fullWidth {
+    width: 97%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 97%;
+    margin-bottom: 10px;
+}
+
+@media (min-width:500px) {
+    .large-ucdp-logo h1 {
+        font-size: 31pt;
+        padding: 0;
+        margin: 0;
+    }
+
+    .large-ucdp-logo {
+        position: absolute;
+        top: 10px;
+        font-size: 9pt;
+        padding-left: 20px;
+    }
+
+    #subTitle {
+        padding-top: 8px;
+    }
+}
+
+@media (min-width: 800px) {
+    .large-ucdp-logo h1 {
+        font-size: 60pt;
+        padding: 0;
+        margin: 0;
+    }
+
+    .large-ucdp-logo {
+        position: absolute;
+        top: 10px;
+        font-size: 18pt;
+        padding-left: 20px;
+    }
+
+    #subTitle {
+        padding-top: 0;
+    }
+}
+
+@media(min-width: 1200px) {
+    .large-ucdp-logo h1 {
+        font-size: 70pt;
+        padding: 0;
+        margin: 0;
+    }
+
+    .large-ucdp-logo {
+        position: absolute;
+        top: -3px;
+        font-size: 21pt;
+        padding-left: 20px;
+        line-height: 0.8;
+    }
+
+    #subTitle {
+        padding-top: 0;
+    }
+}
+
+#subTitle {
+    margin-left: 5px;
+    margin-top: -12px;
+}
+
+.chart-container {
+    position: absolute;
+    bottom: 30px;
+    left: 15%;
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    visibility: hidden;
+}
+
+    .chart-container .chart-caption {
+        position: absolute;
+        font-size: 21px;
+        left: 30px;
+        top: 10px;
+        color: lightgray;
+        background-color: none !important;
+    }
+
+em {
+    font-style: italic;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+/********************
+
+Leaflet styling
+
+*********************/
+.leaflet-container {
+    background: #111;
+}
+
+.leaflet-popup-content {
+    color: #000;
+    margin: 12px;
+}
+
+.leaflet-popup-content-wrapper {
+    font-size: 10px;
+    width: 450px;
+}
+
+.leaflet-popup {
+    opacity: 0.95 !important;
+}
+
+.leaflet-control-zoom {
+    margin-right: 20px !important;
+    margin-bottom: 50px !important;
+}
+
+.leaflet-right {
+    margin-right: 17px;
+}
+
+.blur {
+    filter: alpha(opacity=40);
+    opacity: 0.15 !important;
+    z-index: -1000 !important;
+}
+
+/********************
+
+play button styling
+
+*********************/
+.play-button {
+    position: absolute;
+    width: 45px;
+    left: 500px;
+    bottom: 58px;
+    pointer-events: all;
+    display: none;
+}
+
+    .play-button span {
+        top: -12px;
+        position: relative;
+        left: -5px;
+        font-size: 13px;
+        display: block;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+
+/*
+    Default chart styles
+*/
+.axis path,
+.axis line {
+    fill: none;
+    stroke: white;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-size: 12px;
+    fill: white;
+}
+
+.axis.x text {
+    font-size: 10px;
+}
+
+.line {
+    stroke: white;
+    fill: none;
+    stroke-width: 2px;
+}
+
+.graph-tooltip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #fff;
+    border-radius: 4px;
+}
+
+    .graph-tooltip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+        width: 100%;
+    }
+
+    .graph-tooltip.n:after {
+        margin: -2px 0 0 0;
+        top: 100%;
+        left: 0;
+    }
+
+.mask {
+    fill-opacity: 0.6;
+    fill: white;
+}
+
+.brush .extent {
+    fill-opacity: 0;
+}
+
+    .brush .extent.show {
+        fill-opacity: 0.2;
+        fill: red;
+        shape-rendering: crispEdges;
+    }
+
+.marker:hover {
+    fill: white;
+}
+
+.marker {
+    stroke: white;
+    fill: white;
+}
+
+.resize .drag-handle rect {
+    stroke: white;
+}
+
+.resize .drag-handle path {
+    stroke: #999999;
+    fill: #999999;
+}
+
+.grid .tick {
+    stroke: rgba(49, 62, 109, 0.5);
+}
+
+.grid path {
+    stroke-width: 0;
+}
+/*
+    Chart styling overrides
+*/
+
+.one-sided.line {
+    stroke: rgb(255, 164, 164);
+}
+
+.one-sided.marker {
+    stroke: rgb(255, 164, 164);
+    fill: rgb(255, 164, 164);
+}
+
+    .one-sided.marker:hover {
+        fill: rgb(255, 164, 164);
+    }
+
+.one-sided.graph-tooltip {
+    background: rgb(255, 164, 164);
+}
+
+    .one-sided.graph-tooltip:after {
+        color: rgb(255, 164, 164);
+    }
+
+.non-state.line {
+    stroke:rgb(167, 0, 0);
+}
+
+.non-state.marker {
+    stroke:rgb(167, 0, 0);
+    fill:rgb(167, 0, 0);
+}
+
+    .non-state.marker:hover {
+        fill:rgb(167, 0, 0);
+    }
+
+.non-state.graph-tooltip {
+    background:rgb(167, 0, 0);
+}
+
+    .non-state.graph-tooltip:after {
+        color:rgb(167, 0, 0);
+    }
+
+.state-based.line {
+    stroke: rgb(255, 0, 0);
+}
+
+.state-based.marker {
+    stroke: rgb(255, 0, 0);
+    fill: rgb(255, 0, 0);
+}
+
+    .state-based.marker:hover {
+        fill: rgb(255, 0, 0);
+    }
+
+.state-based.graph-tooltip {
+    background: rgb(255, 0, 0);
+}
+
+    .state-based.graph-tooltip:after {
+        color: rgb(255, 0, 0);
+    }
+
+#timespan-indicator {
+    position: absolute;
+    bottom: 120px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#timespan-indicator-anim {
+    position: absolute;
+    bottom: 35px;
+    left: 540px;
+    font-size: 6em;
+    letter-spacing: 0.1em;
+    width: 100%;
+    text-align: center;
+    line-height: 0.23em;
+}
+
+    #timespan-indicator-anim span {
+        font-size: 0.3em;
+        letter-spacing: 0;
+    }
+
+.timespan-selector {
+    fill: #454545;
+}
+
+.chart-background {
+    fill: rgb(17, 17, 17);
+    fill-opacity: 0.8;
+    pointer-events: all;
+}
+
+/* Zoom button styling */
+
+#keypage-chart {
+    position: relative;
+    height: 212;
+}
+
+#keypage-chart-container {
+    position: relative;
+}
+
+    #keypage-chart-container .chart-caption {
+        position: absolute;
+        font-size: 21px;
+        left: 30px;
+        top: 10px;
+        color: lightgray;
+        background-color: none !important;
+        z-index: 1000;
+    }
+
+.zoom-button {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    font-weight: bold;
+    padding: 0;
+    border-radius: 8px;
+    border-width: 0;
+    border-color: #999999;
+    color: white;
+    background-color: #999999;
+    color: white;
+    font-size: 14px;
+}
+
+    .zoom-button.in {
+        right: 8px;
+        top: 8px;
+    }
+
+    .zoom-button.out {
+        right: 8px;
+        top: 30px;
+    }
+
+.line.overlay {
+    stroke: grey;
+    stroke-width: 1px;
+}
+
+.marker.overlay {
+    stroke: grey;
+}
+
+#keypage-chart > svg > text,
+#exploratory-chart > svg > text,
+#encyclopedia-chart > svg > text {
+    fill: white;
+    font-size: 20px;
+}
+
+
+
+/********************
+
+Legend
+
+*********************/
+
+#exploratory-map-legend,
+#encyclopedia-map-legend {
+    position: absolute;
+    bottom: 70px;
+    right: -115px;
+    font-size: 10px;
+    background-color: #000000;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px;
+    z-index: 1;
+    visibility: hidden;
+}
+
+.legendHeadline {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.legendColor {
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    float: left;
+}
+
+.legendContainer {
+    height: 14px;
+}
+
+/********************
+
+Popup
+
+*********************/
+
+.stateBased, .nonState, .oneSided {
+    font-size: 15px;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 86px;
+    text-align: left;
+}
+
+.stateBased {
+    color: rgb(255, 98, 106);
+}
+
+.nonState {
+    color: rgb(255, 0, 0);
+}
+
+.oneSided {
+    color: rgb(232, 176, 183);
+}
+
+.popupDynamicText {
+    font-size: 12px;
+}
+
+.popupLabel {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    margin-right: 4px;
+}
+
+/********************
+
+Spinner
+
+*********************/
+#loadingSpinner {
+    z-index: 1000;
+}
+
+.spinner {
+    height: 150px;
+    width: 150px;
+    position: absolute;
+    -webkit-animation: rotation .6s infinite linear;
+    -moz-animation: rotation .6s infinite linear;
+    -o-animation: rotation .6s infinite linear;
+    animation: rotation .6s infinite linear;
+    border-left: 6px solid #ff0000;
+    border-left: 6px solid rgba(255,0,0,.15);
+    border-right: 6px solid #ff0000;
+    border-right: 6px solid rgba(255,0,0,.15);
+    border-bottom: 6px solid #ff0000;
+    border-bottom: 6px solid rgba(255,0,0,.15);
+    border-top: 6px solid #ff0000;
+    border-top: 6px solid rgba(255,0,0,.8);
+    border-radius: 100%;
+    margin-left: -6rem;
+    margin-top: -6rem;
+    left: 50%;
+    top: 50%;
+}
+
+.spinner-text {
+    position: absolute;
+    margin-left: -2.3rem;
+    margin-top: -1rem;
+    left: 50%;
+    top: 50%;
+}
+
+@-webkit-keyframes rotation {
+    from {
+        -webkit-transform: rotate(0);
+    }
+
+    to {
+        -webkit-transform: rotate(359deg);
+    }
+}
+
+@-moz-keyframes rotation {
+    from {
+        -moz-transform: rotate(0);
+    }
+
+    to {
+        -moz-transform: rotate(359deg);
+    }
+}
+
+@-o-keyframes rotation {
+    from {
+        -o-transform: rotate(0);
+    }
+
+    to {
+        -o-transform: rotate(359deg);
+    }
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+
+/********************
+
+Map funcitonality switcher
+
+*********************/
+#mapFunctionalitySwitcher {
+    color: #FFF;
+    position: absolute;
+    bottom: 71px;
+    right: 110px;
+    font-size: 10px;
+    background-color: #000000;
+    background-color: rgba(0,0,0,0.4);
+    padding: 10px;
+    z-index: 1;
+}
+
+input[type='radio'] {
+    border: 2px solid white;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: white;
+    border: 2px solid #DDD;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+    input[type='radio']:checked {
+        background: black !important;
+    }
+
+#badge {
+    margin: 10px;
+}
+
+.disclaimer {
+    position: absolute;
+    bottom: 0;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+}
+
+.download {
+    position: absolute;
+    top: 100px;
+    right: 26px;
+    width: 136px;
+    background-color: rgba(255, 0, 0, 0.8);
+    border-radius: 6px;
+    padding: 6px;
+    padding-top: 14px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Download list */
+.download-list-delete {
+    color: black;
+}
+.download-list-delete:hover {
+    color: red;
+}
+
+/* LIST EXPANDER*/
+.listExpander {
+    overflow: hidden;
+    list-style: none;
+}
+
+    .listExpander .list-group {
+        display: inline-block;
+        margin: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 6px;
+        color: white;
+        font-size: 11px;
+        margin-bottom: 20px;
+    }
+
+        .listExpander .list-group > span {
+            top: -10px;
+            left: 20px;
+            background-color: #12131A;
+            padding-left: 10px;
+            padding-right: 10px;
+            -ms-text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 224px;
+            position: relative;
+        }
+
+    .listExpander .list-item a,
+    .listExpander .list-item a:visited {
+        color: white;
+        text-decoration: none;
+        font-size: 0.8rem;
+    }
+
+    .listExpander .list-item {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 5px -2px 5px -9px;
+    }
+
+        .listExpander .list-item span {
+            color: white;
+            display: inline-block;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin-left: 4px;
+            -ms-text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 224px;
+        }
+
+        .listExpander .list-item input {
+            margin: 0;
+        }
+
+        .listExpander .list-item div.checkbox input[type=checkbox] {
+            visibility: hidden;
+        }
+
+        .listExpander .list-item div.checkbox {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            position: relative;
+            border-radius: 50%;
+            border: 1px solid white;
+            top: -8px;
+        }
+
+            .listExpander .list-item div.checkbox label {
+                display: block;
+                width: 20px;
+                height: 20px;
+                position: relative;
+                border-radius: 50%;
+                top: 1px;
+                left: -4px;
+                cursor: pointer;
+            }
+
+                .listExpander .list-item div.checkbox label:after {
+                    content: '';
+                    opacity: 0.5;
+                    position: absolute;
+                    width: 11px;
+                    height: 8px;
+                    background: transparent;
+                    top: 3px;
+                    left: 1px;
+                    border: 4px solid gray;
+                    border-top: none;
+                    border-right: none;
+                    transform: rotate(-45deg);
+                }
+
+            .listExpander .list-item div.checkbox input[type=checkbox]:checked + label:after {
+                opacity: 1;
+                border: 4px solid green;
+                border-top: none;
+                border-right: none;
+            }
+
+.toggle-button {
+    font-size: 23px;
+    line-height: 27px;
+    cursor: pointer;
+    float: right;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    color: #999;
+    font-weight: bold;
+    border: 1px solid #999;
+    border-radius: 4px;
+    margin: 0;
+    position: absolute;
+    top: 9px;
+    right: -45px;
+}
+
+div.fade {
+    position: absolute;
+    background: -webkit-linear-gradient(right, rgba(18, 19, 26, 1), rgba(18, 19, 26, 0.2));
+    background: -o-linear-gradient(right, rgba(18, 19, 26, 1), rgba(18, 19, 26, 0.2));
+    background: linear-gradient(to left, rgba(18, 19, 26, 1), rgba(18, 19, 26, 0.2));
+    width: 14%;
+    height: 43px;
+    right: 0;
+    top: 0;
+}
+
+/* DOWNLOAD */
+
+.keypage-button-section {
+    color: white;
+}
+
+    .keypage-button-section div {
+        margin: 10px;
+    }
+
+    .keypage-button-section button {
+        border-radius: 10px;
+        border: 2px solid #29345E;
+        background: transparent;
+        text-transform: uppercase;
+        border-color: #29345E !important;
+        width: 49%;
+        padding-top: 27px !important;
+        padding-bottom: 27px !important;
+        margin-top: 10px;
+    }
+
+        .keypage-button-section button:hover, .keypage-button-section button:focus {
+            background-color: #29345E;
+            border-color: #000 !important;
+            outline: none;
+        }
+
+button.disabled, button[disabled], .button.disabled, .button[disabled] {
+    background-color: inherit;
+}
+
+    button.disabled:hover, button[disabled]:hover, .button.disabled:hover, .button[disabled]:hover, button.disabled:focus, button[disabled]:focus, .button.disabled:focus, .button[disabled]:focus {
+        background-color: inherit;
+        border-color: #29345E !important;
+        outline: none;
+    }
+
+
+/* TYPE OF VIOLENCE */
+
+.type-of-violence-filter ul {
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.type-of-violence-filter li {
+    clear: both;
+}
+
+.type-of-violence-filter label {
+    color: white;
+    font-size: 10px;
+    margin-left: -16px;
+}
+
+.violence-filter-box {
+    height: 25px;
+    float: left;
+    margin-right: 10px;
+}
+
+.header-section {
+    background-color: #12131A margin-top: 2px;
+}
+
+    .header-section h2 {
+        margin: 0;
+        line-height: 2em;
+    }
+
+.UCDP-logo {
+    color: #6B6B6B;
+    font-weight: bold;
+    padding-left: 57px;
+}
+
+/*#master-page .UCDP-logo {
+    display: none;
+}*/
+
+.UCDP-logo {
+    font-size: 40px;
+}
+
+.page-title {
+    font-size: 50px;
+}
+
+.page-title {
+    margin-left: 20px !important;
+}
+
+#exploratory-type-of-violence-filter {
+    position: absolute;
+    bottom: 40px;
+    right: 70px;
+    visibility: hidden;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px 14px;
+}
+
+#keypage-type-of-violence-filter {
+    margin-top: 20px;
+}
+
+.type-of-violence-filter .deathNumber {
+    font-size: 1.4rem;
+    padding-left: 19px;
+}
+
+#exploratory-type-of-violence-filter .deathNumber {
+    font-size: 1.3rem;
+    padding-left: 19px;
+}
+
+.centered-in-row {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.type-of-violence-filter .legend-box {
+    height: 12px;
+    width: 12px;
+    background-color: #ff0000;
+    float: left;
+}
+
+.type-of-violence-filter .legend-row {
+    height: 27px;
+}
+
+#homeButton {
+    vertical-align: middle;
+}
+
+.description-section {
+    padding-top: 15px;
+}
+
+    .description-section h1 {
+        font-size: 1.5em !important;
+    }
+
+.confToolTip {
+    display: none !important;
+    background: #a7a7a7;
+    margin-left: 30px;
+    padding: 10px;
+    position: absolute;
+    max-width: none !important;
+    overflow: visible;
+    font-size: 0.8rem;
+    border: none !important;
+}
+
+.confText:hover .confToolTip {
+    display: block !important;
+}
+
+
+/* ADDITIONAL INFORMATION */
+
+#additionalInfoContent {
+    max-width: 880px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: larger;
+}
+
+    #additionalInfoContent strong {
+        color: #A4A5A9;
+        padding-top: 5px;
+    }
+
+    #additionalInfoContent th {
+        color: #A4A5A9;
+    }
+
+        #additionalInfoContent th::after {
+            content: ':';
+        }
+
+    #additionalInfoContent #tableofcontents + p {
+        max-width: 500px;
+    }
+
+        #additionalInfoContent #tableofcontents + p a:first-of-type {
+            display: block;
+        }
+
+    #additionalInfoContent h3 {
+        color: #F8F7CD;
+        font-size: 20px;
+    }
+
+    #additionalInfoContent h2 {
+        margin-bottom: 0;
+        margin-top: 40px;
+    }
+
+    #additionalInfoContent h3 + p {
+        margin-top: 0;
+    }
+
+    #additionalInfoContent h3 {
+        margin-bottom: 4px;
+        padding-top: 30px;
+    }
+
+    #additionalInfoContent p a:first-of-type {
+        padding-bottom: 10px;
+    }
+
+    #additionalInfoContent p:first-of-type {
+        margin-bottom: 65px;
+    }
+
+    #additionalInfoContent th {
+        color: #A4A5A9;
+    }
+
+#countryTooltip {
+    position: fixed;
+    background: #000;
+    color: #FFF;
+    font-size: 13px;
+    padding: 3px 7px;
+    z-index: 10;
+    border-radius: 5px;
+    border: 2px solid #DDD;
+    font-weight: bold;
+}
+
+#keypage-map .leaflet-interactive, #exploratory-map .leaflet-interactive {
+    cursor: inherit;
+}
+
+.leaflet-marker-icon {
+    cursor: pointer !important;
+}
+
+.inactive_listitem {
+    background-color: #B1B1B1 !important;
+}
+
+    .inactive_listitem a:hover {
+        cursor: default;
+    }
+
+.select2-results__option {
+    color: black !important;
+}
+
+.header-view {
+    height: 62px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    width: 100%;
+}
+
+/* fix for select2, looses its width after being hidden */
+.select2-container {
+    width: 412px !important;
+    margin-right: 12px !important;
+}
+
+.select2-selection, .select2-selection-single {
+    height: 32px !important;
+}
+
+.select2-selection, .select2-selection-single, .select2-dropdown, .select2-search__field {
+    background-color: rgba(0,0,0,0.8) !important;
+    color: #FFF !important;
+}
+
+.select2-container--default {
+    color: #FFF !important;
+}
+
+.select2-results__option {
+    color: #FFF !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #3D5394 !important;
+    color: #FFF !important;
+}
+
+.main-buttons .button {
+    margin: 0 !important;
+}
+
+#keypage:nth-child(2) > div:nth-child(2) {
+    padding-top: 70px;
+}
+
+#no-recorded-deaths {
+    display: none;
+    width: 90%;
+    height: 83%;
+    opacity: 0.9;
+    text-align: center;
+    background-color: #AAA;
+    position: absolute;
+    color: #fff;
+    font-size: 4em;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    margin: 5%;
+    padding: 5rem;
+}
+
+.listExpanderFader:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(transparent 50px, #12131A);
+    pointer-events: none;
+}
+
+.related-info h5 {
+    margin-left: 20px;
+}
+
+.related-info > .panel {
+    border: 1px solid #000;
+}
+
+.entitiesHelpText {
+    color: #D0D0D0;
+    font-size: smaller;
+    font-style: italic;
+    margin-bottom: 25px;
+    margin-left: 20px;
+}
+
+/*
+     ENTITY SEARCH BOX 
+*/
+
+.select2-results > ul > li > ul > li:nth-child(even) {
+    background-color: rgba(30,30,30,0.75);
+}
+
+.select2-results > ul > li {
+    margin-bottom: 12px;
+}
+
+.select2-search__field {
+    margin: 0 !important;
+}
+
+.select2-results strong {
+    font-size: 2rem;
+    padding: 5px 12px !important;
+}
+
+.select2-container--default .select2-results > .select2-results__options {
+    max-height: 300px !important;
+}
+
+[aria-label] li:after {
+    font-size: 10px;
+    background-color: #E4E4E4;
+    color: black;
+    padding: 1px 4px;
+    margin-left: 9px;
+    border-radius: 4px;
+}
+
+[aria-label = Actors] li:after {
+    content: "Actor";
+}
+
+[aria-label = Dyads] li:after {
+    content: "Dyad";
+}
+
+[aria-label = Conflicts] li:after {
+    content: "Conflict";
+}
+
+[aria-label = Countries] li:after {
+    content: "Country";
+}
+
+.top-bar {
+    background-color: transparent;
+}
+
+.button {
+    font-size: 1.05rem;
+}
+
+/*  =====================================================
+    LARGE UP
+    ===================================================== */
+@media screen and (min-width: 64em) {
+    .red-box-link-group {
+        z-index: 1000;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        top: 30%;
+        left: 15px;
+        position: absolute;
+    }
+
+        .red-box-link-group a {
+            color: white;
+            position: relative;
+            top: 10px;
+        }
+
+        .red-box-link-group span {
+            display: block;
+        }
+
+        .red-box-link-group li {
+            background-color: #786e62;
+            width: 60px;
+            height: 60px;
+            font-size: 8pt;
+            border-radius: 6px 6px 6px 6px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+}
+
+/*  =====================================================
+    SMALL AND MEDIUM 
+    ===================================================== */
+@media screen and (max-width: 63.9375em) {
+
+    body {
+        font-size: 1.2rem;
+    }
+
+    #keypage-chart-container, .chart-container, .exploratory-type-of-violence-filter, .large-ucdp-logo, #explore-teaser, #exploratory-type-of-violence-filter, .entitiesHelpText, #encyclopedia-button {
+        display: none !important;
+    }
+    
+    #master-page .UCDP-logo {
+        display: block;
+    }
+
+    .main-buttons {
+        right: auto;
+        top: auto;
+        /*left: 0;*/
+        background-color: #000;
+        padding: 1px 20px;
+        position: relative;
+        background-color: #000;
+    }
+
+    .button {
+        display: block;
+        text-align: initial;
+        border-radius: initial;
+        
+    }
+
+    .main-buttons .button {
+        margin: 1rem 0 !important;
+    }
+
+    .top-bar {
+        background-color: #000;
+    }
+
+        .top-bar ul {
+            background-color: transparent;
+        }
+
+    /* fix for select2, looses its width after being hidden */
+    .select2-container {
+        width: 100% !important;
+        margin: 0;
+        margin-top: 10px !important;
+    }
+
+    .large-ucdp-logo {
+        top: 46px;
+        width: 100%;
+    }
+
+    .red-box-link-group {
+        position: inherit;
+    }
+
+        .red-box-link-group li {
+            /*display: inline;*/
+            width: 50%;
+        }
+
+    ul.red-box-link-group {
+        margin-left: 0 !important;
+        padding-bottom: 2px;
+    }
+
+    .red-box-link-group span {
+        display: inline;
+        margin-left: 12px;
+    }
+
+    .red-box-link-group li {
+        background-color: transparent;
+        width: auto;
+        height: auto;
+        font-size: 8pt;
+        border-radius: 6px 6px 6px 6px;
+        margin-bottom: 5px;
+    }
+
+        .red-box-link-group li a {
+            display: block;
+        }
+
+    .red-box-link-group img {
+        float: left;
+        width: 15px;
+    }
+
+    .red-box-link-group a, .red-box-link-group a:active, .red-box-link.group a:visited {
+        color: #fff;
+    }
+
+    .inactive_listitem {
+        background-color: transparent !important;
+    }
+
+    .header-view {
+        background-color: transparent !important;
+        position: relative;
+        height: 15%;
+    }
+
+    #uu-logo {
+        bottom: 10px;
+        left: 10px;
+        width: 70px;
+        height: 70px;
+    }
+
+    #keypage-type-of-violence-filter {
+        padding-left: 4px;
+    }
+
+    #keypage {
+        top: 20px;
+    }
+
+    .section h5 {
+        font-size: 1.2rem;
+    }
+
+    .deaths-badge {
+        padding-top: 15px;
+    }
+
+    .header-section h2 {
+        line-height: 1.3em;
+        font-size: 3rem;
+    }
+
+    .page-title {
+        margin-left: 0 !important;
+    }
+
+    .title-bar {
+        background-color: transparent !important;
+    }
+
+    .select2-results__options {
+        background-color: #000 !important;
+    }
+
+    .UCDP-logo {
+        position: absolute;
+        top: 7px;
+        right: 10px;
+        font-size: 23px;
+    }
+
+    .main-buttons .button, .main-buttons li {
+        background-color: #444 !important;
+        border-radius: 6px !important;
+        list-style-type: none;
+    }
+
+    .main-buttons li {
+        padding: 0.7rem;
+        margin: 0 0 1rem 0;
+        font-size: 1.05rem;
+    }
+
+    .main-buttons .button.active {
+        background-color: #3D5394;
+    }
+
+    .leaflet-control-zoom {
+        margin-right: -4px !important;
+        margin-bottom: -8px !important;
+    }
+
+    #exploratory-map, #keypage-map {
+        /*margin-left: 1.5rem;
+        margin-right: 1.5rem;*/
+    }
+
+    #exploratory {
+        height: 85%;
+    }
+    #mobileInfoText {
+        position: absolute;
+        top: 0;
+        left: 8px;
+        width: 85%;
+        z-index: 1000;
+        font-size: 0.9rem;
+    }
+}
+
+/*  =====================================================
+    SMALL only 
+    ===================================================== */
+@media screen and (max-width: 39.9375em) {
+    #keypage-map {
+        height: 250px;
+    }
+
+    #badge {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/*  =====================================================
+    MEDIUM only 
+    ===================================================== */
+@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+    #keypage-map {
+        height: 250px;
+    }
+
+    #uu-logo {
+        bottom: 17px;
+    }
+}
