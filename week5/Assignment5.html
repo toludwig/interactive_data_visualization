@@ -28,7 +28,32 @@
 
     <!-- D3 & JS -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="stacked_bars.js"></script>
+    <script src="time_profile.js"></script>
 
+    <script>
+        d3.select(window).on('load', init);
+
+        function init() {
+            var year_category;
+            var time_of_day;
+            d3.json("sf_crime.geojson", function (data) {
+                year_category = data.features.map(function (t) {
+                    var p = t.properties;
+                    return {year: +p["Dates"].slice(0,4),
+                            category: p["Category"]};
+                });
+                //stacked_bars(year_category);
+
+                time_of_day = data.features.map(function (t) {
+                    var p = t.properties;
+                    return +p["Dates"].slice(11, 13); // hour, when crime happened
+                });
+                time_profile(time_of_day);
+            });
+
+        }
+    </script>
 </head>
 <body>
 
@@ -39,26 +64,26 @@
 </h2>
 
 <div class="page-wrap">
-    <p>
-        <h3>(Visualisierungs-) Ideen / Fragen / Hinweise /...</h3>
-        <ol>
-            <li>Hat sich die Art der Crimes geändert über die Jahre (Interaktivität)?-> Map der Crimes mit unterschiedlichen Farben je nach Art?
-                <a href="https://www.kaggle.com/mircat/violent-crime-mapping">(vgl.)</a></li>
-            <li>Stacked Bar plot x=Years, y=verschiedene Crimes</li>
-            <li>Welche Areas sind besonders geprägt? Evtl. Detailanalyse Golden Gate Bridge etc.</li>
-            <li>Bei Maps könnte ein Problem mit Overlapping der Farben entstehen: siehe Kaggle Kernel  <a href="https://www.kaggle.com/mircat/violent-crime-mapping">hier</a></li>
+    <h3>(Visualisierungs-) Ideen / Fragen / Hinweise /...</h3>
+    <ol>
+        <li>Hat sich die Art der Crimes geändert über die Jahre (Interaktivität)?-> Map der Crimes mit unterschiedlichen Farben je nach Art?
+            <a href="https://www.kaggle.com/mircat/violent-crime-mapping">(vgl.)</a></li>
+        <li>Stacked Bar plot x=Years, y=verschiedene Crimes</li>
+        <li>Welche Areas sind besonders geprägt? Evtl. Detailanalyse Golden Gate Bridge etc.</li>
+        <li>Bei Maps könnte ein Problem mit Overlapping der Farben entstehen: siehe Kaggle Kernel  <a href="https://www.kaggle.com/mircat/violent-crime-mapping">hier</a></li>
 
-        </ol>
-    </p>
+    </ol>
 
-    <p>
-        <h3> Research Questions </h3>
-        <h3> Data Exploration</h3>
-            <ol>
-                <p>e.g., Stacked Barplot</p>
-                <svg style="width:800px; height:500px" id="barplot"></svg>
-            </ol>
-    </p>
+    <h3>Research Questions</h3>
+
+    <h3>Time profile</h3>
+    <svg style="width:800px; height:400px" id="time_profile"></svg>
+
+
+    <h3>Crime categories over the years</h3>
+    <svg style="width:800px; height:500px" id="barplot"></svg>
+
+
 </div>
 
 </body>
