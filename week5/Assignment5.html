@@ -33,7 +33,7 @@
     <script src="time_profile.js"></script>
     <!-- TopoJSON: <script src="https://d3js.org/topojson.v3.min.js"></script> -->
     <script src="drawmap.js"></script>
-    <script src="drawpoint.js"></script>
+    <script src="san_francisco.js"></script>
 
     <script>
         d3.select(window).on('load', init);
@@ -41,6 +41,7 @@
         function init() {
             var year_category;
             var time_of_day;
+            var crime_points;
             d3.json("sf_crime.geojson", function (data) {
                 year_category = data.features.map(function (t) {
                     var p = t.properties;
@@ -54,12 +55,14 @@
                     return +p["Dates"].slice(11, 13); // hour, when crime happened
                 });
                 time_profile(time_of_day);
+
+                crime_points = data.features.map(function (t) {
+                    var p = t.properties;
+                    return {lon: +p["X"], lat: +p["Y"], cat: +p["Category"]};
+                });
+                drawMap(crime_points);
             });
 
-            // MAP (Johannes)
-            drawMap();
-            crimeData = d3.json("sf_crime.geojson");
-            drawPoint(crimeData);
         }
     </script>
 </head>
@@ -89,6 +92,9 @@
 
     <h3>Crime categories over the years</h3>
     <svg style="width:800px; height:500px" id="barplot"></svg>
+
+    <h3>Map</h3>
+    <svg id="map"></svg>
 </div>
 
 </body>

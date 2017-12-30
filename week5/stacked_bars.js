@@ -1,11 +1,13 @@
 function make_hist(data) {
-    var year_cat_hist = { // hardcoded years
-        2003 : {}, 2004 : {}, 2005 : {}, 2006 : {},
-        2007 : {}, 2008 : {}, 2009 : {}, 2010 : {},
-        2011 : {}, 2012 : {}, 2013 : {}, 2014 : {}, 2015 : {}
+    var years = { // hardcoded years
+        2003 : 0, 2004 : 0, 2005 : 0, 2006 : 0,
+        2007 : 0, 2008 : 0, 2009 : 0, 2010 : 0,
+        2011 : 0, 2012 : 0, 2013 : 0, 2014 : 0, 2015 : 0
     };
+    // The y-Axis variable is to be sorted first
     data.forEach(function(d) {
-        if(year_cat_hist[d.year][d.category] == undefined){
+        if(year_cat_hist[d.category] == undefined){
+            year_cat_hist[d.category] = years;
             // if category in that year not yet there, introduce it
             year_cat_hist[d.year][d.category] = 1;
         } else{
