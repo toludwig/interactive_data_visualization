@@ -12,7 +12,6 @@ function count(data){
 
 function time_profile(data){
     var data = count(data);
-    console.log(data);
 
     // Scales
     var padding = 70;

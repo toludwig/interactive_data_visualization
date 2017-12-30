@@ -1,29 +1,31 @@
 function make_hist(data) {
-    var years = { // hardcoded years
-        2003 : 0, 2004 : 0, 2005 : 0, 2006 : 0,
-        2007 : 0, 2008 : 0, 2009 : 0, 2010 : 0,
-        2011 : 0, 2012 : 0, 2013 : 0, 2014 : 0, 2015 : 0
-    };
+    var cat_hour = {};
     // The y-Axis variable is to be sorted first
     data.forEach(function(d) {
-        if(year_cat_hist[d.category] == undefined){
-            year_cat_hist[d.category] = years;
-            // if category in that year not yet there, introduce it
-            year_cat_hist[d.year][d.category] = 1;
-        } else{
-            // if there already, increment
-            year_cat_hist[d.year][d.category]++;
-        }
+        if(cat_hour[d.cat] == undefined) // if category not yet there, introduce it
+            cat_hour[d.cat] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        cat_hour[d.cat][d.hour]++;
     });
 
-    // TODO var layers =
-
-    return year_cat_hist;
+    var layers = [];
+    for(var l in cat_hour) {
+        layers.push(cat_hour[l].map(function (d, i) {
+           return {x: i, y: d};
+        }));
+    };
+    return layers;
 }
 
 
 function stacked_bars(data) {
-    var hist = make_hist(data);
+    var layers = make_hist(data);
+    var stack = d3.stack();
+    var series = stack(layers);
+    console.log(series);
+
+    var padding = 60,
+        width = 800,
+        height = 400;
 
     // Scales
     var xScale = d3.scaleLinear()
@@ -34,20 +36,11 @@ function stacked_bars(data) {
         .domain([0, 150])
         .range([height-padding, padding]);
 
-    var stack = d3.layout.stack(hist);
-
-    d3.select("#barplot")
-        .data(hist)
-        .append("rect")
-        .attr("height", function (d) {
-            return 0; // TODO
-        });
+    var svg = d3.select("#barplot");
 
     // copied from http://chimera.labs.oreilly.com/books/1230000000345/ch11.html#_stack_layout
-    var rects = groups.selectAll("rect")
-        .data(function (d) {
-            return d;
-        })
+    svg.selectAll("rect")
+        .data(layers)
         .enter()
         .append("rect")
         .attr("x", function (d, i) {
@@ -59,5 +52,5 @@ function stacked_bars(data) {
         .attr("height", function (d) {
             return yScale(d.y);
         })
-        .attr("width", xScale.rangeBand());
+        .attr("width", xScale.bandwidth());
 }

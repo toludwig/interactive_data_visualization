@@ -38,6 +38,13 @@
     <script>
         d3.select(window).on('load', init);
 
+        const cats = ["ARSON","ASSAULT","BAD CHECKS","BRIBERY","BURGLARY","DISORDERLY CONDUCT",
+            "DRIVING UNDER THE INFLUENCE","GAMBLING","KIDNAPPING","LARCENY/THEFT","LIQUOR LAWS",
+            "LOITERING","MISSING PERSON","NON-CRIMINAL","OTHER OFFENSES","PROSTITUTION","RECOVERED VEHICLE",
+            "ROBBERY","RUNAWAY","SECONDARY CODES","SEX OFFENSES FORCIBLE","SEX OFFENSES NON FORCIBLE",
+            "STOLEN PROPERTY","SUICIDE","SUSPICIOUS OCC","TRESPASS","VANDALISM","VEHICLE THEFT","WARRANTS","WEAPON LAWS"]
+
+
         function init() {
             var year_category;
             var time_of_day;
@@ -45,8 +52,8 @@
             d3.json("sf_crime.geojson", function (data) {
                 year_category = data.features.map(function (t) {
                     var p = t.properties;
-                    return {year: +p["Dates"].slice(0,4),
-                            category: p["Category"]};
+                    return {hour: +p["Dates"].slice(11,13),
+                            cat: p["Category"]};
                 });
                 //stacked_bars(year_category);
 
@@ -58,7 +65,8 @@
 
                 crime_points = data.features.map(function (t) {
                     var p = t.properties;
-                    return {lon: +p["X"], lat: +p["Y"], cat: +p["Category"]};
+                    return {lon: +p["X"], lat: +p["Y"],
+                            cat: cats.indexOf(p["Category"])};
                 });
                 drawMap(crime_points);
             });
@@ -90,11 +98,11 @@
     <h3>Time profile</h3>
     <svg style="width:800px; height:400px" id="time_profile"></svg>
 
-    <h3>Crime categories over the years</h3>
-    <svg style="width:800px; height:500px" id="barplot"></svg>
+    <h3>Crime categories over the hours</h3>
+    <svg style="width:800px; height:400px" id="barplot"></svg>
 
     <h3>Map</h3>
-    <svg id="map"></svg>
+    <svg style="width:1000px; height:1000px" id="map"></svg>
 </div>
 
 </body>
