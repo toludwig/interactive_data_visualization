@@ -59,23 +59,23 @@ function time_profile(data){
         .attr("stroke", "blue")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
-        .attr("stroke-width", 0.5)
+        .attr("stroke-width", 0.8)
         .attr("d", line);
 
     svg.append("text")
         .attr("fill", "#000")
-        .attr("x", 700)
-        .attr("y", 370)
+        .attr("x", 730)
+        .attr("y", 380)
         .attr("dx", "0.71em")
         .attr("text-anchor", "end")
-        .text("Hour");
+        .text("time of the day");
 
     svg.append("text")
         .attr("fill", "#000")
         .attr("transform", "rotate(-90)")
-        .attr("x", -80)
+        .attr("x", -70)
         .attr("y", 20)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
-        .text("percentage of crimes");
+        .text("% of crimes");
 }
