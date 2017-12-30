@@ -19,10 +19,18 @@
         svg {
             border: 1px solid grey;
         }
-
+    
         #barplot {
             border:1px solid grey;
         }
+
+        h3 {
+            font-style: italic;
+            font-weight: bold;
+            font-size: 20px;
+        };
+        
+  
     </style>
 
 
@@ -76,33 +84,58 @@
 </head>
 <body>
 
-<h2>
-    Assignment 5
+<h1>
+    <u>Assignment 5</u>
     <br>
     by Johannes Jacob, Tobias Ludwig and Mona Timmermann
-</h2>
+</h1>
 
 <div class="page-wrap">
-    <h3>(Visualisierungs-) Ideen / Fragen / Hinweise /...</h3>
+    <h2>Introduction</h2>
+    We have focused on two research questions and used different ways of visualising the data
+    on crimes in the city of San Francisco to provide answers to these questions.
+    The case and data was provided by <a href="https://www.kaggle.com/c/sf-crime">Kaggle</a>
+    and ranges from 01/01/2003 to 13/05/2015.
+
+    <h2>Research Questions</h2>
     <ol>
-        <li>Hat sich die Art der Crimes geändert über die Jahre (Interaktivität)?-> Map der Crimes mit unterschiedlichen Farben je nach Art?
-            <a href="https://www.kaggle.com/mircat/violent-crime-mapping">(vgl.)</a></li>
-        <li>Stacked Bar plot x=Years, y=verschiedene Crimes</li>
-        <li>Welche Areas sind besonders geprägt? Evtl. Detailanalyse Golden Gate Bridge etc.</li>
-        <li>Bei Maps könnte ein Problem mit Overlapping der Farben entstehen: siehe Kaggle Kernel  <a href="https://www.kaggle.com/mircat/violent-crime-mapping">hier</a></li>
+        <li>Are there differences in the amount of crimes during the different hours of the day?</li>
+        <li>Are there areas of San Francisco where more crimes are committed than in other areas?</li>
 
     </ol>
 
-    <h3>Research Questions</h3>
+    <h2>Visualisations and Insights</h2>
 
-    <h3>Time profile</h3>
+    <h3> a. The role of the time of the day</h3>
+    In the following graph one can see that there is a difference in the amount
+    of crimes throughout the day. As expected, there are more crimes being committed
+    in the afternoon and evenings, less during the late night/early morning. However,
+    it is not yet clear whether there are also differences in the kind of crimes
+    throughout the day. <br><br>
+    <div style="display: inline-block">
     <svg style="width:800px; height:400px" id="time_profile"></svg>
+    </div>
 
-    <h3>Crime categories over the hours</h3>
-    <svg style="width:800px; height:400px" id="barplot"></svg>
-
-    <h3>Map</h3>
+    <h3> b. Location of crimes in San Francisco</h3>
+    The following map is rather basic and not interactive. It depicts where crimes have been committed in San Francisco
+    and shows clearly that the more north-eastern districts are more affected by crimes.
+    However, it again does not make clear which crimes have been committed in the different areas.<br><br>
     <svg style="width:1000px; height:1000px" id="map"></svg>
+
+    <h3> c. Location of crimes in San Francisco with Interactivity</h3>
+    The following map allows to select only a subset of the different kinds of crimes through a
+    combo box to get a feeling of the kind of crimes which occur in different
+    areas of San Francisco and allows to find out which crimes a dot refers to
+    by hovering over the circles in the map. It is an adaption of the previously
+    created map.<br><br>
+    <svg style="width:1000px; height:1000px" id="map_selection"></svg>
+
+
+    <h3> d. Change in crime categories over the hours</h3>
+    The following visualisation helps to find out whether there has been a change
+    in the kinds of crimes that occur over the different hours.<br><br>
+    <svg style="width:800px; height:500px" id="barplot"></svg>
+
 </div>
 
 </body>

@@ -1,5 +1,3 @@
-
-
 function drawMap(crimeData) {
     var width = 1000, height = 1000;
 
@@ -15,12 +13,19 @@ function drawMap(crimeData) {
     projection.scale(scale).translate(transl);
 
     var svg = d3.select("#map");
-
-    svg.selectAll("path").data(districts.features).enter().append("path").attr("d", path).attr('data-id', function (d) {
-        return d.id;
-    }).attr('data-name', function (d) {
-        return d.properties.name;
-    }).style("fill", "#020D1B").style("stroke", "#ffffff");
+    svg.selectAll("path")
+        .data(districts.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr('data-id', function (d) {
+            return d.id;
+        })
+        .attr('data-name', function (d) {
+            return d.properties.name;
+        })
+        .style("fill", "#020D1B")
+        .style("stroke", "#ffffff");
 
 
     // generates colors
@@ -31,10 +36,10 @@ function drawMap(crimeData) {
         .data(crimeData)
         .enter()
         .append("circle")
-        .attr("cx", function(d) {
+        .attr("cx", function (d) {
             return projection([d.lon, d.lat])[0];
         })
-        .attr("cy", function(d) {
+        .attr("cy", function (d) {
             return projection([d.lon, d.lat])[1];
         })
         .attr("r", 2)
@@ -42,5 +47,4 @@ function drawMap(crimeData) {
             return colorScale(d.cat);
         })
         .style("opacity", 0.75);
-
 }
