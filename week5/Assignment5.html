@@ -46,7 +46,7 @@
     <script>
         d3.select(window).on('load', init);
 
-        const cats = ["ARSON","ASSAULT","BAD CHECKS","BRIBERY","BURGLARY","DISORDERLY CONDUCT",
+        const CATS = ["ARSON","ASSAULT","BAD CHECKS","BRIBERY","BURGLARY","DISORDERLY CONDUCT",
             "DRIVING UNDER THE INFLUENCE","GAMBLING","KIDNAPPING","LARCENY/THEFT","LIQUOR LAWS",
             "LOITERING","MISSING PERSON","NON-CRIMINAL","OTHER OFFENSES","PROSTITUTION","RECOVERED VEHICLE",
             "ROBBERY","RUNAWAY","SECONDARY CODES","SEX OFFENSES FORCIBLE","SEX OFFENSES NON FORCIBLE",
@@ -63,7 +63,7 @@
                     return {hour: +p["Dates"].slice(11,13),
                             cat: p["Category"]};
                 });
-                //stacked_bars(year_category);
+                stacked_bars(year_category);
 
                 time_of_day = data.features.map(function (t) {
                     var p = t.properties;
@@ -74,7 +74,7 @@
                 crime_points = data.features.map(function (t) {
                     var p = t.properties;
                     return {lon: +p["X"], lat: +p["Y"],
-                            cat: cats.indexOf(p["Category"])};
+                            cat: CATS.indexOf(p["Category"])};
                 });
                 drawMap(crime_points);
             });

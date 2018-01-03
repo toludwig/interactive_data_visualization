@@ -1,56 +1,84 @@
 function make_hist(data) {
-    var cat_hour = {};
-    // The y-Axis variable is to be sorted first
+    var hour_cat = [];
+    for(var h=0; h<24; h++) {
+        hour_cat[h] = {};
+        CATS.forEach(function (cat) {
+            hour_cat[h][cat] = 0;
+        });
+    }
+
     data.forEach(function(d) {
-        if(cat_hour[d.cat] == undefined) // if category not yet there, introduce it
-            cat_hour[d.cat] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-        cat_hour[d.cat][d.hour]++;
+        hour_cat[d.hour][d.cat]++;
     });
 
-    var layers = [];
-    for(var l in cat_hour) {
-        layers.push(cat_hour[l].map(function (d, i) {
-           return {x: i, y: d};
-        }));
-    };
-    return layers;
+    return hour_cat;
 }
 
 
+// the following is mostly copied from
+// https://github.com/alignedleft/d3-book/blob/master/chapter_13/03_stacked_bar.html
 function stacked_bars(data) {
     var layers = make_hist(data);
-    var stack = d3.stack();
+    var stack = d3.stack().keys(CATS);
     var series = stack(layers);
-    console.log(series);
 
     var padding = 60,
         width = 800,
-        height = 400;
+        height = 500;
 
     // Scales
-    var xScale = d3.scaleLinear()
-        .domain([2003, 2015])
-        .range([padding,width-padding]);
+    var xScale = d3.scaleBand()
+        .domain(d3.range(24))
+        .range([padding, width-padding])
+        .paddingInner(0.05);
 
     var yScale = d3.scaleLinear()
-        .domain([0, 150])
+        .domain([0, 650]) // the following code was used to get the max stack height
+    // d3.max(layers, function(stack) {
+    //         var sum = 0;
+    //         for(var bar in stack)
+    //             sum += stack[bar];
+    //         return sum;
+    //     })])
         .range([height-padding, padding]);
 
-    var svg = d3.select("#barplot");
 
-    // copied from http://chimera.labs.oreilly.com/books/1230000000345/ch11.html#_stack_layout
-    svg.selectAll("rect")
-        .data(layers)
+    var svg = d3.select("#barplot");
+    svg.append('g')
+        .attr('transform', 'translate(0,' + (height - padding) + ')')
+        .call(d3.axisBottom(xScale));
+    svg.append('g')
+        .attr('transform', 'translate('+padding+', 0)')
+        .call(d3.axisLeft(yScale));
+
+
+    // easy colors accessible via a 10-step ordinal scale
+    var colors = d3.scaleOrdinal(d3.schemeCategory10);
+
+    // Add a group for each row of data
+    var groups = svg.selectAll("g")
+        .data(series)
+        .enter()
+        .append("g")
+        .style("fill", function(d, i) {
+            return colors(i);
+        });
+
+
+    var rects = groups.selectAll("rect")
+        .data(function(d) { console.log(d); return d; })
         .enter()
         .append("rect")
         .attr("x", function (d, i) {
+            console.log(xScale(i));
             return xScale(i);
         })
         .attr("y", function (d) {
-            return yScale(d.y0);
+            return yScale(d[0]);
         })
-        .attr("height", function (d) {
-            return yScale(d.y);
+        .attr("height", function(d) {
+            return yScale(d[0]) - yScale(d[1]);
         })
         .attr("width", xScale.bandwidth());
+
 }
