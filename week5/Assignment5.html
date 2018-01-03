@@ -45,6 +45,7 @@
     <script src="time_profile.js"></script>
     <!-- TopoJSON: <script src="https://d3js.org/topojson.v3.min.js"></script> -->
     <script src="drawmap.js"></script>
+    <script src="drawCATSmap.js"></script>
     <script src="san_francisco.js"></script>
 
     <script>
@@ -143,6 +144,28 @@
     areas of San Francisco and allows to find out which crimes a dot refers to
     by hovering over the circles in the map. It is an adaption of the previously
     created map.<br><br>
+    <label for="crimeselection">Filter crimes by category:</label>
+    <select id="crimeselection" onchange="crimeCATS(this)">
+        <option>Choose a crime category</option>
+    </select>
+
+    <script>
+        // Populate Combobox
+        var select = document.getElementById("crimeselection");
+        var options = CATS;
+        for(var i = 0; i < options.length; i++) {
+            var opt = options[i];
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+        }
+        // Callback for Comboboxes:
+        function crimeCATS(selectObject) {
+            crimeselection = selectObject.value;
+            drawCATSMap(crime_points, crimeselection);
+        }
+    </script>
     <svg style="width:1200px; height:1000px" id="map_selection"></svg>
 
 
