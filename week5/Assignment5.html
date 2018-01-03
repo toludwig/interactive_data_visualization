@@ -12,25 +12,29 @@
             width: 1200px;
             margin: 0 auto;
         }
+
         body {
             text-align: center;
             font-family: 'Montserrat', sans-serif;
         }
+
         svg {
             border: 1px solid grey;
         }
-    
+
         #barplot {
-            border:1px solid grey;
+            border: 1px solid grey;
         }
 
         h3 {
             font-style: italic;
             font-weight: bold;
             font-size: 20px;
-        };
-        
-  
+        }
+
+        ;
+
+
     </style>
 
 
@@ -50,7 +54,7 @@
             "DRIVING UNDER THE INFLUENCE","GAMBLING","KIDNAPPING","LARCENY/THEFT","LIQUOR LAWS",
             "LOITERING","MISSING PERSON","NON-CRIMINAL","OTHER OFFENSES","PROSTITUTION","RECOVERED VEHICLE",
             "ROBBERY","RUNAWAY","SECONDARY CODES","SEX OFFENSES FORCIBLE","SEX OFFENSES NON FORCIBLE",
-            "STOLEN PROPERTY","SUICIDE","SUSPICIOUS OCC","TRESPASS","VANDALISM","VEHICLE THEFT","WARRANTS","WEAPON LAWS"]
+            "STOLEN PROPERTY","SUICIDE","SUSPICIOUS OCC","TRESPASS","VANDALISM","VEHICLE THEFT","WARRANTS","WEAPON LAWS"];
 
 
         function init() {
@@ -60,8 +64,10 @@
             d3.json("sf_crime.geojson", function (data) {
                 year_category = data.features.map(function (t) {
                     var p = t.properties;
-                    return {hour: +p["Dates"].slice(11,13),
-                            cat: p["Category"]};
+                    return {
+                        hour: +p["Dates"].slice(11, 13),
+                        category: p["Category"]
+                    };
                 });
                 stacked_bars(year_category);
 
@@ -73,8 +79,11 @@
 
                 crime_points = data.features.map(function (t) {
                     var p = t.properties;
-                    return {lon: +p["X"], lat: +p["Y"],
-                            cat: CATS.indexOf(p["Category"])};
+                    return {
+                        lon: +p["X"], lat: +p["Y"],
+                        category: p["Category"],
+                        cat: CATS.indexOf(p["Category"])
+                    };
                 });
                 drawMap(crime_points);
             });
@@ -113,14 +122,20 @@
     it is not yet clear whether there are also differences in the kind of crimes
     throughout the day. <br><br>
     <div style="display: inline-block">
-    <svg style="width:800px; height:400px" id="time_profile"></svg>
+        <svg style="width:800px; height:400px" id="time_profile"></svg>
     </div>
 
     <h3> b. Location of crimes in San Francisco</h3>
     The following map is rather basic and not interactive. It depicts where crimes have been committed in San Francisco
-    and shows clearly that the more north-eastern districts are more affected by crimes.
-    However, it again does not make clear which crimes have been committed in the different areas.<br><br>
-    <svg style="width:1000px; height:1000px" id="map"></svg>
+    and shows clearly that the more north-eastern districts are more affected by crimes, but does not show a clear
+    difference between the types of crimes (depicted by different colours) that have been committed.
+    The reader can check the types of crimes but hovering over the dots in the map and reading the line
+    underneath.<br><br>
+    <svg style="width:1200px; height:1000px" id="map"></svg>
+    <br>
+    <!--<i>Meaning of colour:</i> <br>-->
+    The committed crime was: <span id="TypeOfCrime">___________________</span>
+
 
     <h3> c. Location of crimes in San Francisco with Interactivity</h3>
     The following map allows to select only a subset of the different kinds of crimes through a
@@ -128,13 +143,14 @@
     areas of San Francisco and allows to find out which crimes a dot refers to
     by hovering over the circles in the map. It is an adaption of the previously
     created map.<br><br>
-    <svg style="width:1000px; height:1000px" id="map_selection"></svg>
+    <svg style="width:1200px; height:1000px" id="map_selection"></svg>
 
 
     <h3> d. Change in crime categories over the hours</h3>
     The following visualisation helps to find out whether there has been a change
     in the kinds of crimes that occur over the different hours.<br><br>
     <svg style="width:800px; height:500px" id="barplot"></svg>
+
 
 </div>
 
