@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Busy Buznis</title>
+
+    <!-- Set (CSS) style: -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        .page-wrap {
+            text-align: left;
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        body {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+        }
+    </style>
+
+
+</head>
+<body>
+<h1>Final Project Proposal</h1>
+<h2>Johannes Jacob, Tobias Ludwig, Mona Timmermann</h2>
+<br>
+<div class="page-wrap">
+
+The goal of the final project is to visualise data on terrorist
+attacks in Europe. The visualisations are supposed to help answer the
+following questions:
+<ol>
+    <li>Are there specific areas (also: Western vs. Eastern) that suffer more often from
+    (specific kinds of) terrorist attacks than others?</li>
+    <li>Are there differences in the amount of attacks, in the kind of
+        attacks and in their concerned areas?</li>
+    <li>Which actors occur? What attacks are they responsible for?
+    Are there changes over the years? Are they active in specific areas?</li>
+</ol>
+
+The data set we are planning to work with is the <a href="https://www.start.umd.edu/gtd/">Global Terrorism Database (GTD)</a>.
+    While they have tried to visualise the data in some ways on their website, they seem to have rather small,
+    unconnected, non-interactive ways which does not give their data justice.
+
+We hope to be able to answer as many of the listed questions as possible using this data.
+
+Possible ways of visualising the data would be to:
+    <ul>
+        <li>Map of Europe</li>
+        <li>Terrorist attacks as circles where they appeared</li>
+        <li>Colouring of attack circles depending on the category of attack</li>
+        <li>Display of more information when hovering over circles in side panel for example,
+            including the number of victims, a summary of the case and the actors</li>
+        <li>Time slider to filter a range of a time period</li>
+        <li>Possibly a selection box to filter by the actors for example, if the data allows to do that.
+        Grouping might be needed and there might be too many cases where actors are unknown.</li>
+        <li>A rather simple line plot to give a brief overview of the numbers of terror attacks over time.</li>
+    </ul>
+
+</div>
+</body>
+</html>
