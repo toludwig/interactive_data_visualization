@@ -52,9 +52,6 @@ function stacked_bars(data) {
         .call(d3.axisLeft(yScale));
 
 
-    // easy colors accessible via a 10-step ordinal scale
-    var colors = d3.scaleOrdinal(d3.schemeCategory10);
-
     // Add a group for each row of data
     var groups = svg.selectAll("g")
         .data(series)
