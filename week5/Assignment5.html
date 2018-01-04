@@ -56,12 +56,12 @@
             "LOITERING","MISSING PERSON","NON-CRIMINAL","OTHER OFFENSES","PROSTITUTION","RECOVERED VEHICLE",
             "ROBBERY","RUNAWAY","SECONDARY CODES","SEX OFFENSES FORCIBLE","SEX OFFENSES NON FORCIBLE",
             "STOLEN PROPERTY","SUICIDE","SUSPICIOUS OCC","TRESPASS","VANDALISM","VEHICLE THEFT","WARRANTS","WEAPON LAWS"];
-
+        
+        var year_category;
+        var time_of_day;
+        var crime_points;
 
         function init() {
-            var year_category;
-            var time_of_day;
-            var crime_points;
             d3.json("sf_crime.geojson", function (data) {
                 year_category = data.features.map(function (t) {
                     var p = t.properties;
@@ -162,7 +162,7 @@
         }
         // Callback for Comboboxes:
         function crimeCATS(selectObject) {
-            crimeselection = selectObject.value;
+            crimeselection = selectObject.value;           
             drawCATSMap(crime_points, crimeselection);
         }
     </script>

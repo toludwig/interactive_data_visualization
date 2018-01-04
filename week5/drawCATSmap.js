@@ -1,4 +1,6 @@
 function drawCATSMap(crimeData, crimeCATS) {
+    console.log(crimeCATS);
+    
     var width = 1200, height = 1000;
 
     var projection = d3.geoMercator().scale(1).translate([0, 0]).precision(0);
@@ -36,7 +38,7 @@ function drawCATSMap(crimeData, crimeCATS) {
 
     var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
-    
+    console.log(crimeData);
     // Draw points:
     radius = 3;
 
@@ -44,7 +46,7 @@ function drawCATSMap(crimeData, crimeCATS) {
         .data(crimeData)
         .enter()
         .append("circle")
-        .filter(function(d) { return d.cat == crimeCATS})
+        .filter(function(d) { return d.category == crimeCATS})
         .attr("cx", function (d) {
             return projection([d.lon, d.lat])[0];
         })
