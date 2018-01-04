@@ -62,34 +62,31 @@
     <script>
         d3.select(window).on('load', init);
 
+        // All 37 categories and associated colours
         const CATS = ["ARSON","ASSAULT","BAD CHECKS","BRIBERY","BURGLARY","DISORDERLY CONDUCT",
-            "DRIVING UNDER THE INFLUENCE","DRUG/NARCOTIC","FRAUD","FORGERY/COUNTERFEITING",
-            "GAMBLING","KIDNAPPING","LARCENY/THEFT","LIQUOR LAWS",
+            "DRIVING UNDER THE INFLUENCE","DRUG/NARCOTIC","DRUNKENNESS","EMBEZZLEMENT","FAMILY OFFENSES",
+            "FORGERY/COUNTERFEITING", "FRAUD","GAMBLING","KIDNAPPING","LARCENY/THEFT","LIQUOR LAWS",
             "LOITERING","MISSING PERSON","NON-CRIMINAL","OTHER OFFENSES","PROSTITUTION","RECOVERED VEHICLE",
             "ROBBERY","RUNAWAY","SECONDARY CODES","SEX OFFENSES FORCIBLE","SEX OFFENSES NON FORCIBLE",
             "STOLEN PROPERTY","SUICIDE","SUSPICIOUS OCC","TRESPASS","VANDALISM","VEHICLE THEFT","WARRANTS","WEAPON LAWS"];
-        // Create 30 colours, since D3 only gives max. of 20:
-        const colors_30 = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728",
-            "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f",
-            "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", "#de9ed6", "#ce6dbd", "#a55194",
-            "#7b4173", "#e7969c", "#d6616b", "#ad494a", "#843c39", "#e7cb94", "#e7ba52"];
+        // Create 40 colours, two times 20
+        const colors = d3.schemeCategory20.concat(d3.schemeCategory20b);
+        const colorScale = d3.scaleOrdinal(colors);
 
-        const colorScale = d3.scaleOrdinal(colors_30);
-
-        var year_category;
+        var hour_category;
         var time_of_day;
         var crime_points;
 
         function init() {
             d3.json("sf_crime.geojson", function (data) {
-                year_category = data.features.map(function (t) {
+                hour_category = data.features.map(function (t) {
                     var p = t.properties;
                     return {
                         hour: +p["Dates"].slice(11, 13),
                         category: p["Category"]
                     };
                 });
-                stacked_bars(year_category);
+                stacked_bars(hour_category);
 
                 time_of_day = data.features.map(function (t) {
                     var p = t.properties;
@@ -101,8 +98,7 @@
                     var p = t.properties;
                     return {
                         lon: +p["X"], lat: +p["Y"],
-                        category: p["Category"],
-                        cat: CATS.indexOf(p["Category"])
+                        category: p["Category"]
                     };
                 });
                 drawMap(crime_points);

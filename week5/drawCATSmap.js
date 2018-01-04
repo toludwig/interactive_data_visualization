@@ -48,8 +48,7 @@ function drawCATSMap(crimeData, crimeCAT) {
         })
         .attr("r", radius)
         .style("fill", function (d) {
-            console.log(d.cat);
-            return colorScale(d.cat);
+            return colorScale(CATS.indexOf(d.category));
         })
         .style("opacity", 0.6);
 

@@ -44,7 +44,7 @@ function drawMap(crimeData) {
         })
         .attr("r", radius)
         .style("fill", function (d) {
-            return colorScale(d.cat);
+            return colorScale(CATS.indexOf(d.category));
         })
         .style("opacity", 0.6);
 
@@ -85,7 +85,7 @@ function drawMap(crimeData) {
             .style("font-weight", "bold")
             .style("left", (d3.event.pageX+5) + "px")
             .style("top", (d3.event.pageY - 40) + "px")
-            .style("background-color", colorScale(d.cat));
+            .style("background-color", colorScale(CATS.indexOf(d.category)));
     });
 
     // make dot small again and remove tool tips (visibility):

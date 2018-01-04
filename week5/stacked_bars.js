@@ -8,7 +8,7 @@ function make_hist(data) {
     }
 
     data.forEach(function(d) {
-        hour_cat[d.hour][d.cat]++;
+        hour_cat[d.hour][d.category]++;
     });
 
     return hour_cat;
@@ -21,6 +21,7 @@ function stacked_bars(data) {
     var layers = make_hist(data);
     var stack = d3.stack().keys(CATS);
     var series = stack(layers);
+    console.log(series);
 
     var padding = 60,
         width = 800,
@@ -44,30 +45,23 @@ function stacked_bars(data) {
 
 
     var svg = d3.select("#barplot");
-    svg.append('g')
-        .attr('transform', 'translate(0,' + (height - padding) + ')')
-        .call(d3.axisBottom(xScale));
-    svg.append('g')
-        .attr('transform', 'translate('+padding+', 0)')
-        .call(d3.axisLeft(yScale));
 
 
     // Add a group for each row of data
-    var groups = svg.selectAll("g")
+    var groups = svg.selectAll('g')
         .data(series)
         .enter()
-        .append("g")
+        .append('g')
         .style("fill", function(d, i) {
-            return colors(i);
+            return colorScale(i);
         });
 
 
     var rects = groups.selectAll("rect")
-        .data(function(d) { console.log(d); return d; })
+        .data(function(d) { return d; })
         .enter()
         .append("rect")
         .attr("x", function (d, i) {
-            console.log(xScale(i));
             return xScale(i);
         })
         .attr("y", function (d) {
@@ -78,4 +72,11 @@ function stacked_bars(data) {
         })
         .attr("width", xScale.bandwidth());
 
+
+    svg.append('g')
+        .attr('transform', 'translate(0,' + (height - padding) + ')')
+        .call(d3.axisBottom(xScale));
+    svg.append('g')
+        .attr('transform', 'translate('+padding+', 0)')
+        .call(d3.axisLeft(yScale));
 }
