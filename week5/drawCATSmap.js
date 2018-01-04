@@ -1,5 +1,5 @@
-function drawCATSMap(crimeData, crimeCATS) {
-    console.log(crimeCATS);
+function drawCATSMap(crimeData, crimeCAT) {
+    console.log(crimeCAT);
     
     var width = 1200, height = 1000;
 
@@ -43,10 +43,13 @@ function drawCATSMap(crimeData, crimeCATS) {
     radius = 3;
 
     circles = svg.selectAll("circle")
-        .data(crimeData)
-        .enter()
+        .data(crimeData.filter(function(d) { return d.category == crimeCAT}));
+
+    // Remove the old points
+    circles.exit().remove();
+
+    circles.enter()
         .append("circle")
-        .filter(function(d) { return d.category == crimeCATS})
         .attr("cx", function (d) {
             return projection([d.lon, d.lat])[0];
         })
@@ -58,5 +61,4 @@ function drawCATSMap(crimeData, crimeCATS) {
             return colorScale(d.cat);
         })
         .style("opacity", 0.6);
-
 }

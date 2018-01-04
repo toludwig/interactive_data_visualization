@@ -34,7 +34,7 @@ function drawMap(crimeData) {
         "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", "#de9ed6", "#ce6dbd", "#a55194",
         "#7b4173", "#e7969c", "#d6616b", "#ad494a", "#843c39", "#e7cb94", "#e7ba52"];
 
-    var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+    var colorScale = d3.scaleOrdinal(colors_30);
 
     // Draw points:
     radius = 3;
