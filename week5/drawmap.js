@@ -12,6 +12,7 @@ function drawMap(crimeData) {
     var transl = [(width - scale * (bounds[1][0] + bounds[0][0])) / 2, (height - scale * (bounds[1][1] + bounds[0][1])) / 2];
     projection.scale(scale).translate(transl);
 
+    // create map (for now without crimes in it)
     var svg = d3.select("#map");
     svg.selectAll("path")
         .data(districts.features)
@@ -34,7 +35,7 @@ function drawMap(crimeData) {
         "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", "#de9ed6", "#ce6dbd", "#a55194",
         "#7b4173", "#e7969c", "#d6616b", "#ad494a", "#843c39", "#e7cb94", "#e7ba52"];
 
-    var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+    var colorScale = d3.scaleOrdinal(colors_30);
 
     // Draw points:
     radius = 3;
@@ -57,24 +58,49 @@ function drawMap(crimeData) {
 
 
     // Select span where kind of type (selected by hover over circle) will be written:
-    typetext = d3.select("#TypeOfCrime");
+    //typetext = d3.select("#TypeOfCrime");
 
 
+    // Tooltips: Define the div for the tooltip (transparent first, later visible)
+    var div = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+
+    // OLD INTERACTIVITY:
     // Simple Interactivity: What type of crime?
     // When mouse placed on circle, a) make circle bigger, b) write type of crime in line underneath map,
     // c) make background-colour of written text the same colour as the selected circle:
-    circles.on("mouseover", function (d) {
-        d3.select(this).attr("r",10);
+    //circles.on("mouseover", function (d) {
+    //    d3.select(this).attr("r",10);
         // console.log(d.cat);
-        text = typetext.text(d.category);
-        text.style("background-color", colorScale(d.cat))
-    });
-    // make circle size normal again (radius defined above)
-    // and remove written text and background colour of text:
-    circles.on("mouseout", function (d) {
-        d3.select(this).attr("r",radius);
-        text = typetext.text("");
-        //text.style("background-color", "white") // not necessary
+    //    text = typetext.text(d.category);
+    //    text.style("background-color", colorScale(d.cat))
+    //});
+
+    // Tooltips Interactivity:
+    circles.on("mouseover", function(d){
+        // make selected dot bigger
+        d3.select(this).attr("r",10);
+        // increase opacity of selected tooltip object (i.e., make visible):
+        div.transition()
+            .duration(0.5)
+            .style("opacity", .95);
+        // write out category in box that is placed in top-right from dot
+        // and colour box in colour of dot:
+        div.html(d.category)
+            .style("font-weight", "bold")
+            .style("left", (d3.event.pageX+5) + "px")
+            .style("top", (d3.event.pageY - 40) + "px")
+            .style("background-color", colorScale(d.cat));
     });
 
+    // make dot small again and remove tool tips (visibility):
+    circles.on("mouseout", function(d) {
+        d3.select(this).attr("r",radius);
+        div.transition()
+                .duration(0.5)
+                .style("opacity", 0);
+        });
 }
