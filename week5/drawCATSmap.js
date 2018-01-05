@@ -36,10 +36,12 @@ function drawCATSMap(crimeData, crimeCAT) {
     circles = svg.selectAll("circle");
     // Remove the old points
 
+    circles.remove();
+
     circles.data(crimeData)
         .enter()
-        .append("circle")
         .filter(function(d) { return d.category == crimeCAT; })
+        .append("circle")
         .attr("cx", function (d) {
             return projection([d.lon, d.lat])[0];
         })
@@ -52,5 +54,4 @@ function drawCATSMap(crimeData, crimeCAT) {
         })
         .style("opacity", 0.6);
 
-    circles.exit().remove();
 }
