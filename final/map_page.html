@@ -16,6 +16,7 @@
     <!-- D3 & JS -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="map.js"></script>
+    
     <!-- map plot & infos boxes -->
     <link rel="stylesheet" href="structure.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
@@ -23,9 +24,11 @@
 
     <script>
         d3.select(window).on('load', init);
+        
+        var data = [];
 
         function init() {
-            d3.csv("data/gtd_europe.csv", function (data) {
+            d3.csv("data/gtd_europe.csv", function (mydata) {
                 mydata.forEach(function (d) {
                         d.eventid = +d.eventid;
                         d.iyear = +d.iyear;
@@ -39,6 +42,7 @@
                         d.related = +d.related;
                         //the + sign converts numeric string to number
                     });
+                data = mydata;
                 // Callback
                 drawMap();
             });
