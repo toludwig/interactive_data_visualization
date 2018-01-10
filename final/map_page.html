@@ -1,76 +1,91 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Terrorist Attacks in Europe</title>
+function drawMap() {
 
-    <!-- Set (CSS) style: -->
-    <link rel="shortcut icon" href="terrorist-thug.ico" />
-    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
-          integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
-          crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
-            integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
-            crossorigin=""></script>
+    // Center Coordinates (ca. Paris) and max. zoom:
+    home_lat=50;
+    home_long=2;
+    home_zoom=4;
+    max_zoom=19;
 
-    <!-- D3 & JS -->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="map.js"></script>
-    
-    <!-- map plot & infos boxes -->
-    <link rel="stylesheet" href="structure.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
-    <script>
-        d3.select(window).on('load', init);
+    // Initialise Map at predefined Center ("home"):
+    // "zoomControl: false" to avoid the default zoom buttons
+    var MAP= L.map('mapid', {zoomControl: false})
+        .setView([home_lat, home_long], home_zoom);
 
-        // GLOBAL VARS
-        var DATA = [];
-        var MAP;
+    // Now add Zoom button in top-right corner:
+    L.control.zoom({position: "topright"}).addTo(MAP);
 
-        function init() {
-            d3.csv("data/gtd_europe.csv", function (mydata) {
-                mydata.forEach(function (d) {
-                        d.eventid = +d.eventid;
-                        d.iyear = +d.iyear;
-                        d.imonth = +d.imonth;
-                        d.iday = +d.iday;
-                        d.latitude = +d.latitude;
-                        d.longitude = +d.longitude;
-                        d.success = +d.success;
-                        d.nkill = +d.nkill;
-                        d.nkillter = +d.nkillter;
-                        d.related = +d.related;
-                        //the + sign converts numeric string to number
-                    });
-                data = mydata;
-                // Callback
-                drawMap();
-                drawPoints();
-            });
-        }
-    </script>
-</head>
-<body>
-    <div id="container">
-        <div id="headline"><h1>Terror in Europe</h1></div>
-        <div id="filters">
-        <h3>Filter</h3>
-        <label for="success_filter">Attack succeeded:</label>
-        <select id="success_filter" onchange="crimeCATS(this)">
-            <option value="1" selected>Yes</option>
-            <option value="0">No</option>
-        </select>
-        </div>
-      <div id="infobox">
-          <h3>Infobox</h3>
-      </div>
-      <div id="map" height="180px">
+    // Add Home Button to the map (leads you back to initial map layout):
+    L.easyButton('<span>&starf;</span>', function (map) {
+        map.setView([home.lat, home.lng], home.zoom);}, 'Zoom To Home')
+        .addTo(MAP);
 
-      </div>
-      <div id="slider">
-      </div>
-    </div>
-</body>
-</html>
+
+    // Add tile layer to map and the source of the leaflet:
+    // Zoom is set to 4-19 so that Europe is displayed nicely.
+    // subdomains: "abcd" ??
+
+    var CartoDB_Positron = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+        {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy;' +
+        '<a href="http://cartodb.com/attributions">CartoDB</a>', maxZoom: max_zoom, minZoom: home_zoom})
+        .addTo(MAP);
+
+    //return MAP;
+}
+
+
+function drawPoints() {
+    // Initialize the SVG layer
+    var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
+        g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+    // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
+
+
+    var circles = g.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .style("stroke", "black")
+        .style("opacity", .8)
+        .style("fill", "red")
+        .attr("x", function (d) {
+            LatLng = [d.latitude, d.longitude];
+            return map.latLngToLayerPoint(LatLng).x;
+        })
+        .attr("y", function (d) {
+            LatLng = [d.latitude, d.longitude];
+            return map.latLngToLayerPoint(LatLng).y;
+        })
+        .attr("r", 5);
+
+    map.on("viewreset", update);
+
+    //update();
+
+    function update() {
+        console.log("in");
+        circles.attr("transform",
+            function (d) {
+                LatLng = [d.latitude, d.longitude];
+                // console.log(map.latLngToLayerPoint(LatLng));
+                return "translate(" +
+                    map.latLngToLayerPoint(LatLng).x + "," +
+                    map.latLngToLayerPoint(LatLng).y + ")";
+            }
+        );
+
+        console.log(svg.node().getBBox());
+        var xSpan = d3.extent(circles.map(function (t) { return t.x; }));
+        var ySpan = d3.extent(circles.map(function (t) { return t.y; }));
+        console.log(xSpan);
+        var margin = 50;
+        svg.attr("width", xSpan[1]-xSpan[0]+margin)
+        .attr("height", ySpan[1]-ySpan[0]+margin)
+        .attr("left", xSpan[0] +"px")
+        .attr("top", ySpan[0] + "px");
+    }
+
+    MAP.on("viewreset", update);
+    update();
+}
