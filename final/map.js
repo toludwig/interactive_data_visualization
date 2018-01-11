@@ -32,11 +32,14 @@ function drawMap() {
 
 
 function drawPoints() {
-    // Radius
-    var radius = 5;
     // Initialize the SVG layer
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+    var radiusScale = d3.scaleSqrt()
+        .domain([0, 300])
+        .range([5, 30]);
+
 
     // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
     var circles = g.selectAll("circle")
@@ -44,7 +47,7 @@ function drawPoints() {
         .enter()
         .append("circle")
         .style("stroke", "black")
-        .style("opacity", .8)
+        .style("opacity", .5)
         .style("fill", "red")
         .attr("x", function (d) {
             LatLng = [d.latitude, d.longitude];
@@ -54,16 +57,15 @@ function drawPoints() {
             LatLng = [d.latitude, d.longitude];
             return MAP.latLngToLayerPoint(LatLng).y;
         })
-        .attr("r", radius);
+        .attr("r", function(d){return radiusScale(d.nkill);});
 
-    init_tooltips(circles, radius);
+    init_tooltips(circles);
 
     DATA.forEach(function(d) {
         d.LatLng = new L.LatLng( d.latitude, d.longitude)
     });
 
     var update = function () {
-        console.log("in");
         circles.attr("transform",
             function(d) {
                 return "translate("+
@@ -72,14 +74,12 @@ function drawPoints() {
             }
         );
 
-        console.log(svg.node().getBBox());
         var bbox = svg.node().getBBox();
         var margin = 50;
         svg.attr("width", bbox.width+margin)
             .attr("height", bbox.height+margin)
             .attr("left", bbox.x+"px")
             .attr("top", bbox.y+"px");
-
     };
 
     MAP.on("zoom", update);
@@ -87,7 +87,7 @@ function drawPoints() {
 }
 
 
-function init_tooltips(circles, radius) {
+function init_tooltips(circles) {
     // Tooltips: Define the div for the tooltip (transparent first, later visible)
     var div = d3.select("body")
         .append("div")
@@ -96,8 +96,9 @@ function init_tooltips(circles, radius) {
 
     // Tooltips Interactivity:
     circles.on("mouseover", function(d){
-        // make selected dot bigger
-        d3.select(this).attr("r",radius*2);
+        // make selected dot more opaque
+        d3.select(this).style("opacity", .9);
+
         // increase opacity of selected tooltip object (i.e., make visible):
         div.transition()
             .duration(0.01)
@@ -113,7 +114,7 @@ function init_tooltips(circles, radius) {
 
     // make dot small again and remove tool tips (visibility):
     circles.on("mouseout", function(d) {
-        d3.select(this).attr("r",radius);
+        d3.select(this).style("opacity", 0.5);
         div.transition()
             .duration(0.1)
             .style("opacity", 0);
