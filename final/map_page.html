@@ -23,11 +23,17 @@
             integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
             crossorigin=""></script>
 
-    <!-- D3 & JS -->
+    <!-- D3 & JS & JQUERY-->
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    
     <script src="map.js"></script>
 
     <!-- Map plot & Infos boxes -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="slider.js"></script>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
@@ -84,13 +90,19 @@
     <!-- INFOBOX: -->
     <div id="infobox">
         <h3>Infobox</h3>
+        <p>
+          <label for="amount">Date range:</label>
+          <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" size="100"/>
+        </p>
     </div>
 
     <!-- MAP: -->
     <div id="mapid" height="180px"></div>
 
     <!-- TIME SLIDER: -->
-    <div id="slider"></div>
+    <div id="slider">
+        <div id="slider-range" style = "margin-top:5%;margin-left:5%;margin-right:5%;"></div>
+    </div>
 
 </div>
 
