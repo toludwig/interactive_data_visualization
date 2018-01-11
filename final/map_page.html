@@ -27,6 +27,7 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     
     <script src="map.js"></script>
+    <script src="filter.js"></script>
 
     <!-- Map plot & Infos boxes -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -81,8 +82,9 @@
     <div id="filters">
         <h3>Filter</h3>
         <label for="success_filter">Attack succeeded:</label>
-        <select id="success_filter" onchange="crimeCATS(this)">
-            <option value="1" selected>Yes</option>
+        <select id="success_filter" onchange="success_change(this)">
+            <option value="2" selected>All</option>
+            <option value="1">Yes</option>
             <option value="0">No</option>
         </select>
     </div>

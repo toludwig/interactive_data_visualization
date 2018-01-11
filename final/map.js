@@ -59,8 +59,8 @@ function drawPoints() {
         })
         .attr("r", function(d){return radiusScale(d.nkill);});
 
-    init_tooltips(circles);
-    init_infobox(circles);
+    init_tooltips();
+    init_infobox();
 
     DATA.forEach(function(d) {
         d.LatLng = new L.LatLng( d.latitude, d.longitude)
@@ -88,7 +88,7 @@ function drawPoints() {
 }
 
 
-function init_tooltips(circles) {
+function init_tooltips() {
     // Tooltips: Define the div for the tooltip (transparent first, later visible)
     var div = d3.select("body")
         .append("div")
@@ -96,21 +96,23 @@ function init_tooltips(circles) {
         .style("opacity", 0);
 
     // Tooltips Interactivity:
+    var circles = d3.select("svg g").selectAll("circle");
+
     circles.on("mouseover", function(d){
         // make selected dot more opaque
         d3.select(this).style("opacity", .9);
 
-        // increase opacity of selected tooltip object (i.e., make visible):
-        div.transition()
-            .duration(0.01)
-            .style("opacity", .95);
-        // write out info in a box that is placed in top-right from dot
-        div.html("Location: "+ d.city + ", " + d.country_txt + "<br>"
-            + "Date: " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
-            + "Kind of attack: " + d.attacktype1_txt + "<br>"
-            + "No. killed: " + d.nkill)
-            .style("left", (d3.event.pageX+ 15) + "px")
-            .style("top", (d3.event.pageY - 100) + "px")
+    // increase opacity of selected tooltip object (i.e., make visible):
+    div.transition()
+        .duration(0.01)
+        .style("opacity", .95);
+    // write out info in a box that is placed in top-right from dot
+    div.html("Location: " + d.city + ", " + d.country_txt + "<br>"
+            +"Date:     " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
+            +"Type:     " + d.attacktype1_txt + "<br>"
+            +"Killed:   " + d.nkill)
+        .style("left", (d3.event.pageX+ 15) + "px")
+        .style("top", (d3.event.pageY - 100) + "px")
     });
 
     // make dot small again and remove tool tips (visibility):
@@ -123,12 +125,14 @@ function init_tooltips(circles) {
 
 }
 
-function init_infobox(circles){
+function init_infobox(){
     // Define div for infos of selected point
     var div = d3.select("#infobox")
         .append("div")
         .attr("class", "infos");
-        
+
+    var circles = d3.select("svg g").selectAll("circle");
+
     // Infobox Interactivity:
     circles.on("click", function(d){
         div.html("Target: " + d.target1 + "<br>" +
