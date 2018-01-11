@@ -40,27 +40,27 @@ function drawPoints() {
         .style("fill", "red")
         .attr("r", 5);
 
+    data.forEach(function(d) {
+        d.LatLng = new L.LatLng( d.latitude, d.longitude)
+    });
 
-    function update() {
+    var update = function () {
         console.log("in");
         circles.attr("transform",
             function(d) {
-                LatLng = [d.latitude, d.longitude];
                 return "translate("+
-                    map.latLngToLayerPoint(LatLng).x +","+
-                    map.latLngToLayerPoint(LatLng).y +")";
+                    MAP.latLngToLayerPoint(d.LatLng).x +","+
+                    MAP.latLngToLayerPoint(d.LatLng).y +")";
             }
         );
 
         console.log(svg.node().getBBox());
-        var xSpan = d3.extent(circles.map(function (t) { return t.x; }));
-        var ySpan = d3.extent(circles.map(function (t) { return t.y; }));
-        console.log(xSpan);
+        var bbox = svg.node().getBBox();
         var margin = 50;
-        svg.attr("width", xSpan[1]-xSpan[0]+margin)
-            .attr("height", ySpan[1]-ySpan[0]+margin)
-            .attr("left", xSpan[0] +"px")
-            .attr("top", ySpan[0] + "px");
+        svg.attr("width", bbox.width+margin)
+            .attr("height", bbox.height+margin)
+            .attr("left", bbox.x+"px")
+            .attr("top", bbox.y+"px");
     }
 
     MAP.on("viewreset", update);
