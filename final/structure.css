@@ -53,6 +53,9 @@ html, body {
     z-index: 1;
     border: 1px solid grey;
 }
+#slider-range .ui-slider-range { 
+	background: #ff0000; 
+}
 div.tooltip {
     position: absolute;
     text-align: left;
