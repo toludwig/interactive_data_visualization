@@ -53,3 +53,16 @@ html, body {
     z-index: 1;
     border: 1px solid grey;
 }
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    width: 320px;
+    height: 80px;
+    padding: 7px;
+    font-size: 14px;
+    font-family: 'Source Code Pro', monospace;
+    background: lightsteelblue;
+    /* rounded edges: */
+    border-radius: 15px;
+    pointer-events: none;
+}
