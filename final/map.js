@@ -32,6 +32,8 @@ function drawMap() {
 
 
 function drawPoints() {
+    // Radius
+    var radius = 5;
     // Initialize the SVG layer
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -52,7 +54,7 @@ function drawPoints() {
             LatLng = [d.latitude, d.longitude];
             return MAP.latLngToLayerPoint(LatLng).y;
         })
-        .attr("r", 5);
+        .attr("r", radius);
 
     DATA.forEach(function(d) {
         d.LatLng = new L.LatLng( d.latitude, d.longitude)
@@ -75,8 +77,40 @@ function drawPoints() {
             .attr("height", bbox.height+margin)
             .attr("left", bbox.x+"px")
             .attr("top", bbox.y+"px");
-    }
+    };
 
     MAP.on("viewreset", update);
     update();
+
+    // Tooltips: Define the div for the tooltip (transparent first, later visible)
+    var div = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+
+    // Tooltips Interactivity:
+    circles.on("mouseover", function(d){
+        // make selected dot bigger
+        d3.select(this).attr("r",radius*2);
+        // increase opacity of selected tooltip object (i.e., make visible):
+        div.transition()
+            .duration(0.01)
+            .style("opacity", .95);
+        // write out info in a box that is placed in top-right from dot
+        div.html("Location: "+ d.city + ", " + d.country_txt + "<br>"
+            + "Date: " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
+            + "Kind of attack: " + d.attacktype1_txt + "<br>"
+            + "No. killed: " + d.nkill)
+            .style("left", (d3.event.pageX+5) + "px")
+            .style("top", (d3.event.pageY - 40) + "px")
+    });
+
+    // make dot small again and remove tool tips (visibility):
+    circles.on("mouseout", function(d) {
+        d3.select(this).attr("r",radius);
+        div.transition()
+            .duration(0.1)
+            .style("opacity", 0);
+    });
 }
