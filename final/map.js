@@ -66,7 +66,7 @@ function drawPoints() {
         .attr("r", function(d){return radiusScale(d.nkill);});
 
     init_tooltips(circles);
-    init_infobox(circles);
+    init_infobox(circles, colorScale);
 
     DATA.forEach(function(d) {
         d.LatLng = new L.LatLng( d.latitude, d.longitude)
@@ -104,7 +104,7 @@ function init_tooltips(circles) {
     // Tooltips Interactivity:
     circles.on("mouseover", function(d){
         // make selected dot more opaque
-        d3.select(this).style("opacity", .9);
+        d3.select(this).style("stroke-width", 2);
 
         // increase opacity of selected tooltip object (i.e., make visible):
         div.transition()
@@ -121,7 +121,7 @@ function init_tooltips(circles) {
 
     // make dot small again and remove tool tips (visibility):
     circles.on("mouseout", function(d) {
-        d3.select(this).style("opacity", 0.5);
+        d3.select(this).style("stroke-width", 1);
         div.transition()
             .duration(0.1)
             .style("opacity", 0);
@@ -129,7 +129,7 @@ function init_tooltips(circles) {
 
 }
 
-function init_infobox(circles){
+function init_infobox(circles, colorScale){
     // Define div for infos of selected point
     var div = d3.select("#infobox")
         .append("div")
@@ -139,8 +139,7 @@ function init_infobox(circles){
     circles.on("click", function(d){
         //Deselect all previous circles
         d3.selectAll("#mapid svg circle")
-          .style("opacity", .5)
-          .style("fill", "red")
+          .style("fill", function(d){return colorScale(d.attacktype1)})
           .style("stroke-width", 1);
         // Color selected circles
         d3.select(this)
@@ -148,13 +147,13 @@ function init_infobox(circles){
           .style("fill", "black")
           .style("stroke", "black")
           .style("stroke-opacity", 1)
-          .style("stroke-width", 2);
+          .style("stroke-width", 4);
         // Write into Infobox
         div.html("<b>Target:</b> " + d.target1 + "<br>" +
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
                  "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
                  "<b>No. killed:</b> " + d.nkill + "<br>" + 
-                 "<b>Summary:</b> " + d.summary
+                 "<b>Summary:</b> " +"<br>" + d.summary
                  )
     });
 }
