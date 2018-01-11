@@ -46,9 +46,9 @@ function drawPoints() {
         .data(DATA)
         .enter()
         .append("circle")
-        .style("stroke", "black")
         .style("opacity", .5)
         .style("fill", "red")
+        .style("stroke", "black")
         .attr("x", function (d) {
             LatLng = [d.latitude, d.longitude];
             return MAP.latLngToLayerPoint(LatLng).x;
@@ -127,15 +127,28 @@ function init_infobox(circles){
     // Define div for infos of selected point
     var div = d3.select("#infobox")
         .append("div")
-        .attr("class", "infos");
+        .attr("class", "infos");    
         
     // Infobox Interactivity:
     circles.on("click", function(d){
-        div.html("Target: " + d.target1 + "<br>" +
-                 "Type: " + d.attacktype1_txt + "<br>" +
-                 "Weapon: " + d.weapsubtype1_txt + "<br>" +
-                 "No. killed: " + d.nkill + "<br>" + 
-                 "Summary: " + d.summary
+        //Deselect all previous circles
+        d3.selectAll("#mapid svg circle")
+          .style("opacity", .5)
+          .style("fill", "red")
+          .style("stroke-width", 1);
+        // Color selected circles
+        d3.select(this)
+          .style("opacity", 1)
+          .style("fill", "black")
+          .style("stroke", "black")
+          .style("stroke-opacity", 1)
+          .style("stroke-width", 2);
+        // Write into Infobox
+        div.html("<b>Target:</b> " + d.target1 + "<br>" +
+                 "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
+                 "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
+                 "<b>No. killed:</b> " + d.nkill + "<br>" + 
+                 "<b>Summary:</b> " + d.summary
                  )
     });
 }
