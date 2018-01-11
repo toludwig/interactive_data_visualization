@@ -9,7 +9,7 @@ function drawMap() {
 
     // Initialise Map at predefined Center ("home"):
     // "zoomControl: false" to avoid the default zoom buttons
-    var MAP= L.map('mapid', {zoomControl: false})
+    MAP = L.map('mapid', {zoomControl: false})
         .setView([home_lat, home_long], home_zoom);
 
     // Now add Zoom button in top-right corner:
@@ -17,8 +17,7 @@ function drawMap() {
 
     // Add Home Button to the map (leads you back to initial map layout):
     L.easyButton('<span>&starf;</span>', function (map) {
-        map.setView([home.lat, home.lng], home.zoom);}, 'Zoom To Home')
-        .addTo(MAP);
+        map.setView([home.lat, home.lng], home.zoom);}, 'Zoom To Home').addTo(MAP);
 
 
     // Add tile layer to map and the source of the leaflet:
@@ -29,8 +28,6 @@ function drawMap() {
         {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy;' +
         '<a href="http://cartodb.com/attributions">CartoDB</a>', maxZoom: max_zoom, minZoom: home_zoom})
         .addTo(MAP);
-
-    //return MAP;
 }
 
 
@@ -40,10 +37,8 @@ function drawPoints() {
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
     // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
-
-
     var circles = g.selectAll("circle")
-        .data(data)
+        .data(DATA)
         .enter()
         .append("circle")
         .style("stroke", "black")
@@ -51,11 +46,11 @@ function drawPoints() {
         .style("fill", "red")
         .attr("x", function (d) {
             LatLng = [d.latitude, d.longitude];
-            return map.latLngToLayerPoint(LatLng).x;
+            return MAP.latLngToLayerPoint(LatLng).x;
         })
         .attr("y", function (d) {
             LatLng = [d.latitude, d.longitude];
-            return map.latLngToLayerPoint(LatLng).y;
+            return MAP.latLngToLayerPoint(LatLng).y;
         })
         .attr("r", 5);
 
