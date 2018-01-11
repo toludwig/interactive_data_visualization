@@ -36,9 +36,15 @@ function drawPoints() {
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
+    // Make radius size dependent on the number of killed people:
     var radiusScale = d3.scaleSqrt()
         .domain([0, 300])
         .range([5, 30]);
+
+    // Make filling colour of circles depend on attacktype:
+    var colors = ["#41ab5d","#fec44f","#f03b20","#df65b0","#0570b0","#9e9ac8","#08306b","#54278f","#238443","#e7298a"];
+    var colorScale = d3.scaleOrdinal(colors);
+
 
 
     // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
@@ -46,8 +52,8 @@ function drawPoints() {
         .data(DATA)
         .enter()
         .append("circle")
-        .style("opacity", .5)
-        .style("fill", "red")
+        .style("opacity", .85)
+        .style("fill", function(d){return colorScale(d.attacktype1)})
         .style("stroke", "black")
         .attr("x", function (d) {
             LatLng = [d.latitude, d.longitude];
