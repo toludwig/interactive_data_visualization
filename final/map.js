@@ -56,6 +56,8 @@ function drawPoints() {
         })
         .attr("r", radius);
 
+    init_tooltips(circles, radius);
+
     DATA.forEach(function(d) {
         d.LatLng = new L.LatLng( d.latitude, d.longitude)
     });
@@ -77,17 +79,20 @@ function drawPoints() {
             .attr("height", bbox.height+margin)
             .attr("left", bbox.x+"px")
             .attr("top", bbox.y+"px");
+
     };
 
-    MAP.on("viewreset", update);
+    MAP.on("zoom", update);
     update();
+}
 
+
+function init_tooltips(circles, radius) {
     // Tooltips: Define the div for the tooltip (transparent first, later visible)
     var div = d3.select("body")
         .append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
-
 
     // Tooltips Interactivity:
     circles.on("mouseover", function(d){
@@ -102,8 +107,8 @@ function drawPoints() {
             + "Date: " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
             + "Kind of attack: " + d.attacktype1_txt + "<br>"
             + "No. killed: " + d.nkill)
-            .style("left", (d3.event.pageX+5) + "px")
-            .style("top", (d3.event.pageY - 40) + "px")
+            .style("left", (d3.event.pageX+ 15) + "px")
+            .style("top", (d3.event.pageY - 100) + "px")
     });
 
     // make dot small again and remove tool tips (visibility):
@@ -113,4 +118,5 @@ function drawPoints() {
             .duration(0.1)
             .style("opacity", 0);
     });
+
 }
