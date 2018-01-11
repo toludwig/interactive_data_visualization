@@ -57,6 +57,7 @@ function drawPoints() {
         .attr("r", radius);
 
     init_tooltips(circles, radius);
+    init_infobox(circles);
 
     DATA.forEach(function(d) {
         d.LatLng = new L.LatLng( d.latitude, d.longitude)
@@ -119,4 +120,21 @@ function init_tooltips(circles, radius) {
             .style("opacity", 0);
     });
 
+}
+
+function init_infobox(circles){
+    // Define div for infos of selected point
+    var div = d3.select("#infobox")
+        .append("div")
+        .attr("class", "infos");
+        
+    // Infobox Interactivity:
+    circles.on("click", function(d){
+        div.html("Target: " + d.target1 + "<br>" +
+                 "Type: " + d.attacktype1_txt + "<br>" +
+                 "Weapon: " + d.weapsubtype1_txt + "<br>" +
+                 "No. killed: " + d.nkill + "<br>" + 
+                 "Summary: " + d.summary
+                 )
+    });
 }
