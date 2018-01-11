@@ -63,7 +63,9 @@ function drawPoints() {
             LatLng = [d.latitude, d.longitude];
             return MAP.latLngToLayerPoint(LatLng).y;
         })
-        .attr("r", function(d){return radiusScale(d.nkill);});
+        .attr("r", function(d){
+            var killed = (d.nkill==NaN) ? 0 : d.nkill;
+            return radiusScale(killed);});
 
     init_tooltips(circles);
     init_infobox(circles, colorScale);
