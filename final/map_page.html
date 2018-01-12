@@ -27,6 +27,7 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     
     <script src="map.js"></script>
+    <script src="filter.js"></script>
 
     <!-- Map plot & Infos boxes -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -43,23 +44,38 @@
 
         // Global: data, map
         var DATA = [];
+        var FILTERED = DATA;
+        var FILTER =
+            {success: "all",
+             attacktype: "all",
+             target: "all"
+            };
+        var TIMERANGE; //TODO
         var MAP;
 
         function init() {
             d3.csv("data/gtd_europe.csv", function (mydata) {
                 mydata.forEach(function (d) {
                     // the + sign converts numeric string to number:
-                    d.eventid = +d.eventid;
+                    d.eventid = +d.eventid
                     d.iyear = +d.iyear;
                     d.imonth = +d.imonth;
                     d.iday = +d.iday;
+                    // location
                     d.latitude = +d.latitude;
                     d.longitude = +d.longitude;
+                    // filter criteria
                     d.success = +d.success;
+                    d.attacktype = +d.attacktype1;
+                    d.target = +d.targtype1;
+                    // other
                     d.nkill = +d.nkill;
                     d.nkillter = +d.nkillter;
-                    d.related = +d.related;
                 });
+                mydata.forEach(function(d) {
+                    d.LatLng = new L.LatLng( d.latitude, d.longitude)
+                });
+
                 DATA = mydata;
                 // Callback
                 drawMap();
@@ -82,9 +98,51 @@
     <div id="filters">
         <h3>Filter</h3>
         <label for="success_filter">Attack succeeded:</label>
-        <select id="success_filter" onchange="crimeCATS(this)">
-            <option value="1" selected>Yes</option>
+        <select id="success_filter" onchange="FILTER.success = this.value; filter();">
+            <option value="all" selected>All</option>
+            <option value="1">Yes</option>
             <option value="0">No</option>
+        </select>
+
+        <label for="attacktype_filter">Attack type:</label>
+        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; filter();">
+            <option value="all" selected>All</option>
+            <option value="0">Assassination</option>
+            <option value="1">Hijacking</option>
+            <option value="2">Kidnapping</option>
+            <option value="3">Barricade Incident</option>
+            <option value="4">Bombing/Explosion</option>
+            <option value="5">Armed Assault</option>
+            <option value="6">Unarmed Assault</option>
+            <option value="7">Facility/Infrastructure Attack</option>
+            <option value="8">Unknown</option>
+        </select>
+
+        <label for="target_filter">Target/Victim:</label>
+        <select id="target_filter" onchange="FILTER.target = this.value; filter();">
+            <option value="all" selected>All</option>
+            <option value="1">BUSINESS</option>
+            <option value="2">GOVERNMENT (GENERAL)</option>
+            <option value="3">POLICE</option>
+            <option value="4">MILITARY</option>
+            <option value="5">ABORTION RELATED</option>
+            <option value="6">AIRPORTS & AIRCRAFT</option>
+            <option value="7">GOVERNMENT (DIPLOMATIC)</option>
+            <option value="8">EDUCATIONAL INSTITUTION</option>
+            <option value="9">FOOD OR WATER SUPPLY</option>
+            <option value="10">JOURNALISTS & MEDIA</option>
+            <option value="11">MARITIME (INCLUDES PORTS AND MARITIME FACILITIES)</option>
+            <option value="12">NGO</option>
+            <option value="13">OTHER</option>
+            <option value="14">PRIVATE CITIZENS & PROPERTY</option>
+            <option value="15">RELIGIOUS FIGURES/INSTITUTIONS</option>
+            <option value="16">TELECOMMUNICATION</option>
+            <option value="17">TERRORISTS/NON-STATE MILITIAS</option>
+            <option value="18">TOURISTS</option>
+            <option value="19">TRANSPORTATION (OTHER THAN AVIATION)</option>
+            <option value="20">UNKNOWN</option>
+            <option value="21">UTILITIES</option>
+            <option value="22">VIOLENT POLITICAL PARTIES</option>
         </select>
     </div>
 
