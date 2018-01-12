@@ -56,6 +56,10 @@ html, body {
 #slider-range .ui-slider-range { 
 	background: #ff0000; 
 }
+#min, #max {
+    width: 50px;
+    text-align: center;
+}
 div.tooltip {
     position: absolute;
     text-align: left;
