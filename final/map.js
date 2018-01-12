@@ -36,19 +36,25 @@ function drawPoints() {
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
+    // Make radius size dependent on the number of killed people:
     var radiusScale = d3.scaleSqrt()
         .domain([0, 300])
         .range([5, 30]);
 
+    // Make filling colour of circles depend on attacktype:
+    var colors = ["#41ab5d","#fec44f","#f03b20","#df65b0","#0570b0","#9e9ac8","#08306b","#54278f","#238443","#e7298a"];
+    var colorScale = d3.scaleOrdinal(colors);
+
 
     // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
     var circles = g.selectAll("circle")
-        .data(DATA)
+        .data(FILTERED)
+        //.exit().remove()
         .enter()
         .append("circle")
+        .style("opacity", .85)
+        .style("fill", function(d){return colorScale(d.attacktype)})
         .style("stroke", "black")
-        .style("opacity", .5)
-        .style("fill", "red")
         .attr("x", function (d) {
             LatLng = [d.latitude, d.longitude];
             return MAP.latLngToLayerPoint(LatLng).x;
@@ -60,11 +66,7 @@ function drawPoints() {
         .attr("r", function(d){return radiusScale(d.nkill);});
 
     init_tooltips();
-    init_infobox();
-
-    DATA.forEach(function(d) {
-        d.LatLng = new L.LatLng( d.latitude, d.longitude)
-    });
+    init_infobox(colorScale);
 
     var update = function () {
         circles.attr("transform",
@@ -100,7 +102,7 @@ function init_tooltips() {
 
     circles.on("mouseover", function(d){
         // make selected dot more opaque
-        d3.select(this).style("opacity", .9);
+        d3.select(this).style("stroke-width", 2);
 
     // increase opacity of selected tooltip object (i.e., make visible):
     div.transition()
@@ -117,7 +119,7 @@ function init_tooltips() {
 
     // make dot small again and remove tool tips (visibility):
     circles.on("mouseout", function(d) {
-        d3.select(this).style("opacity", 0.5);
+        d3.select(this).style("stroke-width", 1);
         div.transition()
             .duration(0.1)
             .style("opacity", 0);
@@ -125,7 +127,7 @@ function init_tooltips() {
 
 }
 
-function init_infobox(){
+function init_infobox(colorScale){
     // Define div for infos of selected point
     var div = d3.select("#infobox")
         .append("div")
@@ -135,11 +137,23 @@ function init_infobox(){
 
     // Infobox Interactivity:
     circles.on("click", function(d){
-        div.html("Target: " + d.target1 + "<br>" +
-                 "Type: " + d.attacktype1_txt + "<br>" +
-                 "Weapon: " + d.weapsubtype1_txt + "<br>" +
-                 "No. killed: " + d.nkill + "<br>" + 
-                 "Summary: " + d.summary
+        //Deselect all previous circles
+        d3.selectAll("#mapid svg circle")
+          .style("fill", function(d){return colorScale(d.attacktype1)})
+          .style("stroke-width", 1);
+        // Color selected circles
+        d3.select(this)
+          .style("opacity", 1)
+          .style("fill", "black")
+          .style("stroke", "black")
+          .style("stroke-opacity", 1)
+          .style("stroke-width", 4);
+        // Write into Infobox
+        div.html("<b>Target:</b> " + d.target1 + "<br>" +
+                 "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
+                 "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
+                 "<b>No. killed:</b> " + d.nkill + "<br>" + 
+                 "<b>Summary:</b> " +"<br>" + d.summary
                  )
     });
 }
