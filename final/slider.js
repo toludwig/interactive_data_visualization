@@ -20,7 +20,7 @@ $(function() {
             var label = handleIndex == 1 ? '#min' : '#max';
              console.log(label);
              console.log(handleIndex);
-                $(label).html(new Date(ui.values[ 0 ] *1000).toDateString()).position({
+                $(label).html(new Date(ui.value *1000).toDateString()).position({
                     my: 'center top',
                     at: 'center bottom',
                     of: ui.handle,
@@ -32,17 +32,20 @@ $(function() {
             setTimeout(delay, 5);
         }
       });
-    $('#min').html('$' + $('#slider-range').slider('values', 0)).position({
+    //console.log($('#slider-range a:eq(0)'));
+    console.log($('#min').html(new  Date($('#slider-range').slider('values', 0)*1000).toDateString()));
+    console.log($('#slider-range a:eq(0)'));
+
+    $('#min').html(new  Date($('#slider-range').slider('values', 0)*1000).toDateString()).position({
         my: 'center top',
         at: 'center bottom',
-        of: $('#slider-range a:eq(0)'),
+        of: $('#slider-range span:eq(0)'),
         offset: "0, 10"
     });
-
-    $('#max').html( $('#lider-range').slider('values', 1)).position({
+    $('#max').html( new  Date($('#slider-range').slider('values', 1)*1000).toDateString()).position({
         my: 'center top',
         at: 'center bottom',
-        of: $('#slider-range a:eq(1)'),
+        of: $('#slider-range span:eq(1)'),
         offset: "0, 10"
     });
     $( "#coloredSlider .ui-slider-range" ).css( "background-color" );
