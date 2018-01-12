@@ -27,7 +27,6 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
     <script src="map.js"></script>
-    <script src="filter.js"></script>
 
     <!-- Map plot & Infos boxes -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -44,7 +43,6 @@
 
         // Global: data, map
         var DATA;
-        var FILTERED;
         var FILTER =
             {success: "all",
              attacktype: "all",
@@ -78,11 +76,6 @@
                 });
 
                 DATA = mydata;
-//                mydata.forEach(function(d, i){
-//                    DATA[i] = d;
-//                });
-                FILTERED = clone(DATA);
-                console.log(FILTERED);
 
                 // Callback
                 drawMap();
@@ -105,14 +98,14 @@
     <div id="filters">
         <h3>Filter</h3>
         <label for="success_filter">Attack succeeded:</label>
-        <select id="success_filter" onchange="FILTER.success = this.value; filter();">
+        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();">
             <option value="all" selected>All</option>
             <option value="1">Yes</option>
             <option value="0">No</option>
         </select>
         <br>
         <label for="attacktype_filter">Attack type:</label>
-        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; filter();">
+        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();">
             <option value="all" selected>All</option>
             <option value="0">Assassination</option>
             <option value="1">Hijacking</option>
@@ -126,7 +119,7 @@
         </select>
         <br>
         <label for="target_filter">Target/Victim:</label>
-        <select id="target_filter" onchange="FILTER.target = this.value; filter();">
+        <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();">
             <option value="all" selected>All</option>
             <option value="1">Business</option>
             <option value="2">Government (general)</option>

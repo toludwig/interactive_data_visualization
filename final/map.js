@@ -32,8 +32,6 @@ function drawMap() {
 
 
 function drawPoints() {
-    console.log(FILTERED);
-
     // Initialize the SVG layer
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -52,11 +50,15 @@ function drawPoints() {
     // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
     var circles = g.selectAll("circle");
 
-    circles.remove();
-
+    console.log(DATA);
     circles
-        .data(FILTERED)  //, function(d){ return d.eventid; })
+        .data(DATA)
         .enter()         // ENTER
+        // .filter(function (d) {
+        //     return (FILTER.success == "all" ? true : FILTER.success == d.success)
+        //         && (FILTER.attacktype == "all" ? true : FILTER.attacktype == d.attacktype)
+        //         && (FILTER.target == "all" ? true : FILTER.target == d.target);
+        // })
         .append("circle")
         .style("opacity", .85)
         .style("fill", function(d){
