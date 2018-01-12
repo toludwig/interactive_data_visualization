@@ -32,6 +32,8 @@ function drawMap() {
 
 
 function drawPoints() {
+    console.log(FILTERED);
+
     // Initialize the SVG layer
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -46,14 +48,19 @@ function drawPoints() {
     var colorScale = d3.scaleOrdinal(colors);
 
 
+
     // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
-    var circles = g.selectAll("circle")
-        .data(FILTERED)
-        //.exit().remove()
-        .enter()
+    var circles = g.selectAll("circle");
+
+    circles.remove();
+
+    circles
+        .data(FILTERED)  //, function(d){ return d.eventid; })
+        .enter()         // ENTER
         .append("circle")
         .style("opacity", .85)
-        .style("fill", function(d){return colorScale(d.attacktype)})
+        .style("fill", function(d){
+            return colorScale(d.attacktype)})
         .style("stroke", "black")
         .attr("x", function (d) {
             LatLng = [d.latitude, d.longitude];
@@ -64,8 +71,12 @@ function drawPoints() {
             return MAP.latLngToLayerPoint(LatLng).y;
         })
         .attr("r", function(d){
-            var killed = (d.nkill==NaN) ? 0 : d.nkill;
+            var killed = typeof(d.nkill) == "undefined" || d.nkill==NaN ? 0 : d.nkill;
             return radiusScale(killed);});
+        //.merge(circles);
+    //
+    // circles
+    //     .exit().remove() // EXIT
 
     init_tooltips();
     init_infobox(colorScale);
@@ -106,25 +117,25 @@ function init_tooltips() {
         // make selected dot more opaque
         d3.select(this).style("stroke-width", 2);
 
-    // increase opacity of selected tooltip object (i.e., make visible):
-    div.transition()
-        .duration(0.01)
-        .style("opacity", .95);
-    // write out info in a box that is placed in top-right from dot
-    div.html("Location: " + d.city + ", " + d.country_txt + "<br>"
-            +"Date:     " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
-            +"Type:     " + d.attacktype1_txt + "<br>"
-            +"Killed:   " + d.nkill)
-        .style("left", (d3.event.pageX+ 15) + "px")
-        .style("top", (d3.event.pageY - 100) + "px")
-    });
-
-    // make dot small again and remove tool tips (visibility):
-    circles.on("mouseout", function(d) {
-        d3.select(this).style("stroke-width", 1);
+        // increase opacity of selected tooltip object (i.e., make visible):
         div.transition()
-            .duration(0.1)
-            .style("opacity", 0);
+            .duration(0.01)
+            .style("opacity", .95);
+        // write out info in a box that is placed in top-right from dot
+        div.html("Location: " + d.city + ", " + d.country_txt + "<br>"
+                +"Date:     " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
+                +"Type:     " + d.attacktype1_txt + "<br>"
+                +"Killed:   " + d.nkill)
+            .style("left", (d3.event.pageX+ 15) + "px")
+            .style("top", (d3.event.pageY - 100) + "px")
+        });
+
+        // make dot small again and remove tool tips (visibility):
+        circles.on("mouseout", function(d) {
+            d3.select(this).style("stroke-width", 1);
+            div.transition()
+                .duration(0.1)
+                .style("opacity", 0);
     });
 
 }
@@ -141,7 +152,7 @@ function init_infobox(colorScale){
     circles.on("click", function(d){
         //Deselect all previous circles
         d3.selectAll("#mapid svg circle")
-          .style("fill", function(d){return colorScale(d.attacktype1)})
+          .style("fill", function(d, i){return colorScale(d.attacktype1)})
           .style("stroke-width", 1);
         // Color selected circles
         d3.select(this)
@@ -154,7 +165,7 @@ function init_infobox(colorScale){
         div.html("<b>Target:</b> " + d.target1 + "<br>" +
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
                  "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
-                 "<b>No. killed:</b> " + d.nkill + "<br>" + 
+                 "<b>No. killed:</b> " + d.nkill + "<br>" +
                  "<b>Summary:</b> " +"<br>" + d.summary
                  )
     });

@@ -25,7 +25,7 @@
 
     <!-- D3 & JS & JQUERY-->
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    
+
     <script src="map.js"></script>
     <script src="filter.js"></script>
 
@@ -43,7 +43,7 @@
         d3.select(window).on('load', init);
 
         // Global: data, map
-        var DATA = [];
+        var DATA;
         var FILTERED;
         var FILTER =
             {success: "all",
@@ -58,7 +58,7 @@
             d3.csv("data/gtd_europe.csv", function (mydata) {
                 mydata.forEach(function (d) {
                     // the + sign converts numeric string to number:
-                    d.eventid = +d.eventid
+                    d.eventid = +d.eventid -1;
                     d.iyear = +d.iyear;
                     d.imonth = +d.imonth;
                     d.iday = +d.iday;
@@ -78,8 +78,12 @@
                 });
 
                 DATA = mydata;
-                FILTERED = mydata;
+//                mydata.forEach(function(d, i){
+//                    DATA[i] = d;
+//                });
+                FILTERED = clone(DATA);
                 console.log(FILTERED);
+
                 // Callback
                 drawMap();
                 drawPoints();
