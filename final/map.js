@@ -32,6 +32,10 @@ function drawMap() {
 
 
 function drawPoints() {
+
+    console.log(DATA);
+    console.log(FILTER);
+
     // Initialize the SVG layer
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -48,49 +52,43 @@ function drawPoints() {
 
 
     // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
-    var circles = g.selectAll("circle");
-
-    console.log(DATA);
-    circles
+    var circles = g.selectAll("circle")
         .data(DATA)
-        .enter()         // ENTER
-        // .filter(function (d) {
-        //     return (FILTER.success == "all" ? true : FILTER.success == d.success)
-        //         && (FILTER.attacktype == "all" ? true : FILTER.attacktype == d.attacktype)
-        //         && (FILTER.target == "all" ? true : FILTER.target == d.target);
-        // })
+        .filter(function (d) {
+            return (FILTER.success == "all" || FILTER.success == d.success)
+                && (FILTER.attacktype == "all" || FILTER.attacktype == d.attacktype)
+                && (FILTER.target == "all" || FILTER.target == d.target);
+        });
+
+    console.log(circles);
+
+    circles
+        .exit().remove(); // EXIT
+
+    circles
+        .enter()
         .append("circle")
         .style("opacity", .85)
         .style("fill", function(d){
-            return colorScale(d.attacktype)})
+            return colorScale(d.attacktype);
+        })
         .style("stroke", "black")
-        .attr("x", function (d) {
-            LatLng = [d.latitude, d.longitude];
-            return MAP.latLngToLayerPoint(LatLng).x;
-        })
-        .attr("y", function (d) {
-            LatLng = [d.latitude, d.longitude];
-            return MAP.latLngToLayerPoint(LatLng).y;
-        })
         .attr("r", function(d){
-            var killed = typeof(d.nkill) == "undefined" || d.nkill==NaN ? 0 : d.nkill;
+            var killed = ((typeof(d.nkill) == "undefined") || Number.isNaN(d.nkill)) ? 0 : d.nkill;
             return radiusScale(killed);});
-        //.merge(circles);
-    //
-    // circles
-    //     .exit().remove() // EXIT
+
 
     init_tooltips();
     init_infobox(colorScale);
 
-    var update = function () {
-        circles.attr("transform",
-            function(d) {
-                return "translate("+
-                    MAP.latLngToLayerPoint(d.LatLng).x +","+
-                    MAP.latLngToLayerPoint(d.LatLng).y +")";
-            }
-        );
+    function update() {
+        g.selectAll("circle")
+            .attr("cx", function (d) {
+                return MAP.latLngToLayerPoint(d.LatLng).x;
+            })
+            .attr("cy", function (d) {
+                return MAP.latLngToLayerPoint(d.LatLng).y;
+            });
 
         var bbox = svg.node().getBBox();
         var margin = 50;
@@ -98,7 +96,7 @@ function drawPoints() {
             .attr("height", bbox.height+margin)
             .attr("left", bbox.x+"px")
             .attr("top", bbox.y+"px");
-    };
+    }
 
     MAP.on("zoom", update);
     update();
@@ -169,6 +167,6 @@ function init_infobox(colorScale){
                  "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
                  "<b>No. killed:</b> " + d.nkill + "<br>" +
                  "<b>Summary:</b> " +"<br>" + d.summary
-                 )
+                 );
     });
 }

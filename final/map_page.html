@@ -63,6 +63,7 @@
                     // location
                     d.latitude = +d.latitude;
                     d.longitude = +d.longitude;
+                    d.LatLng = new L.LatLng(d.latitude, d.longitude);
                     // filter criteria
                     d.success = +d.success;
                     d.attacktype = +d.attacktype1;
@@ -70,9 +71,6 @@
                     // other
                     d.nkill = +d.nkill;
                     d.nkillter = +d.nkillter;
-                });
-                mydata.forEach(function(d) {
-                    d.LatLng = new L.LatLng( d.latitude, d.longitude)
                 });
 
                 DATA = mydata;
