@@ -176,3 +176,4 @@ function init_infobox(){
                  );
     });
 }
+
