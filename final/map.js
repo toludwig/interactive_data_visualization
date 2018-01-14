@@ -33,8 +33,8 @@ function drawMap() {
 
 function drawPoints() {
 
-    console.log(DATA);
     console.log(FILTER);
+
 
     // Initialize the SVG layer
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
@@ -50,21 +50,15 @@ function drawPoints() {
     var colorScale = d3.scaleOrdinal(colors);
 
 
-
-    // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
     var circles = g.selectAll("circle")
-        .data(DATA);
+        // filter returns the data that are permitted by the filters
+        .data(filter());       // UPDATE
 
-    console.log(circles);
+    //console.log(circles.exit());
+    circles.exit().remove();   // EXIT
 
-    circles
-        .enter()
+    circles.enter()            // ENTER
         .append("circle")
-        .filter(function (d) {
-            return (FILTER.success == "all" || FILTER.success == d.success)
-                && (FILTER.attacktype == "all" || FILTER.attacktype == d.attacktype)
-                && (FILTER.target == "all" || FILTER.target == d.target);
-        })
         .style("opacity", .85)
         .style("fill", function(d){
             return colorScale(d.attacktype);
@@ -73,9 +67,6 @@ function drawPoints() {
         .attr("r", function(d){
             var killed = ((typeof(d.nkill) == "undefined") || Number.isNaN(d.nkill)) ? 0 : d.nkill;
             return radiusScale(killed);});
-
-    circles
-        .exit().remove(); // EXIT
 
 
 

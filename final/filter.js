@@ -1,32 +1,16 @@
 function filter() {
-    FILTERED = clone(DATA);
+    // we have to start with all data (FILTER might be more general than before)
+    var selection = DATA.slice(); // so we make a copy (empty splice)
 
-    console.log(FILTER);
-
-    for (var criterion in FILTER) {
-        var value = FILTER[criterion];
-        if (value != "all") { // Selection: All
-            for (var id=0; id < FILTERED.length; id++) {
-                if (FILTERED[id][criterion] != value){
-                    FILTERED.splice(id, 1);
-                    id--;
-                }
-            }
+    for (var id=0; id < DATA.length; id++) {
+        if(!((FILTER.success == "all" || FILTER.success == selection[id].success)
+          && (FILTER.attacktype == "all" || FILTER.attacktype == selection[id].attacktype)
+          && (FILTER.target == "all" || FILTER.target == selection[id].target)))
+        {
+            selection = selection.splice(id, 1); // copy the old selection, but leave index id out
         }
     }
 
-    console.log(FILTERED);
-
-    drawPoints();
-}
-
-
-// https://stackoverflow.com/questions/10270711/copy-associative-array-in-javascript
-function clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-    }
-    return copy;
+    console.log(selection);
+    return selection;
 }
