@@ -52,6 +52,11 @@
         var TIMERANGE; //TODO
         var MAP;
 
+        // Use custom colours:
+        var cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
+            6: "#9e9ac8", 7: "#08306b",8:"#54278f",9:"#238443"};
+
+
         function init() {
             d3.csv("data/gtd_europe.csv", function (mydata) {
                 mydata.forEach(function (d) {
@@ -67,6 +72,7 @@
                     // filter criteria
                     d.success = +d.success;
                     d.attacktype = +d.attacktype1;
+                    d.attacktype_txt = d.attacktype1_txt;
                     d.target = +d.targtype1;
                     // other
                     d.nkill = +d.nkill;
@@ -74,7 +80,6 @@
                 });
 
                 DATA = mydata;
-
                 // Callback
                 drawMap();
                 drawPoints();
@@ -103,17 +108,18 @@
         </select>
         <br>
         <label for="attacktype_filter">Attack type:</label>
+        <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
         <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();">
             <option value="all" selected>All</option>
-            <option value="0">Assassination</option>
-            <option value="1">Hijacking</option>
-            <option value="2">Kidnapping</option>
-            <option value="3">Barricade Incident</option>
-            <option value="4">Bombing/Explosion</option>
-            <option value="5">Armed Assault</option>
-            <option value="6">Unarmed Assault</option>
+            <option value="1">Assassination</option>
+            <option value="2">Armed Assault</option>
+            <option value="3">Bombing/Explosion</option>
+            <option value="4">Hijacking</option>
+            <option value="5">Hostage Taking (Barricade Incident) </option>
+            <option value="6">Hostage Taking (Kidnapping) </option>
             <option value="7">Facility/Infrastructure Attack</option>
-            <option value="8">Unknown</option>
+            <option value="8">Unarmed Assault</option>
+            <option value="9">Unknown</option>
         </select>
         <br>
         <label for="target_filter">Target/Victim:</label>
