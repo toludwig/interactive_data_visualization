@@ -30,12 +30,13 @@
     <script src="filter.js"></script>
 
 
-    <!-- Map plot & Infos boxes -->
+    <!-- Slider -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="slider.js"></script>
-    
+
+    <!-- Map plot -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
@@ -53,6 +54,11 @@
         var TIMERANGE; //TODO
         var MAP;
 
+        // Use custom colours:
+        var cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
+            6: "#9e9ac8", 7: "#08306b",8:"#54278f",9:"#238443"};
+
+
         function init() {
             d3.csv("data/gtd_europe.csv", function (mydata) {
                 mydata.forEach(function (d) {
@@ -68,6 +74,7 @@
                     // filter criteria
                     d.success = +d.success;
                     d.attacktype = +d.attacktype1;
+                    d.attacktype_txt = d.attacktype1_txt;
                     d.target = +d.targtype1;
                     // other
                     d.nkill = +d.nkill;
@@ -75,7 +82,6 @@
                 });
 
                 DATA = mydata;
-
                 // Callback
                 drawMap();
                 drawPoints();
@@ -104,17 +110,18 @@
         </select>
         <br>
         <label for="attacktype_filter">Attack type:</label>
+        <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
         <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();">
             <option value="all" selected>All</option>
-            <option value="0">Assassination</option>
-            <option value="1">Hijacking</option>
-            <option value="2">Kidnapping</option>
-            <option value="3">Barricade Incident</option>
-            <option value="4">Bombing/Explosion</option>
-            <option value="5">Armed Assault</option>
-            <option value="6">Unarmed Assault</option>
+            <option value="1">Assassination</option>
+            <option value="2">Armed Assault</option>
+            <option value="3">Bombing/Explosion</option>
+            <option value="4">Hijacking</option>
+            <option value="5">Hostage Taking (Barricade Incident) </option>
+            <option value="6">Hostage Taking (Kidnapping) </option>
             <option value="7">Facility/Infrastructure Attack</option>
-            <option value="8">Unknown</option>
+            <option value="8">Unarmed Assault</option>
+            <option value="9">Unknown</option>
         </select>
         <br>
         <label for="target_filter">Target/Victim:</label>
@@ -160,7 +167,26 @@
         <div id ="min"></div>
         <div id = "max"></div>
     </div>
-
+    
+    <!-- LEGEND: -->
+    <div id="legend">
+      <input id="toggle" type="checkbox" unchecked>
+      <label for="toggle" id="legend_lab">Legend</label>
+      <div id="expand">
+        <section>
+            <div style="background-color:#41ab5d;" class = "bullets">&nbsp;</div>&nbsp;Assassination<br>
+            <div style="background-color:#fec44f;" class = "bullets">&nbsp;</div>&nbsp;Armed Assault<br>
+            <div style="background-color:#f03b20;" class = "bullets">&nbsp;</div>&nbsp;Bombing/Explosion<br>
+            <div style="background-color:#df65b0;" class = "bullets">&nbsp;</div>&nbsp;Hijacking<br>
+            <div style="background-color:#0570b0;" class = "bullets">&nbsp;</div>&nbsp;Hostage Taking (Barricade Incident)<br>
+            <div style="background-color:#9e9ac8;" class = "bullets">&nbsp;</div>&nbsp;Hostage Taking (Kidnapping)<br>
+            <div style="background-color:#08306b;" class = "bullets">&nbsp;</div>&nbsp;Facility/Infrastructure Attack<br>
+            <div style="background-color:#54278f;" class = "bullets">&nbsp;</div>&nbsp;Unarmed Assault<br>
+            <div style="background-color:#238443;" class = "bullets">&nbsp;</div>&nbsp;Unknown<br>
+ 
+        </section>
+      </div>
+    </div>
 </div>
 
 </body>

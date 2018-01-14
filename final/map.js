@@ -43,12 +43,17 @@ function drawPoints() {
     // Make radius size dependent on the number of killed people:
     var radiusScale = d3.scaleSqrt()
         .domain([0, 300])
-        .range([5, 30]);
+        .range([6, 30]);
+
 
     // Make filling colour of circles depend on attacktype:
-    var colors = ["#41ab5d","#fec44f","#f03b20","#df65b0","#0570b0","#9e9ac8","#08306b","#54278f","#238443","#e7298a"];
-    var colorScale = d3.scaleOrdinal(colors);
+    var cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
+            6: "#9e9ac8", 7: "#08306b",8:"#54278f",9:"#238443"};
 
+
+
+    // var colors = ["#41ab5d","#fec44f","#f03b20","#df65b0","#0570b0","#9e9ac8","#08306b","#54278f","#238443","#e7298a"];
+    // var colorScale = d3.scaleOrdinal(colors);
 
     var circles = g.selectAll("circle")
         // filter returns the data that are permitted by the filters
@@ -61,7 +66,7 @@ function drawPoints() {
         .append("circle")
         .style("opacity", .85)
         .style("fill", function(d){
-            return colorScale(d.attacktype);
+            return cat_col_dic[d.attacktype];
         })
         .style("stroke", "black")
         .attr("r", function(d){
@@ -71,7 +76,7 @@ function drawPoints() {
 
 
     init_tooltips();
-    init_infobox(colorScale);
+    init_infobox();
 
     function update() {
         g.selectAll("circle")
@@ -118,7 +123,7 @@ function init_tooltips() {
                 +"Date:     " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
                 +"Type:     " + d.attacktype1_txt + "<br>"
                 +"Killed:   " + d.nkill)
-            .style("left", (d3.event.pageX+ 15) + "px")
+            .style("left", (d3.event.pageX + 15) + "px")
             .style("top", (d3.event.pageY - 100) + "px")
         });
 
@@ -126,13 +131,13 @@ function init_tooltips() {
         circles.on("mouseout", function(d) {
             d3.select(this).style("stroke-width", 1);
             div.transition()
-                .duration(0.1)
+                .duration(0.01)
                 .style("opacity", 0);
     });
-
 }
 
-function init_infobox(colorScale){
+
+function init_infobox(){
     // Define div for infos of selected point
     var div = d3.select("#infobox")
         .append("div")
@@ -144,7 +149,7 @@ function init_infobox(colorScale){
     circles.on("click", function(d){
         //Deselect all previous circles
         d3.selectAll("#mapid svg circle")
-          .style("fill", function(d, i){return colorScale(d.attacktype1)})
+          .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
           .style("stroke-width", 1);
         // Color selected circles
         d3.select(this)
@@ -162,3 +167,4 @@ function init_infobox(colorScale){
                  );
     });
 }
+

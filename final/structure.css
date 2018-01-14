@@ -48,7 +48,7 @@ html, body {
     position: absolute;
     top: 91%;
     left: 26%;
-    background: lightslategrey;
+    background: none; 
     opacity: 0.7;
     z-index: 1;
 }
@@ -59,6 +59,65 @@ html, body {
     width: 150px;
     text-align: center;
 }
+/* LEGEND */
+#legend {
+    z-index: 1;
+    top: 2%;
+    left: 26.5%;
+    position: absolute;
+}
+#toggle {
+  display: none;
+  visibility: hidden;
+}
+#toggle:checked ~ #expand {
+  height: 250px;
+}
+#toggle:checked ~ #legend_lab::before {
+  content: "-";
+}
+#legend_lab {
+    padding: 0.5em;
+    border: 1px solid #CCC;
+    color: #000;
+    background: white;
+    border-radius: 3px;
+    z-index: 1;
+}
+#legend_lab:hover {
+    background: #f3f3f3;
+}
+#legend_lab::before {
+  font-weight: bold;
+  font-size: 15px;
+  content: "+";
+  vertical-align: text-top;
+  width: 20px;
+  height: 20px;
+  margin-right: 3px;
+}
+#expand {
+    height: 0px;
+    width: 100%;
+    overflow: hidden;
+    transition: height 0.5s;
+    background: lightgrey;
+    color: #FFF;
+    border-radius: 3px;
+}
+section {
+  padding: 3%;
+}
+div.bullets {
+    width:17px; 
+    height: 17px; 
+    display: inline-block;
+    border-radius: 5px;
+
+}
+
+
+/* MAP INTERACTIVITY */
 div.tooltip {
     position: absolute;
     text-align: left;
