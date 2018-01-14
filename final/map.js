@@ -53,21 +53,18 @@ function drawPoints() {
 
     // adapt Leaflet’s API to fit D3 by implementing a custom geometric transformation
     var circles = g.selectAll("circle")
-        .data(DATA)
-        .filter(function (d) {
-            return (FILTER.success == "all" || FILTER.success == d.success)
-                && (FILTER.attacktype == "all" || FILTER.attacktype == d.attacktype)
-                && (FILTER.target == "all" || FILTER.target == d.target);
-        });
+        .data(DATA);
 
     console.log(circles);
 
     circles
-        .exit().remove(); // EXIT
-
-    circles
         .enter()
         .append("circle")
+        .filter(function (d) {
+            return (FILTER.success == "all" || FILTER.success == d.success)
+                && (FILTER.attacktype == "all" || FILTER.attacktype == d.attacktype)
+                && (FILTER.target == "all" || FILTER.target == d.target);
+        })
         .style("opacity", .85)
         .style("fill", function(d){
             return colorScale(d.attacktype);
@@ -76,6 +73,10 @@ function drawPoints() {
         .attr("r", function(d){
             var killed = ((typeof(d.nkill) == "undefined") || Number.isNaN(d.nkill)) ? 0 : d.nkill;
             return radiusScale(killed);});
+
+    circles
+        .exit().remove(); // EXIT
+
 
 
     init_tooltips();
