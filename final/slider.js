@@ -22,7 +22,7 @@ $(function() {
       step: 86400,
       values: [ new Date('2013.01.01').getTime() / 1000, new Date('2017.01.01').getTime() / 1000 ],
       slide: function (event, ui){
-         // Set handles 
+         // Set handles
          var labelHandels = function() {
             var handleIndex = $(ui.handle).index(); // gives index for selected handler
             var label = handleIndex == 1 ? '#min' : '#max'; //set between min und max handlers depending on index  

@@ -4,7 +4,7 @@ function drawMap() {
     home_lat=50;
     home_long=2;
     home_zoom=4;
-    max_zoom=19;
+    max_zoom=20;
 
 
     // Initialise Map at predefined Center ("home"):
@@ -50,7 +50,7 @@ function drawPoints() {
     var g = d3.select("svg g");
     var circles = d3.select("svg g").selectAll("circle")
         // filter() returns the data that are permitted by the filters
-        .data(filter())
+        .data(filter())    // UPDATE
         .style("opacity", .85)
         .style("fill", function(d){
             return cat_col_dic[d.attacktype];
@@ -58,11 +58,7 @@ function drawPoints() {
         .style("stroke", "black")
         .attr("r", function(d){
             var killed = ((typeof(d.nkill) == "undefined") || Number.isNaN(d.nkill)) ? 0 : d.nkill;
-            return radiusScale(killed);});    // UPDATE
-
-    //console.log(circles.size());
-    //console.log(circles.exit().size());
-    //console.log(circles.enter().size());
+            return radiusScale(killed);});
 
     circles.enter()            // ENTER
         .append("circle")
@@ -89,12 +85,16 @@ function drawPoints() {
                 return MAP.latLngToLayerPoint(d.LatLng).y;
             });
 
-        var bbox = svg.node().getBBox();
-        var margin = 50;
-        svg.attr("width", bbox.width+margin)
-            .attr("height", bbox.height+margin)
-            .attr("left", bbox.x+"px")
-            .attr("top", bbox.y+"px");
+        var circle_list = g.selectAll("circle").nodes();
+        console.log(circle_list.map(function (c) { return c.cx.baseVal.value; }));
+        var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
+        var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
+        //var bbox = svg.node().getBBox();
+        var margin = 150;
+        svg.attr("width", x_range[1] - x_range[0] +margin)
+            .attr("height", y_range[1] - y_range[0] +margin)
+            .attr("left", x_range[0] +"px")
+            .attr("top", y_range[0] +"px");
     }
 
     MAP.on("zoom", zoom_update);
@@ -147,6 +147,7 @@ function init_infobox(){
 
     var circles = d3.select("svg g").selectAll("circle");
 
+
     // Infobox Interactivity:
     circles.on("click", function(d){
         //Deselect all previous circles
@@ -177,10 +178,16 @@ function init_infobox(){
         
         
         // Write into Infobox
-        div.html("<b>Target:</b> " + d.target1 + "<br>" +
+        div.html("<b>Location:</b> " + d.city + ", " + d.country_txt + "<br>" +
+                 "<b>Date:</b> " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>" +
+                 "<b>Target:</b> " + d.target1 + "<br>" +
+                 "<b>Perpetrator:</b> " + d.terrorist + "<br>" +
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
+                 "<b>Killed:</b> " + d.nkill + "<br>" +
+                 "<b>Injured:</b> " + d.nwound + "<br>" +
+                 "<b>Target:</b> " + d.target1 + "<br>" +
                  "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
-                 "<b>No. killed:</b> " + d.nkill + "<br><br>" +
+                 "<br>" +
                  "<b>Summary:</b> " +"<br>" + d.summary
                  );
     });
