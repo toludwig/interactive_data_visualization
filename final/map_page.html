@@ -82,12 +82,12 @@
                     d.nkill = +d.nkill;
                     d.nkillter = +d.nkillter;
                     d.date = d.iyear + "/" + d.imonth + "/" + d.iday;
-                    // responsible:
-                    // responsible
-                    d.terrorist = (d.gname=="Unknown") ? "n.a." : d.gname;
-                });
+                    // perpetrator:
+                    d.terrorist = d.gname;
 
                 DATA = mydata;
+
+
                 // Callback
                 drawMap();
                 drawPoints();
@@ -130,10 +130,11 @@
             <option value="9">Unknown</option>
         </select>
         <br>
+        <!-- TARGET FILTER -->
         <label for="target_filter">Target/Victim:</label>
         <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();">
             <option value="all" selected>All</option>
-            <option value="1">Business</option>
+            <option value="1">Anarchists</option>
             <option value="2">Government (general)</option>
             <option value="3">Police</option>
             <option value="4">Military</option>
@@ -155,6 +156,36 @@
             <option value="20">Unknown</option>
             <option value="21">Utilities</option>
             <option value="22">Violent political parties</option>
+        </select>
+
+        <!-- TERRORIST FILTER -->
+        <label for="target_filter">Perpetrator:</label>
+        <select id="target_filter" onchange="FILTER.terrorist = this.value; drawPoints();">
+            <option value="all" selected>All</option>
+            <option value="1">Anarchists</option>
+            <option value="2">Anti-Immigrant extremists</option>
+            <option value="3">Anti-Muslim extremists</option>
+            <option value="4">Caucasus Emirate</option>
+            <option value="6">Caucasus Province of the Islamic State</option>
+            <option value="7">Conspiracy of Cells of Fire</option>
+            <option value="8">Cossack Separatists</option>
+            <option value="9">Dissident Republicans</option>
+            <option value="10">Donetsk People's Republic</option>
+            <option value="11">Informal Anarchist Federation</option>
+            <option value="12">Islamic State of Iraq and the Levant (ISIL)</option>
+            <option value="13">Jihadi-inspired extremists</option>
+            <option value="14">Kurdistan Workers' Party (PKK)</option>
+            <option value="15">Loyalists</option>
+            <option value="16">Luhansk People's Republic</option>
+            <option value="17">Muslim extremists</option>
+            <option value="18">Neo-Nazi extremists</option>
+            <option value="19">Oglaigh na hEireann</option>
+            <option value="20">Pro-Russia Militia</option>
+            <option value="21">Right Sector</option>
+            <option value="22">Right-wing extremists</option>
+            <option value="23">The New Irish Republican Army</option>
+            <option value="24">Ukrainian nationalists</option>
+            <option value="25">Unknown</option>
         </select>
     </div>
 
