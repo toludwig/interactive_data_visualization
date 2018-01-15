@@ -147,6 +147,7 @@ function init_infobox(){
 
     var circles = d3.select("svg g").selectAll("circle");
 
+
     // Infobox Interactivity:
     circles.on("click", function(d){
         //Deselect all previous circles
@@ -161,9 +162,12 @@ function init_infobox(){
           .style("stroke", "black")
           .style("stroke-opacity", 1)
           .style("stroke-width", 4);
+
         // Write into Infobox
         div.html("<b>Location:</b> " + d.city + ", " + d.country_txt + "<br>" +
                  "<b>Date:</b> " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>" +
+                 "<b>Target:</b> " + d.target1 + "<br>" +
+                 "<b>Perpetrator:</b> " + d.terrorist + "<br>" +
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
                  "<b>Killed:</b> " + d.nkill + "<br>" +
                  "<b>Injured:</b> " + d.nwound + "<br>" +

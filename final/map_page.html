@@ -66,9 +66,7 @@
                 mydata.forEach(function (d) {
                     // the + sign converts numeric string to number:
                     d.eventid = +d.eventid -1;
-                    //d.iyear = +d.iyear;
-                    //d.imonth = +d.imonth;
-                    //d.iday = +d.iday;
+                    d.date = d.iyear + "/" + d.imonth + "/" + d.iday;
                     // location
                     d.latitude = +d.latitude;
                     d.longitude = +d.longitude;
@@ -81,10 +79,32 @@
                     // other
                     d.nkill = +d.nkill;
                     d.nwound = +d.nwound;
-                    d.date = d.iyear + "/" + d.imonth + "/" + d.iday;
+                    // responsible
+                    d.terrorist = (d.gname=="Unknown") ? "n.a." : d.gname;
                 });
 
                 DATA = mydata;
+
+                var terrorists = DATA.map(function(d){return d.terrorist;});
+                var t_dict = {};
+                for(var i=0; i < terrorists.length; i++) {
+                    var value = terrorists[i];
+                    if (t_dict[value] == undefined)
+                        t_dict[value] = 1;
+                    else
+                        t_dict[value]++;
+                }
+
+                var items = Object.keys(t_dict).map(function(key) {
+                    return [key, t_dict[key]];
+                });
+                items.sort(function(first, second) {
+                    return second[1] - first[1];
+                });
+
+                console.log(items);
+
+
                 // Callback
                 drawMap();
                 drawPoints();
@@ -142,8 +162,9 @@
             <option value="10">Journalists & Media</option>
             <option value="11">Maritime (includes ports and maritime facilities)</option>
             <option value="12">NGO</option>
-            <option value="13">Other</option>
+            <option value="23">Other</option>
             <option value="14">Private citizens & property</option>
+            <option value="13">Refugees</option>
             <option value="15">Religious figures/institutions</option>
             <option value="16">Telecommunication</option>
             <option value="17">Terrorists/Non-state militias</option>
