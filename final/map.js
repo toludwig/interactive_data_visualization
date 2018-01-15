@@ -163,7 +163,7 @@ function init_infobox(){
           .style("stroke-width", 4);
         // Write into Infobox
         div.html("<b>Target:</b> " + d.target1 + "<br>" +
-                 "<b>Responsible:</b> " + d.terrorist + "<br>" +
+                 "<b>Perpetrator:</b> " + d.terrorist + "<br>" +
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
                  "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
                  "<b>No. killed:</b> " + d.nkill + "<br><br>" +
