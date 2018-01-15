@@ -28,14 +28,17 @@ function drawMap() {
         {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy;' +
         '<a href="http://cartodb.com/attributions">CartoDB</a>', maxZoom: max_zoom, minZoom: home_zoom})
         .addTo(MAP);
+
+
+    // Initialize the SVG layer
+    SVG = d3.select(MAP.getPanes().overlayPane).append("svg")
+        .append("g").attr("class", "leaflet-zoom-hide");
+
+
 }
 
 
 function drawPoints() {
-
-    // Initialize the SVG layer
-    var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
-        g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
     // Make radius size dependent on the number of killed people:
     var radiusScale = d3.scaleSqrt()
@@ -43,16 +46,19 @@ function drawPoints() {
         .range([6, 30]);
 
 
-    // Make filling colour of circles depend on attacktype:
-    var cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
-            6: "#9e9ac8", 7: "#08306b",8:"#54278f",9:"#238443"};
-    // var colors = ["#41ab5d","#fec44f","#f03b20","#df65b0","#0570b0","#9e9ac8","#08306b","#54278f","#238443","#e7298a"];
-    // var colorScale = d3.scaleOrdinal(colors);
-
-
-    var circles = g.selectAll("circle")
+    var svg = d3.select("svg");
+    var g = d3.select("svg g");
+    var circles = d3.select("svg g").selectAll("circle")
         // filter() returns the data that are permitted by the filters
-        .data(filter());       // UPDATE
+        .data(filter())
+        .style("opacity", .85)
+        .style("fill", function(d){
+            return cat_col_dic[d.attacktype];
+        })
+        .style("stroke", "black")
+        .attr("r", function(d){
+            var killed = ((typeof(d.nkill) == "undefined") || Number.isNaN(d.nkill)) ? 0 : d.nkill;
+            return radiusScale(killed);});    // UPDATE
 
     //console.log(circles.size());
     //console.log(circles.exit().size());
