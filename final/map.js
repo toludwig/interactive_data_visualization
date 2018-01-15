@@ -3,7 +3,7 @@ function drawMap() {
     // Center Coordinates (ca. Paris) and max. zoom:
     home_lat=50;
     home_long=2;
-    home_zoom=5;
+    home_zoom=4;
     max_zoom=20;
     bounds = new L.LatLngBounds(new L.LatLng(70, -29), new L.LatLng(32, 41));
 
