@@ -3,8 +3,8 @@ function drawMap() {
     // Center Coordinates (ca. Paris) and max. zoom:
     home_lat=50;
     home_long=2;
-    home_zoom=4;
-    max_zoom=19;
+    home_zoom=5;
+    max_zoom=20;
 
 
     // Initialise Map at predefined Center ("home"):
@@ -50,7 +50,7 @@ function drawPoints() {
     var g = d3.select("svg g");
     var circles = d3.select("svg g").selectAll("circle")
         // filter() returns the data that are permitted by the filters
-        .data(filter())
+        .data(filter())    // UPDATE
         .style("opacity", .85)
         .style("fill", function(d){
             return cat_col_dic[d.attacktype];
@@ -58,11 +58,7 @@ function drawPoints() {
         .style("stroke", "black")
         .attr("r", function(d){
             var killed = ((typeof(d.nkill) == "undefined") || Number.isNaN(d.nkill)) ? 0 : d.nkill;
-            return radiusScale(killed);});    // UPDATE
-
-    //console.log(circles.size());
-    //console.log(circles.exit().size());
-    //console.log(circles.enter().size());
+            return radiusScale(killed);});
 
     circles.enter()            // ENTER
         .append("circle")
@@ -90,7 +86,7 @@ function drawPoints() {
             });
 
         var bbox = svg.node().getBBox();
-        var margin = 50;
+        var margin = 150;
         svg.attr("width", bbox.width+margin)
             .attr("height", bbox.height+margin)
             .attr("left", bbox.x+"px")
@@ -161,10 +157,14 @@ function init_infobox(){
           .style("stroke-opacity", 1)
           .style("stroke-width", 4);
         // Write into Infobox
-        div.html("<b>Target:</b> " + d.target1 + "<br>" +
+        div.html("<b>Location:</b> " + d.city + ", " + d.country_txt + "<br>" +
+                 "<b>Date:</b> " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>" +
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
+                 "<b>Killed:</b> " + d.nkill + "<br>" +
+                 "<b>Injured:</b> " + d.nwound + "<br>" +
+                 "<b>Target:</b> " + d.target1 + "<br>" +
                  "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
-                 "<b>No. killed:</b> " + d.nkill + "<br><br>" +
+                 "<br>" +
                  "<b>Summary:</b> " +"<br>" + d.summary
                  );
     });

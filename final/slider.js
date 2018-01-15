@@ -25,7 +25,7 @@ $(function() {
       max: new Date('2017.01.01').getTime() / 1000,
       step: 86400,
       values: [ lowerbound.getTime() / 1000, upperbound.getTime() / 1000 ],
-      slide: function (event, ui){
+      stop: function (event, ui){
          // get selected dates to filter data
          lowerbound = (new Date(ui.values[ 0 ] *1000) );
          upperbound = (new Date(ui.values[ 1 ] *1000) );
