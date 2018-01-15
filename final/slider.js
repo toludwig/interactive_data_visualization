@@ -1,10 +1,6 @@
 // Here the source: https://codepen.io/2rod/pen/JtIki
 
-// Define start dates
-var lowerbound = new Date('2013.01.01');
-var upperbound = new Date('2017.01.01');
-
-// Function for right date format
+// Function for display of right date format
 function getFormattedDate(date) {
   var year = date.getFullYear();
 
@@ -24,15 +20,10 @@ $(function() {
       min: new Date('2013.01.01').getTime() / 1000,
       max: new Date('2017.01.01').getTime() / 1000,
       step: 86400,
-      values: [ lowerbound.getTime() / 1000, upperbound.getTime() / 1000 ],
+      values: [ new Date('2013.01.01').getTime() / 1000, new Date('2017.01.01').getTime() / 1000 ],
       slide: function (event, ui){
-         // get selected dates to filter data
-         lowerbound = (new Date(ui.values[ 0 ] *1000) );
-         upperbound = (new Date(ui.values[ 1 ] *1000) );
-         //drawPoints(); 
-          
          // Set handles 
-         var delay = function() {
+         var labelHandels = function() {
             var handleIndex = $(ui.handle).index(); // gives index for selected handler
             var label = handleIndex == 1 ? '#min' : '#max'; //set between min und max handlers depending on index  
                 $(label).html(getFormattedDate(new Date(ui.value *1000))).position({
@@ -40,12 +31,18 @@ $(function() {
                     at: 'center bottom',
                     of: ui.handle,
                     offset: "0, 10"
-                });
+                });  
             };
-
+          var timeSelection = function(){
+            // get selected dates to filter data
+            FILTER.lowerdate = (new Date(ui.values[ 0 ] *1000) );
+            FILTER.upperdate = (new Date(ui.values[ 1 ] *1000) ); 
+            drawPoints();
+          };
             // wait for the ui.handle to set its position
-            setTimeout(delay, 5);
-        }
+            setTimeout(labelHandels, 5); 
+            setTimeout(timeSelection, 5000);
+        }      
       });
     // Initial position of date describtion for min und max handler
     $('#min').html(getFormattedDate(new  Date($('#slider-range').slider('values', 0)*1000))).position({
