@@ -33,9 +33,6 @@ function drawMap() {
 
 function drawPoints() {
 
-    console.log(FILTER);
-
-
     // Initialize the SVG layer
     var svg = d3.select(MAP.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -49,18 +46,16 @@ function drawPoints() {
     // Make filling colour of circles depend on attacktype:
     var cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
             6: "#9e9ac8", 7: "#08306b",8:"#54278f",9:"#238443"};
-
-
-
     // var colors = ["#41ab5d","#fec44f","#f03b20","#df65b0","#0570b0","#9e9ac8","#08306b","#54278f","#238443","#e7298a"];
     // var colorScale = d3.scaleOrdinal(colors);
 
     var circles = g.selectAll("circle")
-        // filter returns the data that are permitted by the filters
+        // filter() returns the data that are permitted by the filters
         .data(filter());       // UPDATE
 
-    //console.log(circles.exit());
-    circles.exit().remove();   // EXIT
+    //console.log(circles.size());
+    //console.log(circles.exit().size());
+    //console.log(circles.enter().size());
 
     circles.enter()            // ENTER
         .append("circle")
@@ -73,12 +68,12 @@ function drawPoints() {
             var killed = ((typeof(d.nkill) == "undefined") || Number.isNaN(d.nkill)) ? 0 : d.nkill;
             return radiusScale(killed);});
 
-
+    circles.exit().remove();    // EXIT
 
     init_tooltips();
     init_infobox();
 
-    function update() {
+    function zoom_update() {
         g.selectAll("circle")
             .attr("cx", function (d) {
                 return MAP.latLngToLayerPoint(d.LatLng).x;
@@ -95,8 +90,8 @@ function drawPoints() {
             .attr("top", bbox.y+"px");
     }
 
-    MAP.on("zoom", update);
-    update();
+    MAP.on("zoom", zoom_update);
+    zoom_update();
 }
 
 
