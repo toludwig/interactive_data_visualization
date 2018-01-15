@@ -3,7 +3,7 @@ function drawMap() {
     // Center Coordinates (ca. Paris) and max. zoom:
     home_lat=50;
     home_long=2;
-    home_zoom=5;
+    home_zoom=4;
     max_zoom=20;
 
 
@@ -85,12 +85,16 @@ function drawPoints() {
                 return MAP.latLngToLayerPoint(d.LatLng).y;
             });
 
-        var bbox = svg.node().getBBox();
+        var circle_list = g.selectAll("circle").nodes();
+        console.log(circle_list.map(function (c) { return c.cx.baseVal.value; }));
+        var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
+        var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
+        //var bbox = svg.node().getBBox();
         var margin = 150;
-        svg.attr("width", bbox.width+margin)
-            .attr("height", bbox.height+margin)
-            .attr("left", bbox.x+"px")
-            .attr("top", bbox.y+"px");
+        svg.attr("width", x_range[1] - x_range[0] +margin)
+            .attr("height", y_range[1] - y_range[0] +margin)
+            .attr("left", x_range[0] +"px")
+            .attr("top", y_range[0] +"px");
     }
 
     MAP.on("zoom", zoom_update);
@@ -146,11 +150,12 @@ function init_infobox(){
     // Infobox Interactivity:
     circles.on("click", function(d){
         //Deselect all previous circles
-        d3.selectAll("#mapid svg circle")
+        d3.selectAll(".selected")
           .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
           .style("stroke-width", 1);
         // Color selected circles
         d3.select(this)
+          .attr("class", "selected")
           .style("opacity", 1)
           .style("fill", "black")
           .style("stroke", "black")

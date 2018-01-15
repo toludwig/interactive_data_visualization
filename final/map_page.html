@@ -49,9 +49,10 @@
         var FILTER =
             {success: "all",
              attacktype: "all",
-             target: "all"
+             target: "all",
+             lowerdate: new Date('2013.01.01'),
+             upperdate: new Date('2017.01.01')
             };
-        var TIMERANGE; //TODO
         var MAP;
         var SVG;
 
@@ -65,9 +66,9 @@
                 mydata.forEach(function (d) {
                     // the + sign converts numeric string to number:
                     d.eventid = +d.eventid -1;
-                    d.iyear = +d.iyear;
-                    d.imonth = +d.imonth;
-                    d.iday = +d.iday;
+                    //d.iyear = +d.iyear;
+                    //d.imonth = +d.imonth;
+                    //d.iday = +d.iday;
                     // location
                     d.latitude = +d.latitude;
                     d.longitude = +d.longitude;
@@ -80,6 +81,7 @@
                     // other
                     d.nkill = +d.nkill;
                     d.nwound = +d.nwound;
+                    d.date = d.iyear + "/" + d.imonth + "/" + d.iday;
                 });
 
                 DATA = mydata;
