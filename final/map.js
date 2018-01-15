@@ -49,6 +49,7 @@ function drawPoints() {
     // var colors = ["#41ab5d","#fec44f","#f03b20","#df65b0","#0570b0","#9e9ac8","#08306b","#54278f","#238443","#e7298a"];
     // var colorScale = d3.scaleOrdinal(colors);
 
+
     var circles = g.selectAll("circle")
         // filter() returns the data that are permitted by the filters
         .data(filter());       // UPDATE
@@ -111,7 +112,7 @@ function init_tooltips() {
 
         // increase opacity of selected tooltip object (i.e., make visible):
         div.transition()
-            .duration(0.01)
+            .duration(0.001)
             .style("opacity", .95);
         // write out info in a box that is placed in top-right from dot
         div.html("Location: " + d.city + ", " + d.country_txt + "<br>"
@@ -157,7 +158,7 @@ function init_infobox(){
         div.html("<b>Target:</b> " + d.target1 + "<br>" +
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
                  "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
-                 "<b>No. killed:</b> " + d.nkill + "<br>" +
+                 "<b>No. killed:</b> " + d.nkill + "<br><br>" +
                  "<b>Summary:</b> " +"<br>" + d.summary
                  );
     });
