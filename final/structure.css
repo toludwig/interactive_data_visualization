@@ -66,14 +66,14 @@ html, body {
     left: 26.5%;
     position: absolute;
 }
-#toggle {
+.toggle {
   display: none;
   visibility: hidden;
 }
-#toggle:checked ~ #expand {
-  height: 202px;
+#toggle1:checked ~ #expand {
+  height: 1000%;
 }
-#toggle:checked ~ #legend_lab::before {
+.toggle:checked ~ #legend_lab::before {
   content: "-";
 }
 #legend_lab {
@@ -110,7 +110,7 @@ html, body {
     z-index: -1;
 }
 section {
-  padding: 3%;
+    padding: 3%;
 }
 div.bullets {
     width:17px; 
@@ -119,6 +119,32 @@ div.bullets {
     border-radius: 5px;
 
 }
+/* ABOUT BUTTON */
+#about {
+    z-index: 1;
+    top: 2%;
+    left: 32.5%;
+    position: absolute;   
+}
+#expand_about {
+    position: absolute;
+    height: 0;
+    width: 1400%;
+    top: 100%;
+    display: inline-block;
+    overflow: hidden;
+    opacity: 0.9;
+    transition: height 0.5s;
+    background: lightslategrey;
+    color: #FFF;
+    border-radius: 10px;
+    z-index: -1;
+    overflow-y: scroll;
+}
+#toggle2:checked ~ #expand_about {
+  height: 3900%;  /* % of about box */  
+}
+
 
 
 /* MAP INTERACTIVITY */

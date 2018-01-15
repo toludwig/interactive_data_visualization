@@ -181,7 +181,7 @@
 
         <!-- TERRORIST FILTER -->
         <label for="target_filter">Perpetrator:</label>
-        <select id="target_filter" onchange="FILTER.terrorist = this.value; drawPoints();">
+        <select id="target_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
             <option value="1">Anarchists</option>
             <option value="2">Anti-Immigrant extremists</option>
@@ -228,8 +228,8 @@
     
     <!-- LEGEND: -->
     <div id="legend">
-      <input id="toggle" type="checkbox" unchecked>
-      <label for="toggle" id="legend_lab">Legend</label>
+      <input id="toggle1" type="checkbox" class="toggle" unchecked>
+      <label for="toggle1" id="legend_lab">Legend</label>
       <div id="expand">
         <section>
             <div style="background-color:#41ab5d;" class = "bullets">&nbsp;</div>&nbsp;Assassination<br>
@@ -245,6 +245,55 @@
         </section>
       </div>
     </div>
+    
+    <!-- ABOUT: -->
+    <div id="about">
+      <input id="toggle2" type="checkbox" class="toggle" unchecked>
+      <label for="toggle2" id="legend_lab">About</label>
+      <div id="expand_about">
+        <section>
+            <h2>Motivation</h2>
+            <p>The last years in Europe have been marked by an ongoing news coverage of terror attacks by Islamist terrorists
+            as well as xenophobic motivated attacks on refugee accommodations.
+            We have set out to find answers to the following questions:
+            <ol>
+                <li>Are there specific areas that suffer more often from
+                    (specific kinds of) terror attacks than others?</li>
+                <li>Are there differences in the amount of attacks, in the kind of
+                    attacks and in the concerned areas?</li>
+                <li>Which actors occur? What attacks are they responsible for?
+                    Are there changes over the years? Are they active in specific areas?</li>
+            </ol>
+            </p>
+
+
+            <h2>Data</h2>
+            <p>The Global Terrorism Database (GTD) is a database including information on
+                terrorist events around the world from 1970 to 2016. It includes data on domestic, transnational and international
+                terrorist incidents and provides relevant information, such as the date, location, weapons, target and the
+                responsible person or group if known. The global terrorism database was introduced in 2001 at the University of
+                Maryland. It is provided by the National Consortium for the Study of Terrorism and Responses to Terrorism (START)
+                which still works in close collaboration with multiple researchers from the University of Maryland.
+                The data is based on publicly available, open-source materials and can be downloaded <a
+                        href="https://www.start.umd.edu/gtd/contact/">here</a> on GTD's website.
+                Incidents have been included if they met START's definition of terrorism as an "intentional act of violence or threat of violence by a non-state actor" and at least two of the following criteria:
+            <ol>
+                <li>The violent act was aimed at attaining a political, economic, religious, or social goal</li>
+                <li>The violent act included evidence of an intention to coerce, intimidate, or convey some other message to a larger audience (or audiences) other than the immediate victims </li>
+                <li>The violent act was outside the precepts of International Humanitarian Law.</li>
+            </ol>
+            </p>
+
+            <h2>Methodology</h2>
+            <p></p>
+
+            <h2>Discussion/Conclusion</h2>
+            <p></p>
+ 
+        </section>
+      </div>
+    </div>
+    
 </div>
 
 </body>

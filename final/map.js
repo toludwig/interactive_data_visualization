@@ -5,11 +5,14 @@ function drawMap() {
     home_long=2;
     home_zoom=4;
     max_zoom=20;
+    bounds = new L.LatLngBounds(new L.LatLng(70, -29), new L.LatLng(32, 41));
 
 
     // Initialise Map at predefined Center ("home"):
     // "zoomControl: false" to avoid the default zoom buttons
-    MAP = L.map('mapid', {zoomControl: false})
+    MAP = L.map('mapid', {zoomControl: false,
+                          maxBounds: bounds,
+                          maxBoundsViscosity: 1.0})
         .setView([home_lat, home_long], home_zoom);
 
     // Now add Zoom button in top-right corner:
@@ -157,23 +160,26 @@ function init_infobox(){
         var selectedCircle = d3.select(this);
         repeat(selectedCircle);
         // Color selected circles
+        function wrapper(){
+            repeat(selectedCircle);
+        };
         function repeat(selectedCircle){
           selectedCircle
           .attr("class", "selected")
           .transition()
-          .ease(d3.easeBounce) 
-          .duration(400)
+          .ease(d3.easeLinear) 
+          .duration(600)
           .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
           .style("stroke-width", 1)
           .transition()
-          .ease(d3.easeBounce)     
-          .duration(400)
+          .ease(d3.easeLinear)     
+          .duration(100)
           .style("opacity", 1)
-          .style("fill", "black")
+          .style("fill", "white")
           .style("stroke", "black")
           .style("stroke-opacity", 1)
-          .style("stroke-width", 4)
-          .on("end", repeat(selectedCircle));
+          .style("stroke-width", 2)
+          .on("end", wrapper);
           };
         
         
