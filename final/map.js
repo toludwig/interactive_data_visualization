@@ -3,7 +3,7 @@ function drawMap() {
     // Center Coordinates (ca. Paris) and max. zoom:
     home_lat=50;
     home_long=2;
-    home_zoom=4;
+    home_zoom=5;
     max_zoom=20;
     bounds = new L.LatLngBounds(new L.LatLng(70, -29), new L.LatLng(32, 41));
 
@@ -89,7 +89,7 @@ function drawPoints() {
             });
 
         var circle_list = g.selectAll("circle").nodes();
-        console.log(circle_list.map(function (c) { return c.cx.baseVal.value; }));
+        // console.log(circle_list.map(function (c) { return c.cx.baseVal.value; }));
         var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
         var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
         //var bbox = svg.node().getBBox();

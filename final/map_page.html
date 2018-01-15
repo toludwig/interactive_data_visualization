@@ -51,7 +51,8 @@
              attacktype: "all",
              target: "all",
              lowerdate: new Date('2013.01.01'),
-             upperdate: new Date('2017.01.01')
+             upperdate: new Date('2017.01.01'),
+             terrorist: "all"
             };
         var MAP;
         var SVG;
@@ -60,6 +61,15 @@
         var cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
             6: "#9e9ac8", 7: "#08306b",8:"#54278f",9:"#238443"};
 
+        // Top perpetrator categories:
+        var terrorist_array = ["Anarchists","Anti-Immigrant extremists", "Anti-Muslim extremists",
+            "Caucasus Emirate", "Caucasus Province of the Islamic State", "Conspiracy of Cells of Fire",
+            "Cossack Separatists", "Dissident Republicans", "Donetsk People's Republic",
+            "Informal Anarchist Federation","Islamic State of Iraq and the Levant (ISIL)","Jihadi-inspired extremists",
+            "Kurdistan Workers' Party (PKK)", "Loyalists", "Luhansk People's Republic",
+            "Muslim extremists", "Neo-Nazi extremists", "Oglaigh na hEireann", "Pro-Russia Militia",
+            "Right Sector","Right-wing extremists", "The New Irish Republican Army", "Ukrainian nationalists",
+            "Unknown"];
 
         function init() {
             d3.csv("data/gtd_europe.csv", function (mydata) {
@@ -81,9 +91,12 @@
                     d.nwound = +d.nwound;
                     // perpetrator:
                     d.terrorist = d.gname;
+                    d.terrorist_grouped = (terrorist_array.includes(d.gname)) ? d.gname : "Other";
                 });
 
                 DATA = mydata;
+                console.log(DATA);
+
 
                 // NOTE just temporal code ---------------------------
                 // for counting of terrorists
@@ -104,7 +117,7 @@
                     return second[1] - first[1];
                 });
 
-                console.log(items);
+                //console.log(items);
                 //--------------------------------------------------
 
 
@@ -183,30 +196,31 @@
         <label for="target_filter">Perpetrator:</label>
         <select id="target_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
-            <option value="1">Anarchists</option>
-            <option value="2">Anti-Immigrant extremists</option>
-            <option value="3">Anti-Muslim extremists</option>
-            <option value="4">Caucasus Emirate</option>
-            <option value="6">Caucasus Province of the Islamic State</option>
-            <option value="7">Conspiracy of Cells of Fire</option>
-            <option value="8">Cossack Separatists</option>
-            <option value="9">Dissident Republicans</option>
-            <option value="10">Donetsk People's Republic</option>
-            <option value="11">Informal Anarchist Federation</option>
-            <option value="12">Islamic State of Iraq and the Levant (ISIL)</option>
-            <option value="13">Jihadi-inspired extremists</option>
-            <option value="14">Kurdistan Workers' Party (PKK)</option>
-            <option value="15">Loyalists</option>
-            <option value="16">Luhansk People's Republic</option>
-            <option value="17">Muslim extremists</option>
-            <option value="18">Neo-Nazi extremists</option>
-            <option value="19">Oglaigh na hEireann</option>
-            <option value="20">Pro-Russia Militia</option>
-            <option value="21">Right Sector</option>
-            <option value="22">Right-wing extremists</option>
-            <option value="23">The New Irish Republican Army</option>
-            <option value="24">Ukrainian nationalists</option>
-            <option value="25">Unknown</option>
+            <option value="Anarchists">Anarchists</option>
+            <option value="Anti-Immigrant extremists">Anti-Immigrant extremists</option>
+            <option value="Anti-Muslim extremists">Anti-Muslim extremists</option>
+            <option value="Caucasus Emirate">Caucasus Emirate</option>
+            <option value="Caucasus Province of the Islamic State">Caucasus Province of the Islamic State</option>
+            <option value="Conspiracy of Cells of Fire">Conspiracy of Cells of Fire</option>
+            <option value="Cossack Separatists">Cossack Separatists</option>
+            <option value="Dissident Republicans">Dissident Republicans</option>
+            <option value="Donetsk People's Republic">Donetsk People's Republic</option>
+            <option value="Informal Anarchist Federation">Informal Anarchist Federation</option>
+            <option value="Islamic State of Iraq and the Levant (ISIL)">Islamic State of Iraq and the Levant (ISIL)</option>
+            <option value="Jihadi-inspired extremists">Jihadi-inspired extremists</option>
+            <option value="Kurdistan Workers' Party (PKK)">Kurdistan Workers' Party (PKK)</option>
+            <option value="Loyalists">Loyalists</option>
+            <option value="Luhansk People's Republic">Luhansk People's Republic</option>
+            <option value="Muslim extremists">Muslim extremists</option>
+            <option value="Neo-Nazi extremists">Neo-Nazi extremists</option>
+            <option value="Oglaigh na hEireann">Oglaigh na hEireann</option>
+            <option value="Other">Other</option>
+            <option value="Pro-Russia Militia">Pro-Russia Militia</option>
+            <option value="Right Sector">Right Sector</option>
+            <option value="Right-wing extremists">Right-wing extremists</option>
+            <option value="The New Irish Republican Army">The New Irish Republican Army</option>
+            <option value="Ukrainian nationalists">Ukrainian nationalists</option>
+            <option value="Unknown">Unknown</option>
         </select>
     </div>
 
