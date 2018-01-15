@@ -32,17 +32,19 @@ $(function() {
                     of: ui.handle,
                     offset: "0, 10"
                 });  
-            };
-          var timeSelection = function(){
+            }; 
+            // wait for the ui.handle to set its position
+            setTimeout(labelHandels, 5); 
+        },
+        stop: function (event, ui){
+            var timeSelection = function(){
             // get selected dates to filter data
             FILTER.lowerdate = (new Date(ui.values[ 0 ] *1000) );
             FILTER.upperdate = (new Date(ui.values[ 1 ] *1000) ); 
             drawPoints();
-          };
-            // wait for the ui.handle to set its position
-            setTimeout(labelHandels, 5); 
-            setTimeout(timeSelection, 5000);
-        }      
+            };
+            timeSelection();
+        }
       });
     // Initial position of date describtion for min und max handler
     $('#min').html(getFormattedDate(new  Date($('#slider-range').slider('values', 0)*1000))).position({

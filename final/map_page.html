@@ -106,7 +106,7 @@
     <div id="filters">
         <h3>Filter</h3>
         <label for="success_filter">Attack succeeded:</label>
-        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();">
+        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();" style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
             <option value="1">Yes</option>
             <option value="0">No</option>
@@ -114,7 +114,7 @@
         <br>
         <label for="attacktype_filter">Attack type:</label>
         <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
-        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();">
+        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();" style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
             <option value="1">Assassination</option>
             <option value="2">Armed Assault</option>
@@ -128,7 +128,7 @@
         </select>
         <br>
         <label for="target_filter">Target/Victim:</label>
-        <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();">
+        <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();" style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
             <option value="1">Business</option>
             <option value="2">Government (general)</option>

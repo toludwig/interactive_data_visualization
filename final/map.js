@@ -150,16 +150,32 @@ function init_infobox(){
     // Infobox Interactivity:
     circles.on("click", function(d){
         //Deselect all previous circles
-        d3.selectAll("#mapid svg circle")
+        d3.selectAll(".selected") //#mapid svg circle
           .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
           .style("stroke-width", 1);
+        var selectedCircle = d3.select(this);
+        repeat(selectedCircle);
         // Color selected circles
-        d3.select(this)
+        function repeat(selectedCircle){
+          selectedCircle
+          .attr("class", "selected")
+          .transition()
+          .ease(d3.easeBounce) 
+          .duration(400)
+          .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
+          .style("stroke-width", 1)
+          .transition()
+          .ease(d3.easeBounce)     
+          .duration(400)
           .style("opacity", 1)
           .style("fill", "black")
           .style("stroke", "black")
           .style("stroke-opacity", 1)
-          .style("stroke-width", 4);
+          .style("stroke-width", 4)
+          .on("end", repeat(selectedCircle));
+          };
+        
+        
         // Write into Infobox
         div.html("<b>Target:</b> " + d.target1 + "<br>" +
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +

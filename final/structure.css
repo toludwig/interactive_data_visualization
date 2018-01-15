@@ -82,7 +82,7 @@ html, body {
     color: #000;
     background: white;
     border-radius: 5px;
-    z-index: 1;
+    z-index: 2;
 }
 #legend_lab:hover {
     background: #f3f3f3;
@@ -97,14 +97,17 @@ html, body {
   margin-right: 3px;
 }
 #expand {
-    height: 0px;
-    width: 100%;
+    position: absolute;
+    height: 0;
+    width: 450%;
+    top: 100%;
     overflow: hidden;
+    opacity: 0.8;
     transition: height 0.5s;
     background: lightslategrey;
-    opacity: 0.95;
     color: #FFF;
     border-radius: 10px;
+    z-index: -1;
 }
 section {
   padding: 3%;
@@ -116,6 +119,7 @@ div.bullets {
     border-radius: 5px;
 
 }
+
 
 /* MAP INTERACTIVITY */
 div.tooltip {
