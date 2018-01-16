@@ -5,7 +5,7 @@ function drawMap() {
     home_long=2;
     home_zoom=4;
     max_zoom=20;
-    bounds = new L.LatLngBounds(new L.LatLng(70, -29), new L.LatLng(32, 41));
+    bounds = new L.LatLngBounds(new L.LatLng(70, -29), new L.LatLng(28, 41));
 
 
     // Initialise Map at predefined Center ("home"):
@@ -121,6 +121,7 @@ function init_tooltips() {
         div.transition()
             .duration(0.001)
             .style("opacity", .95);
+
         // write out info in a box that is placed in top-right from dot
         div.html("Location: " + d.city + ", " + d.country_txt + "<br>"
                 +"Date:     " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
@@ -157,30 +158,7 @@ function init_infobox(){
             .style("stroke-width", 1)
             .attr("class", null);       // removes the .selected class from it
 
-        // Select the current one
-        d3.select(this).attr("class", "selected");
 
-        function blink(){
-            d3.select(".selected")
-              .transition()
-              .ease(d3.easeLinear)
-                .duration(600)
-                .style("opacity", 1)
-                .style("fill", "white")
-                .style("stroke", "black")
-                .style("stroke-opacity", 1)
-                .style("stroke-width", 2)
-              .transition()
-              .ease(d3.easeLinear)
-              .duration(100)
-                .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
-                .style("stroke-width", 1)
-              .on("end", blink);
-        };
-
-        blink();
-        
-        
         // Write into Infobox
         div.html("<b>Location:</b> " + d.city + ", " + d.country_txt + "<br>" +
                  "<b>Date:</b> " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>" +
@@ -194,6 +172,29 @@ function init_infobox(){
                  "<br>" +
                  "<b>Summary:</b> " +"<br>" + d.summary
                  );
+
+        // Blinking
+        d3.select(this).attr("class", "selected");
+
+        function blink(){
+            d3.select(".selected")
+                .transition()
+                .ease(d3.easeLinear)
+                .duration(600)
+                .style("opacity", 1)
+                .style("fill", "white")
+                .style("stroke", "black")
+                .style("stroke-opacity", 1)
+                .style("stroke-width", 2)
+                .transition()
+                .ease(d3.easeLinear)
+                .duration(100)
+                .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
+                .style("stroke-width", 1)
+                .on("end", blink);
+        };
+
+        blink();
     });
 }
 
