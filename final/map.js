@@ -34,7 +34,7 @@ function drawMap() {
 
 
     // Initialize the SVG layer
-    SVG = d3.select(MAP.getPanes().overlayPane).append("svg")
+    d3.select(MAP.getPanes().overlayPane).append("svg")
         .append("g").attr("class", "leaflet-zoom-hide")
         .attr("position", "relative");
 
@@ -79,7 +79,7 @@ function drawPoints() {
     circles.exit().remove();    // EXIT
 
     init_tooltips();
-    init_infobox();
+    on_click_infobox();
 
     function zoom_update() {
         g.selectAll("circle")
@@ -94,8 +94,7 @@ function drawPoints() {
         var circle_list = g.selectAll("circle").nodes();
         var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
         var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
-        var margin = 10;
-        console.log(x_range);
+        var margin = 150;
         svg.attr("width", x_range[1] - x_range[0] + 2*margin)
             .attr("height", y_range[1] - y_range[0] + 2*margin)
             .style("left", x_range[0] - margin +"px")
@@ -103,12 +102,10 @@ function drawPoints() {
         g.attr("transform", "translate(" + (-x_range[0] +margin) + "," + (-y_range[0] +margin) + ")");
     }
 
+    // react on zoom
     MAP.on("zoom", zoom_update);
-    MAP.on("move", function () {
-        console.log("move");
-        zoom_update();
-    });
 
+    // initial zoom
     zoom_update();
 }
 
@@ -151,14 +148,9 @@ function init_tooltips() {
 }
 
 
-function init_infobox(){
-    // Define div for infos of selected point
-    var div = d3.select("#infobox")
-        .append("div")
-        .attr("class", "infos");
-
+function on_click_infobox(){
+    //
     var circles = d3.select("svg g").selectAll("circle");
-
 
     // Infobox Interactivity:
     circles.on("click", function(d){
@@ -174,7 +166,6 @@ function init_infobox(){
 
         function blink(circle){
             if(circle.node().classList.contains("selected")) { // only as long as the circle is selected
-                console.log("blink");
                 d3.select(".selected")
                     .transition()
                     .ease(d3.easeLinear)
@@ -195,7 +186,9 @@ function init_infobox(){
             }
         };
 
-        // Write into Infobox
+
+        // Write infos of selected point in infobox
+        var div = d3.select("#infobox div");
         div.html("<b>Location:</b> " + d.city + ", " + d.country_txt + "<br>" +
                  "<b>Date:</b> " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>" +
                  "<b>Target:</b> " + d.target1 + "<br>" +
@@ -212,7 +205,7 @@ function init_infobox(){
 }
 
 // Build 4 circles for legend: 0, 100, 200, 300 kills
-function init_circles(){
+function init_legend(){
     var svg = d3.select("#circleSize")
 
     var circles = [{x:10, y:10, r:0, text:"0 killed"},

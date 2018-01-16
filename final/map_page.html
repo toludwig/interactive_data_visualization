@@ -44,25 +44,24 @@
     <script>
         d3.select(window).on('load', init);
 
-        // Global: data, map
+        // Global variables
         var DATA;
         var FILTER =
-            {success: "all",
+            {target:     "all",
+             terrorist:  "all",
              attacktype: "all",
-             target: "all",
-             lowerdate: new Date('2013.01.01'),
-             upperdate: new Date('2017.01.01'),
-             terrorist: "all"
+             success:    "all",
+             lowerdate:  new Date('2013.01.01'),
+             upperdate:  new Date('2017.01.01')
             };
         var MAP;
-        var SVG;
 
         // Use custom colours:
-        var cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
-            6: "#9e9ac8", 7: "#08306b",8:"#54278f",9:"#238443"};
+        const cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
+                             6:"#9e9ac8",7:"#08306b",8:"#54278f",9:"#238443"};
 
-        // Top perpetrator categories:
-        var terrorist_array = ["Anarchists","Anti-Immigrant extremists", "Anti-Muslim extremists",
+        // Top 24 perpetrator categories:
+        const terrorist_array = ["Anarchists","Anti-Immigrant extremists", "Anti-Muslim extremists",
             "Caucasus Emirate", "Caucasus Province of the Islamic State", "Conspiracy of Cells of Fire",
             "Cossack Separatists", "Dissident Republicans", "Donetsk People's Republic",
             "Informal Anarchist Federation","Islamic State of Iraq and the Levant (ISIL)","Jihadi-inspired extremists",
@@ -70,6 +69,14 @@
             "Muslim extremists", "Neo-Nazi extremists", "Oglaigh na hEireann", "Pro-Russia Militia",
             "Right Sector","Right-wing extremists", "The New Irish Republican Army", "Ukrainian nationalists",
             "Unknown"];
+
+        const targets_array = ["Anarchists", "Government (general)", "Police", "Military", "Abortion related",
+            "Airports & Aircraft", "Government (diplomatic)", "Educational institution", "Food or water supply",
+            "Journalists & Media", "Maritime (includes ports and maritime facilities)", "NGO", "Other",
+            "Private citizens & property", "Refugees", "Religious figures/institutions", "Telecommunication",
+            "Terrorists/Non-state militias", "Tourists", "Transportation (other than aviation)", "Unknown",
+            "Utilities", "Violent political parties"];
+
 
         function init() {
             d3.csv("data/gtd_europe.csv", function (mydata) {
@@ -95,20 +102,20 @@
                 });
 
                 DATA = mydata;
-                console.log(DATA);
 
 
                 // NOTE just temporal code ---------------------------
                 // for counting of terrorists
-                var terrorists = DATA.map(function(d){return d.terrorist;});
+                var targets = DATA.map(function(d){return d.target;});
                 var t_dict = {};
-                for(var i=0; i < terrorists.length; i++) {
-                    var value = terrorists[i];
+                for(var i=0; i < targets.length; i++) {
+                    var value = targets[i];
                     if (t_dict[value] == undefined)
                         t_dict[value] = 1;
                     else
                         t_dict[value]++;
                 }
+                console.log(t_dict);
 
                 var items = Object.keys(t_dict).map(function(key) {
                     return [key, t_dict[key]];
@@ -117,7 +124,7 @@
                     return second[1] - first[1];
                 });
 
-                //console.log(items);
+                console.log(items);
                 //--------------------------------------------------
 
 
@@ -125,7 +132,7 @@
                 drawMap();
                 drawPoints();
             });
-            init_circles();
+            init_legend();
         }
         
     </script>
@@ -228,6 +235,7 @@
     <!-- INFOBOX: -->
     <div id="infobox">
         <h3>Infobox</h3>
+        <div class="infos"></div>
     </div>
 
     <!-- MAP: -->
@@ -259,7 +267,7 @@
             <div style="background-color:#238443;" class = "bullets">&nbsp;</div>&nbsp;Unknown<br>
             <!-- Circle Size: -->
             <br>
-            <b>No. of killed persons:</b>
+            <b>Number of fatalities:</b>
             <svg id="circleSize" style="width: 260; height:170;"></svg>
       </div>
     </div>
@@ -302,6 +310,15 @@
             </p>
 
             <h2>Methodology</h2>
+            <h3>Data pre-processing</h3>
+            <ul>
+                <li>We restricted the time range for recent years: 01.01.2013 - 31.12.2016 (newer data not available)</li>
+                <li>only Eastern + Western Europe</li>
+                <li><b>Targets:</b> We took a closer look at the summaries of the attacks in the GTD category "Other"
+                    which turned out to be mostly <it>refugee related</it>. Therefore, we created a new category "Refugees".</li>
+                <li><b>Perpetrators:</b> We reduced the number of terrorist groups by only taking the most active ones.
+                    There are still 24 (with more than 5 attacks each) while the remaining ones are grouped in "Other".</li>
+            </ul>
             <p></p>
 
             <h2>Discussion/Conclusion</h2>

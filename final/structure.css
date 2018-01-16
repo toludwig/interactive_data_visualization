@@ -134,6 +134,7 @@ div.bullets {
     position: absolute;
     left:0;
     height: 0;
+    width: 0;
     top: 100%;
     display: inline-block;
     overflow: hidden;
@@ -147,8 +148,8 @@ div.bullets {
     padding: 0;
 }
 #toggle2:checked ~ #expand_about {
-    height: 3500%;  /* % of about box */ 
-    width: 60%;
+    height: 80vh;  /* % of about box */
+    width: 60vw;
     padding: 1%
 
 }

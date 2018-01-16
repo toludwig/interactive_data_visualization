@@ -1,8 +1,6 @@
 function filter() {
     // we have to start with all data (FILTER might be more general than before)
     var selection = DATA.slice(); // so we make a copy (empty splice)
-    console.log(DATA);
-    
 
     for (var id=0; id < selection.length; id++) {
         if(!((FILTER.success == "all" || FILTER.success == selection[id].success)
@@ -17,8 +15,6 @@ function filter() {
             id--;
         }
     }
-
-    console.log(selection);
 
     return selection;
 }
