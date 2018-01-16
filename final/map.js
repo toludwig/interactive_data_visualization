@@ -5,7 +5,7 @@ function drawMap() {
     home_long=2;
     home_zoom=4;
     max_zoom=20;
-    bounds = new L.LatLngBounds(new L.LatLng(70, -29), new L.LatLng(32, 41));
+    bounds = new L.LatLngBounds(new L.LatLng(70, -29), new L.LatLng(28, 41));
 
 
     // Initialise Map at predefined Center ("home"):
@@ -35,13 +35,16 @@ function drawMap() {
 
     // Initialize the SVG layer
     SVG = d3.select(MAP.getPanes().overlayPane).append("svg")
-        .append("g").attr("class", "leaflet-zoom-hide");
-
+        .append("g").attr("class", "leaflet-zoom-hide")
+        .attr("position", "relative");
 
 }
 
 
 function drawPoints() {
+
+    // filter() returns the data that are permitted by the filters
+    var filtered = filter();
 
     // Make radius size dependent on the number of killed people:
     var radiusScale = d3.scaleSqrt()
@@ -52,8 +55,7 @@ function drawPoints() {
     var svg = d3.select("svg");
     var g = d3.select("svg g");
     var circles = d3.select("svg g").selectAll("circle")
-        // filter() returns the data that are permitted by the filters
-        .data(filter())    // UPDATE
+        .data(filtered)    // UPDATE
         .style("opacity", .85)
         .style("fill", function(d){
             return cat_col_dic[d.attacktype];
@@ -88,17 +90,25 @@ function drawPoints() {
                 return MAP.latLngToLayerPoint(d.LatLng).y;
             });
 
+
         var circle_list = g.selectAll("circle").nodes();
         var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
         var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
-        var margin = 150;
-        svg.attr("width", x_range[1] - x_range[0] +margin)
-            .attr("height", y_range[1] - y_range[0] +margin)
-            .attr("left", x_range[0] +"px")
-            .attr("top", y_range[0] +"px");
+        var margin = 10;
+        console.log(x_range);
+        svg.attr("width", x_range[1] - x_range[0] + 2*margin)
+            .attr("height", y_range[1] - y_range[0] + 2*margin)
+            .style("left", x_range[0] - margin +"px")
+            .style("top", y_range[0] -margin +"px");
+        g.attr("transform", "translate(" + (-x_range[0] +margin) + "," + (-y_range[0] +margin) + ")");
     }
 
     MAP.on("zoom", zoom_update);
+    MAP.on("move", function () {
+        console.log("move");
+        zoom_update();
+    });
+
     zoom_update();
 }
 
@@ -158,29 +168,32 @@ function init_infobox(){
             .attr("class", null);       // removes the .selected class from it
 
         // Select the current one
-        d3.select(this).attr("class", "selected");
+        var circle = d3.select(this).attr("class", "selected");
+        blink(circle);
 
-        function blink(){
-            d3.select(".selected")
-              .transition()
-              .ease(d3.easeLinear)
-                .duration(600)
-                .style("opacity", 1)
-                .style("fill", "white")
-                .style("stroke", "black")
-                .style("stroke-opacity", 1)
-                .style("stroke-width", 2)
-              .transition()
-              .ease(d3.easeLinear)
-              .duration(100)
-                .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
-                .style("stroke-width", 1)
-              .on("end", blink);
+        function blink(circle){
+            if(circle.node().classList.contains("selected")) { // only as long as the circle is selected
+                console.log("blink");
+                d3.select(".selected")
+                    .transition()
+                    .ease(d3.easeLinear)
+                    .duration(600)
+                    .style("opacity", 1)
+                    .style("fill", "white")
+                    .style("stroke", "black")
+                    .style("stroke-opacity", 1)
+                    .style("stroke-width", 2)
+                    .transition()
+                    .ease(d3.easeLinear)
+                    .duration(600)
+                    .style("fill", function (d, i) {
+                        return cat_col_dic[d.attacktype]
+                    })
+                    .style("stroke-width", 1)
+                    .on("end", function(){blink(circle);}); // repeat for blinking
+            }
         };
 
-        blink();
-        
-        
         // Write into Infobox
         div.html("<b>Location:</b> " + d.city + ", " + d.country_txt + "<br>" +
                  "<b>Date:</b> " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>" +
