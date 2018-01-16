@@ -71,11 +71,11 @@ html, body {
     position: absolute;
 }
 .toggle {
-  display: none;
-  visibility: hidden;
+    display: none;
+    visibility: hidden;
 }
 #toggle1:checked ~ #expand {
-  height: 1000%;
+  height: 2200%;
 }
 .toggle:checked ~ #legend_lab::before {
   content: "-";
@@ -127,7 +127,7 @@ div.bullets {
 #about {
     z-index: 1;
     top: 2%;
-    left: 32.5%;
+    left: 34.5%;
     position: absolute;   
 }
 #expand_about {

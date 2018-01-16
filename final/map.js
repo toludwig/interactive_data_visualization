@@ -197,3 +197,55 @@ function init_infobox(){
     });
 }
 
+// Build 4 circles for legend: 0, 100, 200, 300 kills
+function init_circles(){
+    var svg = d3.select("#circleSize")
+
+    var circles = [{x:10, y:10, r:0, text:"0 killed"},
+                   {x:10, y:80, r:10, text:"100 killed"},
+                   {x:10, y:180, r:100, text:"200 killed"},
+                   {x:10, y:310, r:200, text:"300 killed"}];
+    var width = +svg.node().getBoundingClientRect().width;
+    var height = +svg.node().getBoundingClientRect().height;
+    
+    var radiusScale = d3.scaleSqrt()
+        .domain([0, 300])
+        .range([6, 30]);
+    var x = d3.scaleLinear()
+        .domain([0, 100])
+        .range([0, width]);
+    var y = d3.scaleLinear()
+        .domain([0, 350])
+        .range([10, height-10]);
+    
+    svg.selectAll("circle")
+       .data(circles)
+       .enter()
+       .append("circle")
+       .attr("cx", function (d) {
+                return x(d.x);
+            })
+       .attr("cy", function (d) {
+                return y(d.y);
+            })
+       .attr("r", function (d){
+                return radiusScale(d.r);
+            })
+       .style("fill", "red")
+       .style("border", "1px solid #000");
+    
+     svg.selectAll("text")
+        .data(circles)
+        .enter()
+        .append("text")
+        .text(function(d){return d.text;})
+        .attr("dx", function (d) {
+                return x(d.x)+35;
+            })
+        .attr("dy", function (d) {
+                return y(d.y)+4;
+            })
+        .style("color", "black")
+        .attr("fill", "red");
+}
+
