@@ -89,10 +89,8 @@ function drawPoints() {
             });
 
         var circle_list = g.selectAll("circle").nodes();
-        // console.log(circle_list.map(function (c) { return c.cx.baseVal.value; }));
         var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
         var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
-        //var bbox = svg.node().getBBox();
         var margin = 150;
         svg.attr("width", x_range[1] - x_range[0] +margin)
             .attr("height", y_range[1] - y_range[0] +margin)
@@ -153,34 +151,34 @@ function init_infobox(){
 
     // Infobox Interactivity:
     circles.on("click", function(d){
-        //Deselect all previous circles
-        d3.selectAll(".selected") //#mapid svg circle
-          .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
-          .style("stroke-width", 1);
-        var selectedCircle = d3.select(this);
-        repeat(selectedCircle);
-        // Color selected circles
-        function wrapper(){
-            repeat(selectedCircle);
+        // Deselect the previous circle
+        d3.select(".selected")
+            .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
+            .style("stroke-width", 1)
+            .attr("class", null);       // removes the .selected class from it
+
+        // Select the current one
+        d3.select(this).attr("class", "selected");
+
+        function blink(){
+            d3.select(".selected")
+              .transition()
+              .ease(d3.easeLinear)
+              .duration(600)
+              .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
+              .style("stroke-width", 1)
+              .transition()
+              .ease(d3.easeLinear)
+              .duration(100)
+              .style("opacity", 1)
+              .style("fill", "white")
+              .style("stroke", "black")
+              .style("stroke-opacity", 1)
+              .style("stroke-width", 2)
+              .on("end", blink);
         };
-        function repeat(selectedCircle){
-          selectedCircle
-          .attr("class", "selected")
-          .transition()
-          .ease(d3.easeLinear) 
-          .duration(600)
-          .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
-          .style("stroke-width", 1)
-          .transition()
-          .ease(d3.easeLinear)     
-          .duration(100)
-          .style("opacity", 1)
-          .style("fill", "white")
-          .style("stroke", "black")
-          .style("stroke-opacity", 1)
-          .style("stroke-width", 2)
-          .on("end", wrapper);
-          };
+
+        blink();
         
         
         // Write into Infobox
