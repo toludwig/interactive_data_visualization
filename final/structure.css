@@ -63,6 +63,7 @@ html, body {
     width: 150px;
     text-align: center;
 }
+
 /* LEGEND */
 #legend {
     z-index: 1;
@@ -149,22 +150,24 @@ div.bullets {
   height: 3900%;  /* % of about box */  
 }
 
-
-
-/* MAP INTERACTIVITY */
+/* TOOLTIPS */
 div.tooltip {
-    position: absolute;
-    text-align: left;
-    width: 320px;
-    height: 80px;
-    padding: 7px;
-    font-size: 14px;
-    font-family: 'Source Code Pro', monospace;
-    background: lightsteelblue;
+    /* make tooltip-size depend on content*/
+    display: inline-block;
+    /* padding: */
+    padding: 0.7%;
     /* rounded edges: */
-    border-radius: 15px;
-    pointer-events: none;
+    border-radius: 5%;
+    /* background colour: */
+    background: lightsteelblue;
+    /* positioned relative to the nearest positioned ancestor */
+    position: absolute;
+    /* text characteristics */
+    text-align: left;
+    font-size: 13px;
 }
+
+/* INFOBOX */
 div.infos {
     position: absolute;
     top: 14%;
