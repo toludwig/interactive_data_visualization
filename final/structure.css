@@ -69,6 +69,7 @@ html, body {
     z-index: 1;
     top: 2%;
     left: 26.5%;
+    width: 100%;
     position: absolute;
 }
 .toggle {
@@ -76,13 +77,14 @@ html, body {
     visibility: hidden;
 }
 #toggle1:checked ~ #expand {
-  height: 2200%;
+    height: 2200%;
+    padding:1%;
 }
 .toggle:checked ~ #legend_lab::before {
   content: "-";
 }
 #legend_lab {
-    padding: 0.5em;
+    padding: 0.5%;
     border: 1px solid #CCC;
     color: #000;
     background: white;
@@ -97,14 +99,10 @@ html, body {
   font-size: 15px;
   content: "+";
   vertical-align: text-top;
-  width: 20px;
-  height: 20px;
-  margin-right: 3px;
 }
 #expand {
     position: absolute;
-    height: 0;
-    width: 450%;
+    height: 0%;
     top: 100%;
     overflow: hidden;
     opacity: 0.8;
@@ -113,15 +111,15 @@ html, body {
     color: #FFF;
     border-radius: 10px;
     z-index: -1;
-}
-section {
-    padding: 3%;
+    width: 20%;
+    font-size: 2vmin;
 }
 div.bullets {
-    width:17px; 
-    height: 17px; 
+    width:5%; 
+    height: 3%; 
     display: inline-block;
     border-radius: 5px;
+    vertical-align: middle;
 
 }
 /* ABOUT BUTTON */
@@ -129,12 +127,13 @@ div.bullets {
     z-index: 1;
     top: 2%;
     left: 34.5%;
+    width: 100%;
     position: absolute;   
 }
 #expand_about {
     position: absolute;
+    left:0;
     height: 0;
-    width: 1400%;
     top: 100%;
     display: inline-block;
     overflow: hidden;
@@ -145,9 +144,13 @@ div.bullets {
     border-radius: 10px;
     z-index: -1;
     overflow-y: scroll;
+    padding: 0;
 }
 #toggle2:checked ~ #expand_about {
-  height: 3900%;  /* % of about box */  
+    height: 3500%;  /* % of about box */ 
+    width: 60%;
+    padding: 1%
+
 }
 
 /* TOOLTIPS */
