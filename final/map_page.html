@@ -3,13 +3,13 @@
     <meta charset="UTF-8">
 
     <!-- Title: -->
-    <title>Terrorist Attacks in Europe</title>
+    <title>Refugees and Terroristic Attacks in Europe</title>
 
     <!-- Import CSS style -->
     <link rel="stylesheet" href="structure.css">
 
     <!-- Shortcut icon in browser tab -->
-    <link rel="shortcut icon" href="terrorist-thug.ico"/>
+    <link rel="shortcut icon" href="World-Icon.ico"/>
 
     <!--Font-->
     <link href="https://fonts.googleapis.com/css?family=Muli|Jura" rel="stylesheet">
@@ -161,33 +161,15 @@
 <div id="container">
 
     <!-- TITLE: -->
-    <div id="headline"><h2>Violence against refugees <br> in the context of terroristic attacks in Europe 2013 - 2016</h2></div>
+    <div id="headline">
+        <p>Violence against refugees <br> in the context of terroristic attacks <br> in Europe 2013 - 2016
+        </p>
+    </div>
 
     <!-- FILTERS: -->
     <div id="filters">
         <h3>Filter</h3>
-        <label for="success_filter">Attack succeeded:</label>
-        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();" style="width:100%;max-width:90%;">
-            <option value="all" selected>All</option>
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select>
-        <br><br>
-        <label for="attacktype_filter">Attack type:</label>
-        <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
-        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();" style="width:100%;max-width:90%;">
-            <option value="all" selected>All</option>
-            <option value="1">Assassination</option>
-            <option value="2">Armed Assault</option>
-            <option value="3">Bombing/Explosion</option>
-            <option value="4">Hijacking</option>
-            <option value="5">Hostage Taking (Barricade Incident) </option>
-            <option value="6">Hostage Taking (Kidnapping) </option>
-            <option value="7">Facility/Infrastructure Attack</option>
-            <option value="8">Unarmed Assault</option>
-            <option value="9">Unknown</option>
-        </select>
-        <br><br>
+
         <!-- TARGET FILTER -->
         <label for="target_filter">Target/Victim:</label>
         <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();" style="width:100%;max-width:90%;">
@@ -205,6 +187,7 @@
         </script>
 
         <br><br>
+
         <!-- TERRORIST FILTER -->
         <label for="terrorist_filter">Perpetrator:</label>
         <select id="terrorist_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
@@ -221,12 +204,39 @@
                 selection.appendChild(el);
             }
         </script>
+
+        <br><br>
+
+        <!-- ATTACK TYPE: -->
+        <label for="attacktype_filter">Attack type:</label>
+        <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
+        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();" style="width:100%;max-width:90%;">
+            <option value="all" selected>All</option>
+            <option value="1">Assassination</option>
+            <option value="2">Armed Assault</option>
+            <option value="3">Bombing/Explosion</option>
+            <option value="4">Hijacking</option>
+            <option value="5">Hostage Taking (Barricade Incident) </option>
+            <option value="6">Hostage Taking (Kidnapping) </option>
+            <option value="7">Facility/Infrastructure Attack</option>
+            <option value="8">Unarmed Assault</option>
+            <option value="9">Unknown</option>
+        </select>
+        <br><br>
+
+        <!-- SUCCESS: -->
+        <label for="success_filter">Attack succeeded:</label>
+        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();" style="width:100%;max-width:90%;">
+            <option value="all" selected>All</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
     </div>
 
     <!-- INFOBOX: -->
     <div id="infobox">
         <h3>Infobox</h3>
-        <div class="infos"></div>
+        <div style="top: 15%;z-index: -1;position: absolute;"><i>Click circle for detailed information on an attack.</i></div>
     </div>
 
     <!-- MAP: -->
@@ -234,7 +244,7 @@
 
     <!-- TIME SLIDER: -->
     <div id="slider">
-        <h3 style = "margin-right: 0; margin-bottom:0;margin-left:3%;float:left;">Time</h3>
+    <div style = "margin-top:1.4%; left:2%;display:inline-block;position: absolute; font-size: 2.5vmin;">Time</div>
         <div id="slider-range" style = "margin-top:1.8%; margin-left:10%;margin-right:7%;"></div>
         <div id ="min"></div>
         <div id = "max"></div>
@@ -242,7 +252,7 @@
     
     <!-- LEGEND: -->
     <div id="legend">
-      <input id="toggle1" type="checkbox" class="toggle" unchecked>
+      <input id="toggle1" type="checkbox" class="toggle" checked>
       <label for="toggle1" id="legend_lab">Legend</label>
       <div id="expand">
             <!-- Filters: -->
@@ -290,8 +300,8 @@
                 responsible person or group if known. The global terrorism database was introduced in 2001 at the University of
                 Maryland. It is provided by the National Consortium for the Study of Terrorism and Responses to Terrorism (START)
                 which still works in close collaboration with multiple researchers from the University of Maryland.
-                The data is based on publicly available, open-source materials and can be downloaded <a
-                        href="https://www.start.umd.edu/gtd/contact/">here</a> on GTD's website.
+                The data is based on publicly available, open-source materials and can be downloaded
+                <a href="https://www.start.umd.edu/gtd/contact/">here</a> on GTD's website.
                 Incidents have been included if they met START's definition of terrorism as an "intentional act of violence or threat of violence by a non-state actor" and at least two of the following criteria:
             <ol>
                 <li>The violent act was aimed at attaining a political, economic, religious, or social goal</li>
@@ -306,7 +316,9 @@
                 <li>We restricted the time range for recent years: 01.01.2013 - 31.12.2016 (newer data not available)</li>
                 <li>only Eastern + Western Europe</li>
                 <li><b>Targets:</b> We took a closer look at the summaries of the attacks in the GTD category "Other"
-                    which turned out to be mostly <it>refugee related</it>. Therefore, we created a new category "Refugees".</li>
+                    which turned out to be mostly <it>refugee related</it>. Therefore, we created a new category "Refugees".
+                    Certain other categories from GDT were merged to reduce the complexity of the filters.
+                </li>
                 <li><b>Perpetrators:</b> We reduced the number of terrorist groups by only taking the most active ones.
                     There are still 24 (with more than 5 attacks each) while the remaining ones are grouped in "Other".</li>
             </ul>

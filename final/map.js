@@ -2,10 +2,10 @@ function drawMap() {
 
     // Center Coordinates (ca. Paris) and max. zoom:
     home_lat=50;
-    home_long=2;
+    home_long=-20;
     home_zoom=4;
     max_zoom=20;
-    bounds = new L.LatLngBounds(new L.LatLng(70, -29), new L.LatLng(28, 41));
+    bounds = new L.LatLngBounds(new L.LatLng(70, -80), new L.LatLng(28, 36));
 
 
     // Initialise Map at predefined Center ("home"):
@@ -188,7 +188,14 @@ function on_click_infobox(){
 
 
         // Write infos of selected point in infobox
-        var div = d3.select("#infobox div");
+        var div = d3.select("#infobox div")
+                    .attr("z-index", 20)
+                    .attr("position", "absolute")
+                    .style("overflow-y", "scroll")
+                    .style("right", "1%")
+                    .style("bottom", "1%")
+                    .style("left", "8%");
+
         div.html("<b>Location:</b> " + d.city + ", " + d.country_txt + "<br>" +
                  "<b>Date:</b> " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>" +
                  "<b>Target:</b> " + d.target1 + "<br>" +
@@ -196,7 +203,7 @@ function on_click_infobox(){
                  "<b>Type:</b> " + d.attacktype1_txt + "<br>" +
                  "<b>Killed:</b> " + d.nkill + "<br>" +
                  "<b>Injured:</b> " + d.nwound + "<br>" +
-                 "<b>Target:</b> " + d.target1 + "<br>" +
+                 "<b>Specific Target:</b> " + d.target1 + "<br>" +
                  "<b>Weapon:</b> " + d.weapsubtype1_txt + "<br>" +
                  "<br>" +
                  "<b>Summary:</b> " +"<br>" + d.summary
