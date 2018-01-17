@@ -58,7 +58,7 @@ function drawPoints() {
         .data(filtered)    // UPDATE
         .style("opacity", .85)
         .style("fill", function(d){
-            return cat_col_dic[d.attacktype];
+            return colors[d.attacktype-1];
         })
         .style("stroke", "black")
         .attr("r", function(d){
@@ -69,7 +69,7 @@ function drawPoints() {
         .append("circle")
         .style("opacity", .85)
         .style("fill", function(d){
-            return cat_col_dic[d.attacktype];
+            return colors[d.attacktype-1];
         })
         .style("stroke", "black")
         .attr("r", function(d){
@@ -156,7 +156,7 @@ function on_click_infobox(){
     circles.on("click", function(d){
         // Deselect the previous circle
         d3.select(".selected")
-            .style("fill", function(d, i){return cat_col_dic[d.attacktype]})
+            .style("fill", function(d, i){return colors[d.attacktype-1]})
             .style("stroke-width", 1)
             .attr("class", null);       // removes the .selected class from it
 
@@ -178,8 +178,8 @@ function on_click_infobox(){
                     .transition()
                     .ease(d3.easeLinear)
                     .duration(600)
-                    .style("fill", function (d, i) {
-                        return cat_col_dic[d.attacktype]
+                    .style("fill", function (d) {
+                        return colors[d.attacktype-1]
                     })
                     .style("stroke-width", 1)
                     .on("end", function(){blink(circle);}); // repeat for blinking
@@ -206,7 +206,7 @@ function on_click_infobox(){
 
 // Build 4 circles for legend: 0, 100, 200, 300 kills
 function init_legend(){
-    var svg = d3.select("#circleSize")
+    var svg = d3.select("#circleSize");
 
     var circles = [{x:10, y:10, r:0, text:"0 killed"},
                    {x:10, y:80, r:10, text:"100 killed"},
