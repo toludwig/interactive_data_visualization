@@ -25,7 +25,6 @@ html, body {
 }
 #filters, #infobox, #headline {
     width: 24%;
-    height: 45%;
     position: absolute;
     left: 0;
     background: black;
@@ -45,10 +44,14 @@ html, body {
 }
 
 #infobox {
-    top: 55%;
+    top: 45%;
+    height: 55%;
+
 }
 #filters {
     top: 10%;
+    height: 35%;
+
 }
 #slider {
     width: 74%;
@@ -175,14 +178,4 @@ div.tooltip {
     text-align: left;
     font-size: 80%;
     opacity: 0.2;
-}
-
-/* INFOBOX */
-div.infos {
-    position: absolute;
-    top: 14%;
-    left: 8%;
-    right: 1%;
-    bottom: 1%;
-    overflow-y: scroll;
 }
