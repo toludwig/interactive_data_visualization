@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="terrorist-thug.ico"/>
 
     <!--Font-->
-    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli|Jura" rel="stylesheet">
 
     <!-- Leaflet CSS and Javascript file -->
     <!-- Check out http://leafletjs.com/examples/quick-start/ for an introduction on using leaflet: -->
@@ -22,6 +22,9 @@
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
             integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
             crossorigin=""></script>
+
+    <!-- colors -->
+
 
     <!-- D3 & JS & JQUERY-->
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -56,9 +59,19 @@
             };
         var MAP;
 
-        // Use custom colours:
-        const cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0",
-                             6:"#9e9ac8",7:"#08306b",8:"#54278f",9:"#238443"};
+        // Use custom colours based on http://vrl.cs.brown.edu/color:
+        //const old_cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0", 6:"#9e9ac8",7:"#08306b",8:"#54278f",9:"#238443"};
+
+        //const cat_col_dic = {1:"#9e0142",2:"#d53e4f",3:"#f46d43",4:"#fdae61",5:"#fee08b", 6:"#deebf7",7:"#66c2a5",8:"#3288bd",9:"#5e4fa2"};
+
+        const colors =
+
+            //original ["#903235", "#c0f442", "#1c4c5e", "#fec44f", "#389eaa", "#38091c", "#b9dcca", "#f3614d","#252525"]
+                ["#903235", "#c0f442", "#1c4c5e", "#fde0dd", "#389eaa", "#38091c", "#b9dcca", "#f3614d","#252525"]
+
+
+
+        ;
 
         // Top 24 perpetrator categories:
         const terrorist_array = ["Anarchists","Anti-Immigrant extremists", "Anti-Muslim extremists",
@@ -155,7 +168,7 @@
             <option value="1">Yes</option>
             <option value="0">No</option>
         </select>
-        <br>
+        <br><br>
         <label for="attacktype_filter">Attack type:</label>
         <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
         <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();" style="width:100%;max-width:90%;">
@@ -170,7 +183,7 @@
             <option value="8">Unarmed Assault</option>
             <option value="9">Unknown</option>
         </select>
-        <br>
+        <br><br>
         <!-- TARGET FILTER -->
         <label for="target_filter">Target/Victim:</label>
         <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();" style="width:100%;max-width:90%;">
@@ -199,7 +212,7 @@
             <option value="21">Utilities</option>
             <option value="22">Violent political parties</option>
         </select>
-
+        <br><br>
         <!-- TERRORIST FILTER -->
         <label for="target_filter">Perpetrator:</label>
         <select id="target_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
