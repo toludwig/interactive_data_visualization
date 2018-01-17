@@ -31,6 +31,7 @@
 
     <script src="map.js"></script>
     <script src="filter.js"></script>
+    <script src="numbers.js"></script>
 
 
     <!-- Slider -->
@@ -83,13 +84,11 @@
             "Right Sector","Right-wing extremists", "The New Irish Republican Army", "Ukrainian nationalists",
             "Unknown"];
 
-        const targets_array = ["Anarchists", "Government (general)", "Police", "Military", "Abortion related",
-            "Airports & Aircraft", "Government (diplomatic)", "Educational institution", "Food or water supply",
-            "Journalists & Media", "Maritime (includes ports and maritime facilities)", "NGO", "Other",
-            "Private citizens & property", "Refugees", "Religious figures/institutions", "Telecommunication",
-            "Terrorists/Non-state militias", "Tourists", "Transportation (other than aviation)", "Unknown",
-            "Utilities", "Violent political parties"];
-
+        const targets_array = ["Government", "Police and Military",
+            "Educational institution", "Food/water/energy supply",
+            "Journalists & Media and Telecommunication", "NGO", "Private citizens and Business",
+            "Refugees", "Religious figures/institutions",
+            "Non-state militias", "Transportation", "Unknown"];
 
         function init() {
             d3.csv("data/gtd_europe.csv", function (mydata) {
@@ -137,13 +136,18 @@
                     return second[1] - first[1];
                 });
 
+
                 console.log(items);
+                console.log(targets_array);
                 //--------------------------------------------------
 
 
-                // Callback
+                // draw map + content
                 drawMap();
                 drawPoints();
+
+                // TODO TEST code
+                count_all();
             });
             init_legend();
         }
@@ -188,61 +192,35 @@
         <label for="target_filter">Target/Victim:</label>
         <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();" style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
-            <option value="1">Anarchists</option>
-            <option value="2">Government (general)</option>
-            <option value="3">Police</option>
-            <option value="4">Military</option>
-            <option value="5">Abortion related</option>
-            <option value="6">Airports & Aircraft</option>
-            <option value="7">Government (diplomatic)</option>
-            <option value="8">Educational institution</option>
-            <option value="9">Food or water supply</option>
-            <option value="10">Journalists & Media</option>
-            <option value="11">Maritime (includes ports and maritime facilities)</option>
-            <option value="12">NGO</option>
-            <option value="23">Other</option>
-            <option value="14">Private citizens & property</option>
-            <option value="13">Refugees</option>
-            <option value="15">Religious figures/institutions</option>
-            <option value="16">Telecommunication</option>
-            <option value="17">Terrorists/Non-state militias</option>
-            <option value="18">Tourists</option>
-            <option value="19">Transportation (other than aviation)</option>
-            <option value="20">Unknown</option>
-            <option value="21">Utilities</option>
-            <option value="22">Violent political parties</option>
         </select>
+
+        <script>
+            var selection = document.getElementById("target_filter");
+            for(var i=0; i < targets_array.length; i++) {
+                var el = document.createElement("option");
+                el.textContent = targets_array[i];
+                el.value = i;
+                selection.appendChild(el);
+            }
+        </script>
+
         <br><br>
         <!-- TERRORIST FILTER -->
-        <label for="target_filter">Perpetrator:</label>
-        <select id="target_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
+        <label for="terrorist_filter">Perpetrator:</label>
+        <select id="terrorist_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
-            <option value="Anarchists">Anarchists</option>
-            <option value="Anti-Immigrant extremists">Anti-Immigrant extremists</option>
-            <option value="Anti-Muslim extremists">Anti-Muslim extremists</option>
-            <option value="Caucasus Emirate">Caucasus Emirate</option>
-            <option value="Caucasus Province of the Islamic State">Caucasus Province of the Islamic State</option>
-            <option value="Conspiracy of Cells of Fire">Conspiracy of Cells of Fire</option>
-            <option value="Cossack Separatists">Cossack Separatists</option>
-            <option value="Dissident Republicans">Dissident Republicans</option>
-            <option value="Donetsk People's Republic">Donetsk People's Republic</option>
-            <option value="Informal Anarchist Federation">Informal Anarchist Federation</option>
-            <option value="Islamic State of Iraq and the Levant (ISIL)">Islamic State of Iraq and the Levant (ISIL)</option>
-            <option value="Jihadi-inspired extremists">Jihadi-inspired extremists</option>
-            <option value="Kurdistan Workers' Party (PKK)">Kurdistan Workers' Party (PKK)</option>
-            <option value="Loyalists">Loyalists</option>
-            <option value="Luhansk People's Republic">Luhansk People's Republic</option>
-            <option value="Muslim extremists">Muslim extremists</option>
-            <option value="Neo-Nazi extremists">Neo-Nazi extremists</option>
-            <option value="Oglaigh na hEireann">Oglaigh na hEireann</option>
-            <option value="Other">Other</option>
-            <option value="Pro-Russia Militia">Pro-Russia Militia</option>
-            <option value="Right Sector">Right Sector</option>
-            <option value="Right-wing extremists">Right-wing extremists</option>
-            <option value="The New Irish Republican Army">The New Irish Republican Army</option>
-            <option value="Ukrainian nationalists">Ukrainian nationalists</option>
-            <option value="Unknown">Unknown</option>
+            <option value="other">Other</option>
         </select>
+
+        <script>
+            var selection = document.getElementById("terrorist_filter");
+            for(var i=0; i < terrorist_array.length; i++) {
+                var el = document.createElement("option");
+                el.textContent = terrorist_array[i];
+                el.value = i;
+                selection.appendChild(el);
+            }
+        </script>
     </div>
 
     <!-- INFOBOX: -->

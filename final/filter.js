@@ -7,8 +7,8 @@ function filter() {
           && (FILTER.attacktype == "all" || FILTER.attacktype == selection[id].attacktype)
           && (FILTER.target == "all" || FILTER.target == selection[id].target)
           && (FILTER.terrorist == "all" || FILTER.terrorist == selection[id].terrorist_grouped)
-          && (FILTER.lowerdate == new Date('2013.01.01') || FILTER.lowerdate <= new Date(selection[id].date))
-          && (FILTER.upperdate == new Date('2017.01.01') || FILTER.upperdate >= new Date(selection[id].date))
+          && (FILTER.lowerdate <= new Date(selection[id].date))
+          && (FILTER.upperdate >= new Date(selection[id].date))
           ))        
         {
             selection.splice(id, 1); // copy the old selection, but leave index id out
