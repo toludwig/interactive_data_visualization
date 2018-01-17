@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
 
     <!-- Title: -->
-    <title>Terrorist Attacks in Europe</title>
+    <title>Refugees and Terroristic Attacks in Europe</title>
 
     <!-- Import CSS style -->
     <link rel="stylesheet" href="structure.css">
@@ -157,33 +157,15 @@
 <div id="container">
 
     <!-- TITLE: -->
-    <div id="headline"><h2>Violence against refugees <br> in the context of terroristic attacks in Europe 2013 - 2016</h2></div>
+    <div id="headline">
+        <p>Violence against refugees <br> in the context of terroristic attacks <br> in Europe 2013 - 2016
+        </p>
+    </div>
 
     <!-- FILTERS: -->
     <div id="filters">
         <h3>Filter</h3>
-        <label for="success_filter">Attack succeeded:</label>
-        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();" style="width:100%;max-width:90%;">
-            <option value="all" selected>All</option>
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select>
-        <br><br>
-        <label for="attacktype_filter">Attack type:</label>
-        <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
-        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();" style="width:100%;max-width:90%;">
-            <option value="all" selected>All</option>
-            <option value="1">Assassination</option>
-            <option value="2">Armed Assault</option>
-            <option value="3">Bombing/Explosion</option>
-            <option value="4">Hijacking</option>
-            <option value="5">Hostage Taking (Barricade Incident) </option>
-            <option value="6">Hostage Taking (Kidnapping) </option>
-            <option value="7">Facility/Infrastructure Attack</option>
-            <option value="8">Unarmed Assault</option>
-            <option value="9">Unknown</option>
-        </select>
-        <br><br>
+
         <!-- TARGET FILTER -->
         <label for="target_filter">Target/Victim:</label>
         <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();" style="width:100%;max-width:90%;">
@@ -213,6 +195,7 @@
             <option value="22">Violent political parties</option>
         </select>
         <br><br>
+
         <!-- TERRORIST FILTER -->
         <label for="target_filter">Perpetrator:</label>
         <select id="target_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
@@ -242,6 +225,32 @@
             <option value="The New Irish Republican Army">The New Irish Republican Army</option>
             <option value="Ukrainian nationalists">Ukrainian nationalists</option>
             <option value="Unknown">Unknown</option>
+        </select>
+        <br><br>
+
+        <!-- ATTACK TYPE: -->
+        <label for="attacktype_filter">Attack type:</label>
+        <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
+        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();" style="width:100%;max-width:90%;">
+            <option value="all" selected>All</option>
+            <option value="1">Assassination</option>
+            <option value="2">Armed Assault</option>
+            <option value="3">Bombing/Explosion</option>
+            <option value="4">Hijacking</option>
+            <option value="5">Hostage Taking (Barricade Incident) </option>
+            <option value="6">Hostage Taking (Kidnapping) </option>
+            <option value="7">Facility/Infrastructure Attack</option>
+            <option value="8">Unarmed Assault</option>
+            <option value="9">Unknown</option>
+        </select>
+        <br><br>
+
+        <!-- SUCCESS: -->
+        <label for="success_filter">Attack succeeded:</label>
+        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();" style="width:100%;max-width:90%;">
+            <option value="all" selected>All</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
         </select>
     </div>
 
