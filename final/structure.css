@@ -195,8 +195,8 @@ div.label {
     padding: 0;
 }
 #toggle3:checked ~ #expand_numbers {
-    height: 80vh;  
-    width: 60vw;
+    height: 48vh;
+    width: 55vw;
     padding: 1%
 }
 
@@ -217,4 +217,15 @@ div.tooltip {
     text-align: left;
     font-size: 80%;
     opacity: 0.2;
+}
+
+
+/* AXIS */
+.axis path {
+    stroke: white;
+    stroke-width: 1px;
+}
+.axis text {
+    fill: white;
+    font-size: 130%;
 }

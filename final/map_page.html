@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="World-Icon.ico"/>
 
     <!--Font-->
-    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli|Jura" rel="stylesheet">
 
     <!-- Leaflet CSS and Javascript file -->
     <!-- Check out http://leafletjs.com/examples/quick-start/ for an introduction on using leaflet: -->
@@ -28,6 +28,11 @@
 
     <!-- D3 & JS & JQUERY-->
     <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <script src="map.js"></script>
+    <script src="filter.js"></script>
+    <script src="numbers.js"></script>
+
 
     <!-- Slider -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -47,13 +52,14 @@
         var DATA;
         var FILTER =
             {
-                target: "all",
+                target: 7,
                 terrorist: "all",
                 attacktype: "all",
                 success: "all",
                 lowerdate: new Date('2013.01.01'),
                 upperdate: new Date('2017.01.01')
             };
+        var MAP;
 
         // Use custom colours based on http://vrl.cs.brown.edu/color to consider
         // perceptual distance:
@@ -102,23 +108,14 @@
                 DATA = mydata;
 
                 // draw map + content
-                var map = drawMap();
-                drawPoints(map);
-
-                // TODO TEST code
-                count_all();
+                drawMap();
+                drawPoints();
+                drawLines();
             });
             init_legend();
         }
 
     </script>
-
-    <!-- own imports -->
-    <script src="filter.js"></script>
-    <script src="map.js"></script>
-    <script src="numbers.js"></script>
-
-
 </head>
 
 <body>
@@ -140,13 +137,15 @@
         <label for="target_filter">Target/Victim:</label>
         <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();"
                 style="width:100%;max-width:90%;">
-            <option value="all" selected>All</option>
+            <option value="all">All</option>
         </select>
 
         <script>
             var selection = document.getElementById("target_filter");
             for (var i = 0; i < targets_array.length; i++) {
                 var el = document.createElement("option");
+                if(i ==7)
+                    el.selected = true;
                 el.textContent = targets_array[i];
                 el.value = i;
                 selection.appendChild(el);
@@ -231,7 +230,7 @@
         <div id="expand">
             <!-- Filters: -->
             <div id="filter_legend">
-                <b>Target/ Victims:</b> <br>
+                <b>Target/Victim:</b> <br>
             </div>
             <!-- Circle Size: -->
             <br>
@@ -262,7 +261,7 @@
         <input id="toggle3" type="checkbox" class="toggle" unchecked>
         <label for="toggle3" id="legend_lab">Numbers</label>
         <div id="expand_numbers">
-            <svg id="lineplot"></svg>
+            <svg id="lineplot" height="70vh" width="70vw"></svg>
         </div>
     </div>
 
