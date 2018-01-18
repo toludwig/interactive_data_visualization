@@ -58,7 +58,7 @@ function drawPoints() {
         .data(filtered)    // UPDATE
         .style("opacity", .85)
         .style("fill", function(d){
-            return colors[d.attacktype-1];
+            return colors[d.target];
         })
         .style("stroke", "black")
         .attr("r", function(d){
@@ -69,7 +69,7 @@ function drawPoints() {
         .append("circle")
         .style("opacity", .85)
         .style("fill", function(d){
-            return colors[d.attacktype-1];
+            return colors[d.target];
         })
         .style("stroke", "black")
         .attr("r", function(d){
@@ -156,7 +156,7 @@ function on_click_infobox(){
     circles.on("click", function(d){
         // Deselect the previous circle
         d3.select(".selected")
-            .style("fill", function(d, i){return colors[d.attacktype-1]})
+            .style("fill", function(d, i){return colors[d.target]})
             .style("stroke-width", 1)
             .attr("class", null);       // removes the .selected class from it
 
@@ -179,7 +179,8 @@ function on_click_infobox(){
                     .ease(d3.easeLinear)
                     .duration(600)
                     .style("fill", function (d) {
-                        return colors[d.attacktype-1]
+                        return colors[d.target]
+                        return colors[d.target]
                     })
                     .style("stroke-width", 1)
                     .on("end", function(){blink(circle);}); // repeat for blinking
