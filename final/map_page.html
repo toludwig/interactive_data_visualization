@@ -83,7 +83,7 @@
             "Non-State Militias", "Transportation", "Unknown"];
 
         function init() {
-            d3.csv("data/gtd_europe.csv", function (mydata) {
+            d3.csv("gtd_europe.csv", function (mydata) {
                 mydata.forEach(function (d) {
                     // the + sign converts numeric string to number:
                     d.eventid = +d.eventid - 1;
@@ -231,7 +231,7 @@
         <div id="expand">
             <!-- Filters: -->
             <div id="filter_legend">
-                <b>Attack types:</b> <br>
+                <b>Target/ Victims:</b> <br>
             </div>
             <!-- Circle Size: -->
             <br>
