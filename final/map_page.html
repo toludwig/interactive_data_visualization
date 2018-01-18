@@ -51,37 +51,28 @@
         // Global variables
         var DATA;
         var FILTER =
-            {target:     "all",
-             terrorist:  "all",
-             attacktype: "all",
-             success:    "all",
-             lowerdate:  new Date('2013.01.01'),
-             upperdate:  new Date('2017.01.01')
+            {
+                target: "all",
+                terrorist: "all",
+                attacktype: "all",
+                success: "all",
+                lowerdate: new Date('2013.01.01'),
+                upperdate: new Date('2017.01.01')
             };
         var MAP;
 
-        // Use custom colours based on http://vrl.cs.brown.edu/color:
-        //const old_cat_col_dic = {1:"#41ab5d",2:"#fec44f",3:"#f03b20",4:"#df65b0",5:"#0570b0", 6:"#9e9ac8",7:"#08306b",8:"#54278f",9:"#238443"};
-
-        //const cat_col_dic = {1:"#9e0142",2:"#d53e4f",3:"#f46d43",4:"#fdae61",5:"#fee08b", 6:"#deebf7",7:"#66c2a5",8:"#3288bd",9:"#5e4fa2"};
-
-        const colors =
-
-            //original ["#903235", "#c0f442", "#1c4c5e", "#fec44f", "#389eaa", "#38091c", "#b9dcca", "#f3614d","#252525"]
-                ["#903235", "#c0f442", "#1c4c5e", "#fde0dd", "#389eaa", "#38091c", "#b9dcca", "#f3614d","#252525"]
-
-
-
-        ;
+        // Use custom colours based on http://vrl.cs.brown.edu/color to consider
+        // perceptual distance:
+        const colors = ["#389eaa","#903235", "#c0f442", "#1c4c5e", "#fde0dd", "#756bb1", "#38091c", "#f3614d", "#b9dcca", "#081d58", "#2ca25f", "#feb24c"];
 
         // Top 24 perpetrator categories:
-        const terrorist_array = ["Anarchists","Anti-Immigrant extremists", "Anti-Muslim extremists",
+        const terrorist_array = ["Anarchists", "Anti-Immigrant extremists", "Anti-Muslim extremists",
             "Caucasus Emirate", "Caucasus Province of the Islamic State", "Conspiracy of Cells of Fire",
             "Cossack Separatists", "Dissident Republicans", "Donetsk People's Republic",
-            "Informal Anarchist Federation","Islamic State of Iraq and the Levant (ISIL)","Jihadi-inspired extremists",
+            "Informal Anarchist Federation", "Islamic State of Iraq and the Levant (ISIL)", "Jihadi-inspired extremists",
             "Kurdistan Workers' Party (PKK)", "Loyalists", "Luhansk People's Republic",
             "Muslim extremists", "Neo-Nazi extremists", "Oglaigh na hEireann", "Pro-Russia Militia",
-            "Right Sector","Right-wing extremists", "The New Irish Republican Army", "Ukrainian nationalists",
+            "Right Sector", "Right-wing extremists", "The New Irish Republican Army", "Ukrainian nationalists",
             "Unknown"];
 
         // (adjusted) target groups:
@@ -95,7 +86,7 @@
             d3.csv("data/gtd_europe.csv", function (mydata) {
                 mydata.forEach(function (d) {
                     // the + sign converts numeric string to number:
-                    d.eventid = +d.eventid -1;
+                    d.eventid = +d.eventid - 1;
                     d.date = d.iyear + "/" + d.imonth + "/" + d.iday;
                     // location
                     d.latitude = +d.latitude;
@@ -125,7 +116,7 @@
             });
             init_legend();
         }
-        
+
     </script>
 </head>
 
@@ -146,13 +137,14 @@
 
         <!-- TARGET FILTER -->
         <label for="target_filter">Target/Victim:</label>
-        <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();" style="width:100%;max-width:90%;">
+        <select id="target_filter" onchange="FILTER.target = this.value; drawPoints();"
+                style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
         </select>
 
         <script>
             var selection = document.getElementById("target_filter");
-            for(var i=0; i < targets_array.length; i++) {
+            for (var i = 0; i < targets_array.length; i++) {
                 var el = document.createElement("option");
                 el.textContent = targets_array[i];
                 el.value = i;
@@ -164,14 +156,15 @@
 
         <!-- TERRORIST FILTER -->
         <label for="terrorist_filter">Perpetrator:</label>
-        <select id="terrorist_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
+        <select id="terrorist_filter" onchange="FILTER.terrorist = this.value; drawPoints();"
+                style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
             <option value="Other">Other</option>
         </select>
 
         <script>
             var selection = document.getElementById("terrorist_filter");
-            for(var i=0; i < terrorist_array.length; i++) {
+            for (var i = 0; i < terrorist_array.length; i++) {
                 var el = document.createElement("option");
                 el.textContent = terrorist_array[i];
                 el.value = terrorist_array[i];
@@ -184,14 +177,15 @@
         <!-- ATTACK TYPE: -->
         <label for="attacktype_filter">Attack type:</label>
         <!-- Attention: numbering in attacktype and numbering in filter for attacktype_txt as in codebook: -->
-        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();" style="width:100%;max-width:90%;">
+        <select id="attacktype_filter" onchange="FILTER.attacktype = this.value; drawPoints();"
+                style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
             <option value="1">Assassination</option>
             <option value="2">Armed Assault</option>
             <option value="3">Bombing/Explosion</option>
             <option value="4">Hijacking</option>
-            <option value="5">Hostage Taking (Barricade Incident) </option>
-            <option value="6">Hostage Taking (Kidnapping) </option>
+            <option value="5">Hostage Taking (Barricade Incident)</option>
+            <option value="6">Hostage Taking (Kidnapping)</option>
             <option value="7">Facility/Infrastructure Attack</option>
             <option value="8">Unarmed Assault</option>
             <option value="9">Unknown</option>
@@ -200,7 +194,8 @@
 
         <!-- SUCCESS: -->
         <label for="success_filter">Attack succeeded:</label>
-        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();" style="width:100%;max-width:90%;">
+        <select id="success_filter" onchange="FILTER.success = this.value; drawPoints();"
+                style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
             <option value="1">Yes</option>
             <option value="0">No</option>
@@ -210,7 +205,8 @@
     <!-- INFOBOX: -->
     <div id="infobox">
         <h3>Infobox</h3>
-        <div style="top: 15%;z-index: -1;position: absolute;"><i>Click circle for detailed information on an attack.</i></div>
+        <div style="top: 15%;z-index: -1;position: absolute;"><i>Click circle for detailed information on an attack.</i>
+        </div>
     </div>
 
     <!-- MAP: -->
@@ -218,10 +214,10 @@
 
     <!-- TIME SLIDER: -->
     <div id="slider">
-    <div style = "margin-top:1.4%; left:2%;display:inline-block;position: absolute; font-size: 2.5vmin;">Time</div>
-        <div id="slider-range" style = "margin-top:1.8%; margin-left:10%;margin-right:7%;"></div>
-        <div id ="min"></div>
-        <div id = "max"></div>
+        <div style="margin-top:1.4%; left:2%;display:inline-block;position: absolute; font-size: 2.5vmin;">Time</div>
+        <div id="slider-range" style="margin-top:1.8%; margin-left:10%;margin-right:7%;"></div>
+        <div id="min"></div>
+        <div id="max"></div>
     </div>
 
     <!-- BUTTONS -->
@@ -235,7 +231,7 @@
             <!-- Filters: -->
             <div id="filter_legend">
                 <b>Attack types:</b> <br>
-                <div style="background-color:#238443;" class = "bullets">&nbsp;</div>&nbsp;Unknown<br>
+                <div style="background-color:#238443;" class="bullets">&nbsp;</div>&nbsp;Unknown<br>
             </div>
             <!-- Circle Size: -->
             <br>
@@ -245,7 +241,7 @@
     </div>
 
     <script>
-        for(var i=0; i<targets_array.length; i++){
+        for (var i = 0; i < targets_array.length; i++) {
             document.getElementById(filter_legend)
         }
     </script>
