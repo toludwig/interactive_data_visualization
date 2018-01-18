@@ -18,11 +18,6 @@ function drawMap() {
     // Now add Zoom button in top-right corner:
     L.control.zoom({position: "topright"}).addTo(map);
 
-    // Add Home Button to the map (leads you back to initial map layout):
-    L.easyButton('<span>&starf;</span>', function (map) {
-        map.setView([home.lat, home.lng], home.zoom);}, 'Zoom To Home').addTo(map);
-
-
     // Add tile layer to map and the source of the leaflet:
     // Zoom is set to 4-19 so that Europe is displayed nicely.
     // subdomains: "abcd" ??
