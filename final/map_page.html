@@ -54,7 +54,6 @@
                 lowerdate: new Date('2013.01.01'),
                 upperdate: new Date('2017.01.01')
             };
-        var MAP;
 
         // Use custom colours based on http://vrl.cs.brown.edu/color to consider
         // perceptual distance:
@@ -104,8 +103,8 @@
                 console.log(mydata);
 
                 // draw map + content
-                drawMap();
-                drawPoints();
+                var map = drawMap();
+                drawPoints(map);
 
                 // TODO TEST code
                 count_all();

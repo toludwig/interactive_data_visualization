@@ -10,17 +10,17 @@ function drawMap() {
 
     // Initialise Map at predefined Center ("home"):
     // "zoomControl: false" to avoid the default zoom buttons
-    MAP = L.map('mapid', {zoomControl: false,
-                          maxBounds: bounds,
-                          maxBoundsViscosity: 1.0})
+    var map = L.map('mapid', {zoomControl: false,
+                              maxBounds: bounds,
+                              maxBoundsViscosity: 1.0})
         .setView([home_lat, home_long], home_zoom);
 
     // Now add Zoom button in top-right corner:
-    L.control.zoom({position: "topright"}).addTo(MAP);
+    L.control.zoom({position: "topright"}).addTo(map);
 
     // Add Home Button to the map (leads you back to initial map layout):
     L.easyButton('<span>&starf;</span>', function (map) {
-        map.setView([home.lat, home.lng], home.zoom);}, 'Zoom To Home').addTo(MAP);
+        map.setView([home.lat, home.lng], home.zoom);}, 'Zoom To Home').addTo(map);
 
 
     // Add tile layer to map and the source of the leaflet:
@@ -30,14 +30,15 @@ function drawMap() {
     var CartoDB_Positron = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
         {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy;' +
         '<a href="https://cartodb.com/attributions">CartoDB</a>', maxZoom: max_zoom, minZoom: home_zoom})
-        .addTo(MAP);
+        .addTo(map);
 
 
     // Initialize the SVG layer
-    d3.select(MAP.getPanes().overlayPane).append("svg")
+    d3.select(map.getPanes().overlayPane).append("svg")
         .append("g").attr("class", "leaflet-zoom-hide")
         .attr("position", "relative");
 
+    return map;
 }
 
 
@@ -194,7 +195,7 @@ function init_legend(){
         .attr("fill", "red");
 }
 
-function drawPoints() {
+function drawPoints(map) {
 
     // filter() returns the data that are permitted by the filters
     var filtered = filter();
@@ -237,10 +238,10 @@ function drawPoints() {
     function zoom_update() {
         g.selectAll("circle")
             .attr("cx", function (d) {
-                return MAP.latLngToLayerPoint(d.LatLng).x;
+                return map.latLngToLayerPoint(d.LatLng).x;
             })
             .attr("cy", function (d) {
-                return MAP.latLngToLayerPoint(d.LatLng).y;
+                return map.latLngToLayerPoint(d.LatLng).y;
             });
 
 
@@ -258,7 +259,7 @@ function drawPoints() {
     }
 
     // react on zoom
-    MAP.on("zoom", zoom_update);
+    map.on("zoom", zoom_update);
 
     // initial zoom
     zoom_update();
