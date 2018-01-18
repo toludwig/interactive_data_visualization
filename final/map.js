@@ -91,6 +91,7 @@ function drawPoints() {
             });
 
 
+
         var circle_list = g.selectAll("circle").nodes();
         var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
         var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
@@ -99,7 +100,7 @@ function drawPoints() {
             .attr("height", y_range[1] - y_range[0] + 2*margin)
             .style("left", x_range[0] - margin +"px")
             .style("top", y_range[0] -margin +"px");
-        console.log(svg);
+        console.log(x_range);
         g.attr("transform", "translate(" + (-x_range[0] +margin) + "," + (-y_range[0] +margin) + ")");
     }
 
