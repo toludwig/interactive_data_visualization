@@ -84,6 +84,7 @@
             "Right Sector","Right-wing extremists", "The New Irish Republican Army", "Ukrainian nationalists",
             "Unknown"];
 
+        // (adjusted) target groups:
         const targets_array = ["Government", "Police and Military",
             "Educational institution", "Food/water/energy supply",
             "Journalists & Media and Telecommunication", "NGO", "Private citizens and Business",
@@ -114,33 +115,6 @@
                 });
 
                 DATA = mydata;
-
-
-                // NOTE just temporal code ---------------------------
-                // for counting of terrorists
-                var targets = DATA.map(function(d){return d.target;});
-                var t_dict = {};
-                for(var i=0; i < targets.length; i++) {
-                    var value = targets[i];
-                    if (t_dict[value] == undefined)
-                        t_dict[value] = 1;
-                    else
-                        t_dict[value]++;
-                }
-                console.log(t_dict);
-
-                var items = Object.keys(t_dict).map(function(key) {
-                    return [key, t_dict[key]];
-                });
-                items.sort(function(first, second) {
-                    return second[1] - first[1];
-                });
-
-
-                console.log(items);
-                console.log(targets_array);
-                //--------------------------------------------------
-
 
                 // draw map + content
                 drawMap();
@@ -192,7 +166,7 @@
         <label for="terrorist_filter">Perpetrator:</label>
         <select id="terrorist_filter" onchange="FILTER.terrorist = this.value; drawPoints();" style="width:100%;max-width:90%;">
             <option value="all" selected>All</option>
-            <option value="other">Other</option>
+            <option value="Other">Other</option>
         </select>
 
         <script>
@@ -200,7 +174,7 @@
             for(var i=0; i < terrorist_array.length; i++) {
                 var el = document.createElement("option");
                 el.textContent = terrorist_array[i];
-                el.value = i;
+                el.value = terrorist_array[i];
                 selection.appendChild(el);
             }
         </script>
@@ -249,12 +223,15 @@
         <div id ="min"></div>
         <div id = "max"></div>
     </div>
-    
+
+    <!-- BUTTONS -->
+    <span id="buttons">
+
     <!-- LEGEND: -->
     <div id="legend">
-      <input id="toggle1" type="checkbox" class="toggle" checked>
-      <label for="toggle1" id="legend_lab">Legend</label>
-      <div id="expand">
+        <input id="toggle1" type="checkbox" class="toggle" checked>
+        <label for="toggle1" id="legend_lab">Legend</label>
+        <div id="expand">
             <!-- Filters: -->
             <b>Attack types:</b> <br>
             <div style="background-color:#41ab5d;" class = "bullets">&nbsp;</div>&nbsp;Assassination<br>
@@ -270,14 +247,23 @@
             <br>
             <b>Number of fatalities:</b>
             <svg id="circleSize" style="width: 260; height:170;"></svg>
-      </div>
+        </div>
     </div>
-    
+
+    <!-- NUMBERS: -->
+    <div id="numbers">
+        <input id="toggle1" type="checkbox" class="toggle" checked>
+        <label for="toggle1" id="legend_lab">Legend</label>
+        <div id="expand">
+            <svg id="lineplot"></svg>
+        </div>
+    </div>
+
     <!-- ABOUT: -->
     <div id="about">
-      <input id="toggle2" type="checkbox" class="toggle" unchecked>
-      <label for="toggle2" id="legend_lab">About</label>
-      <div id="expand_about">
+        <input id="toggle2" type="checkbox" class="toggle" unchecked>
+        <label for="toggle2" id="legend_lab">About</label>
+        <div id="expand_about">
             <h2>Motivation</h2>
             <p>The last years in Europe have been marked by an ongoing news coverage of terror attacks by Islamist terrorists
             as well as xenophobic motivated attacks on refugee accommodations.
@@ -326,9 +312,10 @@
 
             <h2>Discussion/Conclusion</h2>
             <p></p>
-       </div>
-    </div>
-    
+            </div>
+        </div>
+    </span>
+
 </div>
 
 </body>
