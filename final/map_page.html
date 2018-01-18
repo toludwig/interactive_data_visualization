@@ -233,16 +233,10 @@
         <label for="toggle1" id="legend_lab">Legend</label>
         <div id="expand">
             <!-- Filters: -->
-            <b>Attack types:</b> <br>
-            <div style="background-color:#41ab5d;" class = "bullets">&nbsp;</div>&nbsp;Assassination<br>
-            <div style="background-color:#fec44f;" class = "bullets">&nbsp;</div>&nbsp;Armed Assault<br>
-            <div style="background-color:#f03b20;" class = "bullets">&nbsp;</div>&nbsp;Bombing/Explosion<br>
-            <div style="background-color:#df65b0;" class = "bullets">&nbsp;</div>&nbsp;Hijacking<br>
-            <div style="background-color:#0570b0;" class = "bullets">&nbsp;</div>&nbsp;Hostage Taking (Barricade Incident)<br>
-            <div style="background-color:#9e9ac8;" class = "bullets">&nbsp;</div>&nbsp;Hostage Taking (Kidnapping)<br>
-            <div style="background-color:#08306b;" class = "bullets">&nbsp;</div>&nbsp;Facility/Infrastructure Attack<br>
-            <div style="background-color:#54278f;" class = "bullets">&nbsp;</div>&nbsp;Unarmed Assault<br>
-            <div style="background-color:#238443;" class = "bullets">&nbsp;</div>&nbsp;Unknown<br>
+            <div id="filter_legend">
+                <b>Attack types:</b> <br>
+                <div style="background-color:#238443;" class = "bullets">&nbsp;</div>&nbsp;Unknown<br>
+            </div>
             <!-- Circle Size: -->
             <br>
             <b>Number of fatalities:</b>
@@ -250,7 +244,13 @@
         </div>
     </div>
 
-    <!-- NUMBERS: -->
+    <script>
+        for(var i=0; i<targets_array.length; i++){
+            document.getElementById(filter_legend)
+        }
+    </script>
+
+        <!-- NUMBERS: -->
     <div id="numbers">
         <input id="toggle1" type="checkbox" class="toggle" checked>
         <label for="toggle1" id="legend_lab">Legend</label>
@@ -259,7 +259,7 @@
         </div>
     </div>
 
-    <!-- ABOUT: -->
+        <!-- ABOUT: -->
     <div id="about">
         <input id="toggle2" type="checkbox" class="toggle" unchecked>
         <label for="toggle2" id="legend_lab">About</label>

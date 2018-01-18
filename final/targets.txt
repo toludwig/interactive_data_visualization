@@ -1,0 +1,51 @@
+
+const targets_array = ["Business", "Government (general)", "Police", "Military", "Abortion related",
+    "Airports & Aircraft", "Government (diplomatic)", "Educational institution", "Food or water supply",
+    "Journalists & Media", "Maritime (includes ports and maritime facilities)", "NGO", "Other",
+    "Private citizens & property", "Refugees", "Religious figures/institutions", "Telecommunication",
+    "Terrorists/Non-state militias", "Tourists", "Transportation (other than aviation)", "Unknown",
+    "Utilities", "Violent political parties"];
+
+const targets_array = [ "Government",
+            "Police and Military",
+            "Educational institution",
+            "Food/water/energy supply",
+            "Media and Telecommunication",
+            "NGO",
+            "Private citizens and Business",
+            "Refugees",
+            "Religious figures/institutions",
+            "Non-state militias",
+            "Transportation",
+            "Unknown"];
+
+Government (general) + Government (diplomatic) = Government
+Police + Military = Police and Military
+Transportation (without aviatory) + Aircraft/Airplane
+Food & water supply + Utilities = Food/water/energy supply
+Private citizens & property + Tourists + Business = Private citizens and Business
+Terrorists/Non-state militias + Violent political parties = Non-state militias
+Journalists & Media + Telecommunication = Media and Telecommunication
+
+Remapping IDs:
+1 -> 6
+2 -> 0
+3 -> 1
+4 -> 1
+6 -> 10
+7 -> 0
+8 -> 2
+9 -> 3
+10 -> 4
+12 -> 5
+13 -> 7
+14 -> 6
+15 -> 8
+16 -> 4
+17 -> 9
+18 -> 6
+19 -> 10
+20 -> 11
+21 -> 3
+22 -> 9
+
