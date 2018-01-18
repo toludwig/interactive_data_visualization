@@ -4,7 +4,7 @@
 
     <!-- Title: -->
     <title>Refugees and Terroristic Attacks in Europe</title>
-    
+
     <!-- Import CSS style -->
     <link rel="stylesheet" href="structure.css">
 
@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="World-Icon.ico"/>
 
     <!--Font-->
-    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli|Jura" rel="stylesheet">
 
     <!-- Leaflet CSS and Javascript file -->
     <!-- Check out http://leafletjs.com/examples/quick-start/ for an introduction on using leaflet: -->
@@ -29,11 +29,20 @@
     <!-- D3 & JS & JQUERY-->
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
+    <script src="map.js"></script>
+    <script src="filter.js"></script>
+    <script src="numbers.js"></script>
+
+
     <!-- Slider -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    
+    <script src="slider.js"></script>
+
+    <!-- Map plot -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
     <!-- JS -->
     <script>
@@ -50,6 +59,7 @@
                 lowerdate: new Date('2013.01.01'),
                 upperdate: new Date('2017.01.01')
             };
+        var MAP;
 
         // Use custom colours based on http://vrl.cs.brown.edu/color to consider
         // perceptual distance:
@@ -96,11 +106,10 @@
                 });
 
                 DATA = mydata;
-                console.log(mydata);
 
                 // draw map + content
-                var map = drawMap();
-                drawPoints(map);
+                drawMap();
+                drawPoints();
 
                 // TODO TEST code
                 count_all();
@@ -109,13 +118,6 @@
         }
 
     </script>
-
-    <!-- own imports -->
-    <script src="filter.js"></script>
-    <script src="map.js"></script>
-    <script src="numbers.js"></script>
-    <script src="slider.js"></script>
-
 </head>
 
 <body>
@@ -228,7 +230,7 @@
         <div id="expand">
             <!-- Filters: -->
             <div id="filter_legend">
-                <b>Target/ Victims:</b> <br>
+                <b>Attack types:</b> <br>
             </div>
             <!-- Circle Size: -->
             <br>
