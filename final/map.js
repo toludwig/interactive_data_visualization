@@ -179,8 +179,7 @@ function on_click_infobox(){
                     .ease(d3.easeLinear)
                     .duration(600)
                     .style("fill", function (d) {
-                        return colors[d.target]
-                        return colors[d.target]
+                        return colors[d.target];
                     })
                     .style("stroke-width", 1)
                     .on("end", function(){blink(circle);}); // repeat for blinking
