@@ -189,6 +189,31 @@ function init_legend(){
         .style("color", "black")
         .attr("fill", "red");
 }
+function zoom_update() {
+        var svg = d3.select("svg");
+        var g = d3.select("svg g");
+        g.selectAll("circle")
+            .attr("cx", function (d) {
+                console.log(map.latLngToLayerPoint(d.LatLng).x);
+                return map.latLngToLayerPoint(d.LatLng).x;
+            })
+            .attr("cy", function (d) {
+                return map.latLngToLayerPoint(d.LatLng).y;
+            });
+
+
+
+        var circle_list = g.selectAll("circle").nodes();
+        var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
+        var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
+        var margin = 150;
+        svg.attr("width", x_range[1] - x_range[0] + 2*margin)
+            .attr("height", y_range[1] - y_range[0] + 2*margin)
+            .style("left", x_range[0] - margin +"px")
+            .style("top", y_range[0] -margin +"px");
+        console.log(x_range);
+        g.attr("transform", "translate(" + (-x_range[0] +margin) + "," + (-y_range[0] +margin) + ")");
+}
 
 function drawPoints(map) {
 
@@ -230,30 +255,6 @@ function drawPoints(map) {
 
     init_tooltips();
     on_click_infobox();
-
-    function zoom_update() {
-        g.selectAll("circle")
-            .attr("cx", function (d) {
-                console.log(map.latLngToLayerPoint(d.LatLng).x);
-                return map.latLngToLayerPoint(d.LatLng).x;
-            })
-            .attr("cy", function (d) {
-                return map.latLngToLayerPoint(d.LatLng).y;
-            });
-
-
-
-        var circle_list = g.selectAll("circle").nodes();
-        var x_range = d3.extent(circle_list.map(function (c) { return c.cx.baseVal.value; }));
-        var y_range = d3.extent(circle_list.map(function (c) { return c.cy.baseVal.value; }));
-        var margin = 150;
-        svg.attr("width", x_range[1] - x_range[0] + 2*margin)
-            .attr("height", y_range[1] - y_range[0] + 2*margin)
-            .style("left", x_range[0] - margin +"px")
-            .style("top", y_range[0] -margin +"px");
-        console.log(map);
-        g.attr("transform", "translate(" + (-x_range[0] +margin) + "," + (-y_range[0] +margin) + ")");
-    }
 
     // react on zoom
     map.on("zoom", zoom_update);
