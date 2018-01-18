@@ -238,6 +238,7 @@ function drawPoints(map) {
     function zoom_update() {
         g.selectAll("circle")
             .attr("cx", function (d) {
+                console.log(map.latLngToLayerPoint(d.LatLng).x);
                 return map.latLngToLayerPoint(d.LatLng).x;
             })
             .attr("cy", function (d) {
