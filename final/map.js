@@ -212,6 +212,7 @@ function drawPoints(map) {
         .data(filtered)    // UPDATE
         .style("opacity", .85)
         .style("fill", function(d){
+            console.log(d.target);
             return colors[d.target];
         })
         .style("stroke", "black")
