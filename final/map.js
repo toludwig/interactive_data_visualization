@@ -99,6 +99,7 @@ function drawPoints() {
             .attr("height", y_range[1] - y_range[0] + 2*margin)
             .style("left", x_range[0] - margin +"px")
             .style("top", y_range[0] -margin +"px");
+        console.log(svg);
         g.attr("transform", "translate(" + (-x_range[0] +margin) + "," + (-y_range[0] +margin) + ")");
     }
 
