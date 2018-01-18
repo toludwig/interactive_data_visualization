@@ -212,7 +212,6 @@ function drawPoints(map) {
         .data(filtered)    // UPDATE
         .style("opacity", .85)
         .style("fill", function(d){
-            console.log(d.target);
             return colors[d.target];
         })
         .style("stroke", "black")
@@ -239,7 +238,6 @@ function drawPoints(map) {
     function zoom_update() {
         g.selectAll("circle")
             .attr("cx", function (d) {
-                console.log(map.latLngToLayerPoint(d.LatLng).x);
                 return map.latLngToLayerPoint(d.LatLng).x;
             })
             .attr("cy", function (d) {
@@ -256,7 +254,6 @@ function drawPoints(map) {
             .attr("height", y_range[1] - y_range[0] + 2*margin)
             .style("left", x_range[0] - margin +"px")
             .style("top", y_range[0] -margin +"px");
-        console.log(DATA);
         g.attr("transform", "translate(" + (-x_range[0] +margin) + "," + (-y_range[0] +margin) + ")");
     }
 

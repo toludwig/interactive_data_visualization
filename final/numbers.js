@@ -1,48 +1,42 @@
 function count_all() {
-    var months = [];
+    var counts = [];
     for(var i=0; i<DATA.length; i++){
-        var year = DATA[i].iyear - 2013;
-        var month = DATA[i].imonth;
+        var year = +DATA[i].iyear - 2013;
+        var month = +DATA[i].imonth;
         var yearmonth = (year * 12) + month;
-        //console.log(yearmonth);
-        //counts[]
+        if(counts[yearmonth] == undefined){
+            counts[yearmonth] = 1;
+        } else{
+            counts[yearmonth]++;
+        }
     }
+    return counts;
 
-
-    // NOTE just temporal code ---------------------------
-    // for counting of terrorists
-    // var targets = DATA.map(function(d){return d.target;});
-    // var t_dict = {};
-    // for(var i=0; i < targets.length; i++) {
-    //     var value = targets[i];
-    //     if (t_dict[value] == undefined)
-    //         t_dict[value] = 1;
-    //     else
-    //         t_dict[value]++;
-    // }
-    // console.log(t_dict);
-    //
-    // var items = Object.keys(t_dict).map(function(key) {
-    //     return [key, t_dict[key]];
-    // });
-    // items.sort(function(first, second) {
-    //     return second[1] - first[1];
-    // });
-    //
-    //
-    // console.log(items);
-    // console.log(targets_array);
-    //--------------------------------------------------
-}
 
 function count_refugees() {
-
+    var counts = [];
+    for(var i=0; i<DATA.length; i++){
+        var year = +DATA[i].iyear - 2013;
+        var month = +DATA[i].imonth;
+        var yearmonth = (year * 12) + month;
+        if(DATA[i].target == 7) { // target == Refugees
+            if (counts[yearmonth] == undefined) {
+                counts[yearmonth] = 1;
+            } else {
+                counts[yearmonth]++;
+            }
+        }
+    }
+    return counts;
 }
 
 function draw_lines() {
 
     var all = count_all();
     var ref = count_refugees();
+
+    console.log(all);
+    console.log(ref);
 
     var padding = 70;
     var width = 800,
