@@ -31,6 +31,7 @@ html, body {
     opacity: 0.8;
     z-index: 2;
     padding-left: 2%;
+    font-size: 2vmin;
 }
 #headline {
     opacity: 1;
@@ -46,14 +47,13 @@ html, body {
 }
 
 #infobox {
-    top: 45%;
-    height: 55%;
+    top: 48%;
+    height: 52%;
 
 }
 #filters {
     top: 10%;
-    height: 35%;
-
+    height: 38%;
 }
 #slider {
     width: 74%;
