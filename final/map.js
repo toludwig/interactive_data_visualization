@@ -2,10 +2,10 @@ function drawMap() {
 
     // Center Coordinates (ca. Paris) and max. zoom:
     home_lat=50;
-    home_long=-20;
+    home_long=2;
     home_zoom=4;
     max_zoom=20;
-    bounds = new L.LatLngBounds(new L.LatLng(70, -80), new L.LatLng(28, 36));
+    bounds = new L.LatLngBounds(new L.LatLng(70, -40), new L.LatLng(28, 36));
 
 
     // Initialise Map at predefined Center ("home"):
@@ -58,7 +58,7 @@ function drawPoints() {
         .data(filtered)    // UPDATE
         .style("opacity", .85)
         .style("fill", function(d){
-            return colors[d.attacktype-1];
+            return colors[d.target];
         })
         .style("stroke", "black")
         .attr("r", function(d){
@@ -69,7 +69,7 @@ function drawPoints() {
         .append("circle")
         .style("opacity", .85)
         .style("fill", function(d){
-            return colors[d.attacktype-1];
+            return colors[d.target];
         })
         .style("stroke", "black")
         .attr("r", function(d){
@@ -111,16 +111,17 @@ function drawPoints() {
 
 
 function init_tooltips() {
-    // Tooltips: Define the div for the tooltip (transparent first, later visible)
-    var div = d3.select("body")
-        .append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
-
     // Tooltips Interactivity:
     var circles = d3.select("svg g").selectAll("circle");
-
+    
+    var div = d3.select(".tooltip");
+    
     circles.on("mouseover", function(d){
+        // Tooltips: Define the div for the tooltip (transparent first, later visible)
+        var div = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+
         // make selected dot more opaque
         d3.select(this).style("stroke-width", 2);
 
@@ -141,9 +142,8 @@ function init_tooltips() {
         // make dot small again and remove tool tips (visibility):
         circles.on("mouseout", function(d) {
             d3.select(this).style("stroke-width", 1);
-            div.transition()
-                .duration(0.01)
-                .style("opacity", 0);
+
+            d3.select(".tooltip").remove();
     });
 }
 
@@ -156,7 +156,7 @@ function on_click_infobox(){
     circles.on("click", function(d){
         // Deselect the previous circle
         d3.select(".selected")
-            .style("fill", function(d, i){return colors[d.attacktype-1]})
+            .style("fill", function(d, i){return colors[d.target]})
             .style("stroke-width", 1)
             .attr("class", null);       // removes the .selected class from it
 
@@ -179,7 +179,8 @@ function on_click_infobox(){
                     .ease(d3.easeLinear)
                     .duration(600)
                     .style("fill", function (d) {
-                        return colors[d.attacktype-1]
+                        return colors[d.target]
+                        return colors[d.target]
                     })
                     .style("stroke-width", 1)
                     .on("end", function(){blink(circle);}); // repeat for blinking
