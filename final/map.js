@@ -133,7 +133,7 @@ function init_tooltips() {
         // write out info in a box that is placed in top-right from dot
         div.html("Location: " + d.city + ", " + d.country_txt + "<br>"
                 +"Date:     " + d.imonth +"/" + d.iday + "/" + d.iyear + "<br>"
-                +"Type:     " + d.attacktype1_txt + "<br>"
+                +"Target:     " + targets_array[d.target] + "<br>"
                 +"Killed:   " + d.nkill)
             .style("left", (d3.event.pageX + 15) + "px")
             .style("top", (d3.event.pageY - 100) + "px")
