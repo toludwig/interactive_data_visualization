@@ -257,7 +257,6 @@ function drawPoints(map) {
         console.log(DATA);
         g.attr("transform", "translate(" + (-x_range[0] +margin) + "," + (-y_range[0] +margin) + ")");
     }
-    console.log(MAP);
 
     // react on zoom
     map.on("zoom", zoom_update);
