@@ -1,11 +1,11 @@
 function drawMap() {
 
     // Center Coordinates (ca. Paris) and max. zoom:
-    home_lat=50;
-    home_long=2;
-    home_zoom=4;
-    max_zoom=20;
-    bounds = new L.LatLngBounds(new L.LatLng(70, -40), new L.LatLng(28, 36));
+    var home_lat=50;
+    var home_long=2;
+    var home_zoom=4;
+    var max_zoom=20;
+    var bounds = new L.LatLngBounds(new L.LatLng(70, -40), new L.LatLng(28, 36));
 
 
     // Initialise Map at predefined Center ("home"):
