@@ -246,7 +246,17 @@
 
     <script>
         for(var i=0; i<targets_array.length; i++){
-            document.getElementById(filter_legend)
+            var div = document.getElementById("filter_legend");
+            var entry = document.createElement("span");
+            var bullet = document.createElement("div");
+            bullet.setAttribute("background-color", colors[i]);
+            bullet.classList.add("class", "bullets");
+            bullet.innerHTML = "&nbsp";
+            var label = document.createElement("div");
+            label.innerHTML = targets_array[i];
+            entry.appendChild(bullet);
+            entry.appendChild(label);
+            div.appendChild(entry);
         }
     </script>
 
