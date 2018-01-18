@@ -231,7 +231,6 @@
             <!-- Filters: -->
             <div id="filter_legend">
                 <b>Attack types:</b> <br>
-                <div style="background-color:#238443;" class="bullets">&nbsp;</div>&nbsp;Unknown<br>
             </div>
             <!-- Circle Size: -->
             <br>
@@ -245,10 +244,11 @@
             var div = document.getElementById("filter_legend");
             var entry = document.createElement("span");
             var bullet = document.createElement("div");
-            bullet.setAttribute("background-color", colors[i]);
+            bullet.style.background = colors[i];
             bullet.classList.add("class", "bullets");
             bullet.innerHTML = "&nbsp";
             var label = document.createElement("div");
+            label.classList.add("class", "label");
             label.innerHTML = targets_array[i];
             entry.appendChild(bullet);
             entry.appendChild(label);
