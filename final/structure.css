@@ -105,7 +105,7 @@ html, body {
 }
 #legend_lab::before {
     font-weight: bold;
-    font-size: 15px;
+    font-size: 2vmin;
     content: "+";
     vertical-align: text-top;
 }
