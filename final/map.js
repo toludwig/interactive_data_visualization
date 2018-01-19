@@ -150,6 +150,10 @@ function on_click_infobox() {
 
     var circles = d3.select("svg g").selectAll("circle");
 
+    if(d3.select(".selected").empty()){
+        d3.select("#infobox div").html("<i>Click circle for detailed information on an attack.</i>");
+    }
+
     // Infobox Interactivity:
     circles.on("click", function (d) {
         // Deselect the previous circle
@@ -163,7 +167,7 @@ function on_click_infobox() {
         // Select the current one
         var circle = d3.select(this).attr("class", "selected");
 
-        // Function to make the dot blink:
+        // Function to make the dot flash:
         function blink(circle) {
             if (circle.node().classList.contains("selected")) { // only as long as the circle is selected
                 d3.select(".selected")
