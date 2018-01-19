@@ -194,7 +194,7 @@ div.label {
 }
 #toggle3:checked ~ #expand_numbers {
     height: 400px;
-    width: 730px;
+    width: 670px;
     padding: 1%
 }
 /* TOOLTIPS */
