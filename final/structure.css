@@ -6,7 +6,7 @@ html, body {
     margin: 0;
     padding: 0;
     position: absolute;
-    color: #f0f0f0;
+    color: white;
     font-size: 100%;
     font-weight: normal;
 }
@@ -94,20 +94,19 @@ html, body {
 }
 #legend_lab {
     padding: 0.5%;
-    border: 1px solid #CCC;
+    border: 1px solid white;
     color: #000;
     background: white;
     border-radius: 5px;
     z-index: 2;
 }
 #legend_lab:hover {
-    background: #f3f3f3;
+    background: white;
 }
 #legend_lab::before {
     font-weight: bold;
     font-size: 15px;
     content: "+";
-    font-size: 2vmin;
     vertical-align: text-top;
 }
 #expand {
@@ -118,7 +117,7 @@ html, body {
     opacity: 0.95;
     transition: height 0.5s;
     background: black;
-    color: #FFF;
+    color: white;
     border-radius: 10px;
     z-index: -1;
     width: 20vw;
@@ -156,11 +155,12 @@ div.label {
     opacity: 0.95;
     transition: height 0.5s;
     background: black;
-    color: #FFF;
+    color: white;
     border-radius: 10px;
     z-index: -1;
     overflow-y: scroll;
     padding: 0;
+    font-size:95%;
 }
 #toggle2:checked ~ #expand_about {
     height: 80vh;  
@@ -233,7 +233,7 @@ div.tooltip {
 }
 /* Modal Content */
 .modal-content {
-    background-color: #fefefe;
+    background-color: white;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
