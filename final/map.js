@@ -6,7 +6,7 @@ function drawMap() {
     home_long = 2;
     home_zoom = 4;
     max_zoom = 20;
-    bounds = new L.LatLngBounds(new L.LatLng(70, -40), new L.LatLng(28, 36));
+    bounds = new L.LatLngBounds(new L.LatLng(70, -40), new L.LatLng(28, 52));
 
     // Initialise Map at predefined Center ("home"):
     // "zoomControl: false" to avoid the default zoom buttons
