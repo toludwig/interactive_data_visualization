@@ -62,7 +62,7 @@
             "Cossack Separatists", "Dissident Republicans", "Donetsk People's Republic",
             "Informal Anarchist Federation", "Islamic State of Iraq and the Levant (ISIL)", "Jihadi-inspired extremists",
             "Kurdistan Workers' Party (PKK)", "Loyalists", "Luhansk People's Republic",
-            "Muslim extremists", "Neo-Nazi extremists", "Oglaigh na hEireann", "Pro-Russia Militia",
+            "Muslim extremists", "Oglaigh na hEireann", "Pro-Russia Militia",
             "Right Sector", "Right-wing extremists", "The New Irish Republican Army", "Ukrainian nationalists",
             "Unknown"];
 
@@ -90,13 +90,17 @@
                     d.target = +d.targtype1;
                     // perpetrator:
                     d.terrorist = d.gname;
-                    d.terrorist_grouped = (terrorist_array.includes(d.gname)) ? d.gname : "Other";
+                    // hard-coded merging of group "right-wing" and "neo-nazi" and grouping of other groups (<=5 attacks)
+                    d.terrorist_grouped = (d.terrorist == "Neo-Nazi extremists") ? "Right-wing extremists" : d.terrorist;
+                    d.terrorist_grouped = (terrorist_array.includes(d.terrorist_grouped)) ? d.terrorist_grouped : "Other";
                     // other
                     d.nkill = +d.nkill;
                     d.nwound = +d.nwound;
                 });
 
                 DATA = mydata;
+
+                console.log(DATA.filter(function (t) { return t.terrorist_grouped == "Right-wing extremists"; }).length);
 
                 // draw map + content
                 drawMap();
