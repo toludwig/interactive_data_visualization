@@ -45,11 +45,9 @@ html, body {
     margin-bottom:3%;
     line-height: 100%;
 }
-
 #infobox {
     top: 48%;
     height: 52%;
-
 }
 #filters {
     top: 10%;
@@ -199,27 +197,17 @@ div.label {
     width: 750px;
     padding: 1%
 }
-
-
 /* TOOLTIPS */
 div.tooltip {
-    /* make tooltip-size depend on content*/
     display: inline-block;
-    /* padding: */
     padding: 0.7%;
-    /* rounded edges: */
     border-radius: 5%;
-    /* background colour: */
     background: #252525;
-    /* positioned relative to the nearest positioned ancestor */
     position: absolute;
-    /* text characteristics */
     text-align: left;
     font-size: 80%;
-    opacity: 0.2;
+    opacity: 0.9;
 }
-
-
 /* AXIS */
 .axis path {
     stroke: white;
@@ -228,4 +216,43 @@ div.tooltip {
 .axis text {
     fill: white;
     font-size: 130%;
+}
+/* The Modal / Pop-up (background) */
+.modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 10; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    top: 40%;
+    left: 30%;
+    position: absolute;
+    color: black;
+}
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
