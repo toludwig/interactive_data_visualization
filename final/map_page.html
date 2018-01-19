@@ -53,7 +53,7 @@
         var MAP;
 
         // Use custom colour scale based on http://vrl.cs.brown.edu/color to consider perceptual distance:
-        const colors = ["#389eaa","#903235", "#c0f442", "#1c4c5e", "#fde0dd", "#756bb1", "#38091c", "#f3614d",
+        const colors = ["#389eaa", "#903235", "#c0f442", "#1c4c5e", "#fde0dd", "#756bb1", "#38091c", "#f3614d",
             "#b9dcca", "#081d58", "#2ca25f", "#feb24c"];
 
         // Top 24 perpetrator categories:
@@ -111,12 +111,12 @@
             // Get the <span> element that closes the modal
             var span = document.getElementsByClassName("close")[0];
             // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
+            window.onclick = function (event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
             };
-            span.onclick = function() {
+            span.onclick = function () {
                 modal.style.display = "none";
             };
         }
@@ -128,11 +128,11 @@
 <!-- POP-UP: -->
 <div id="myModal" class="modal">
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p>Please use the Google Chrome webbrowser to view this page correctly.</p>
-  </div>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Please use the Google Chrome webbrowser to view this page correctly.</p>
+    </div>
 
 </div>
 
@@ -160,7 +160,7 @@
             var selection = document.getElementById("target_filter");
             for (var i = 0; i < targets_array.length; i++) {
                 var el = document.createElement("option");
-                if(i ==7)
+                if (i == 7)
                     el.selected = true;
                 el.textContent = targets_array[i];
                 el.value = i;
@@ -255,7 +255,7 @@
     </div>
 
     <script>
-        for(var i=0; i<targets_array.length; i++){
+        for (var i = 0; i < targets_array.length; i++) {
             var div = document.getElementById("filter_legend");
             var entry = document.createElement("span");
             var bullet = document.createElement("div");
@@ -271,7 +271,7 @@
         }
     </script>
 
-    <!-- NUMBERS: -->
+        <!-- NUMBERS: -->
     <div id="numbers">
         <input id="toggle3" type="checkbox" class="toggle" unchecked>
         <label for="toggle3" id="legend_lab">Overview</label>
@@ -280,25 +280,29 @@
         </div>
     </div>
 
-    <!-- ABOUT: -->
+        <!-- ABOUT: -->
     <div id="about">
         <input id="toggle2" type="checkbox" class="toggle" unchecked>
         <label for="toggle2" id="legend_lab">About</label>
-        <div id="expand_about">
-            <h2>Motivation</h2>
-            <p>The last years in Europe have been marked by an ongoing news coverage of terror attacks by Islamist terrorists
-            as well as xenophobic motivated attacks on refugee accommodations.
-            We have set out to find answers to the following questions:
-            <ol>
-                <li>Are there specific areas that suffer more often from
-                    (specific kinds of) terror attacks than others?</li>
-                <li>Are there differences in the amount of attacks, in the kind of
-                    attacks and in the concerned areas?</li>
-                <li>Which actors occur? What attacks are they responsible for?
-                    Are there changes over the years? Are they active in specific areas?</li>
-            </ol>
+        <div id="expand_about" style="text-align: justify">
+            <h2>Creating awareness</h2>
+            <p>Since 2015 the number of xenophobic motivated attacks on refugees or their accommodations has increased
+                significantly. The present graphic serves the purpose of creating awareness of the many attempted and
+                succeeded attacks on refugees. For a better understanding the graphic allows to put these attacks into
+                perspective with elsewise motivated terroristic violence and filter the data by multiple factors, e.g.
+                the date and the target. To give the reader more information on each incident, information is displayed
+                in an interactive way within tooltips and within the so-called “Infobox”. He is provided with data on
+                the date and place of the attack, the numbers of injured or killed people, the target and perpetrator
+                and the kind of attack and weapons used. Additionally, a short summary of the incident can be read. <br>
+                The graphic should help the reader to find answers to the following questions:
+                <ol>
+                    <li>Are there specific areas that suffer more often from (specific kinds of) attacks than others?</li>
+                    <li>Are there structural differences in the kinds of attacks, the targets, the numbers of
+                        fatalities or in the affected areas?</li>
+                    <li>•	Which actors occur? What kind of attacks are they responsible for and where are they active?
+                        Are there changes over the years?</li>
+                </ol>
             </p>
-
 
             <h2>Data</h2>
             <p>The Global Terrorism Database (GTD) is a database including information on
@@ -310,30 +314,52 @@
                 The data is based on publicly available, open-source materials and can be downloaded
                 <a href="https://www.start.umd.edu/gtd/contact/">here</a> on GTD's website.
                 Incidents have been included if they met START's definition of terrorism as an "intentional act of violence or threat of violence by a non-state actor" and at least two of the following criteria:
-            <ol>
-                <li>The violent act was aimed at attaining a political, economic, religious, or social goal</li>
-                <li>The violent act included evidence of an intention to coerce, intimidate, or convey some other message to a larger audience (or audiences) other than the immediate victims </li>
-                <li>The violent act was outside the precepts of International Humanitarian Law.</li>
-            </ol>
+                <ol>
+                    <li>The violent act was aimed at attaining a political, economic, religious, or social goal</li>
+                    <li>The violent act included evidence of an intention to coerce, intimidate, or convey some other message to a larger audience (or audiences) other than the immediate victims </li>
+                    <li>The violent act was outside the precepts of International Humanitarian Law.</li>
+                </ol>
+                Since the goal was to display terrorist attacks in Europe with a focus on attacks on refugees over the
+                last few years, some modifications of the original dataset were necessary. First, the data set was reduced
+                to attacks occurring in Eastern and Western Europe between 01/01/2013 and 01/01/2016. Next, a new category
+                for refugees based on the incident’s description was set up since they were only categorized as “Other” originally.
+                To provide the user with limited amounts of filter options on the targets and perpetrators, a reduction to the most
+                common groups and some further grouping was needed. However, the user is still able to find out about the specific
+                target and perpetrator (group) in the Infobox.
             </p>
 
-            <h2>Methodology</h2>
-            <h3>Data pre-processing</h3>
-            <ul>
-                <li>We restricted the time range for recent years: 01.01.2013 - 31.12.2016 (newer data not available)</li>
-                <li>only Eastern + Western Europe</li>
-                <li><b>Targets:</b> We took a closer look at the summaries of the attacks in the GTD category "Other"
-                    which turned out to be mostly <it>refugee related</it>. Therefore, we created a new category "Refugees".
-                    Certain other categories from GDT were merged to reduce the complexity of the filters.
-                </li>
-                <li><b>Perpetrators:</b> We reduced the number of terrorist groups by only taking the most active ones.
-                    There are still 24 (with more than 5 attacks each) while the remaining ones are grouped in "Other".</li>
-            </ul>
-            <p></p>
-
-            <h2>Discussion/Conclusion</h2>
-            <p></p>
-            </div>
+            <h2>Insights</h2>
+            <p>The most common terroristic attacks in Europe were refugee-related or targeted towards private citizens
+                and businesses or religious figures and institutions, mostly mosques.
+                Refugee-related attacks in 2013-2016 mostly took place in Germany, but there were also significant numbers
+                of attacks in Sweden and Finland. While many praised Germany for not putting a limit on the number of refugees
+                allowed to find shelter in the country over the last couple of years, more and more people started expressing
+                concerns and xenophobic thoughts, too. Newspapers regularly informed about refugee shelters being set on fire
+                by right-wing extremists, especially in more Eastern parts of Germany such as Saxony. The visualization backs
+                this information and shows the high frequency of these incidents, while also providing the reader with more
+                detailed information. Looking at the line plot providing the reader with data on the numbers of (refugee-related)
+                attacks over the years, one can clearly see that especially the years 2014 and 2015 suffered from huge amounts of
+                all kinds of terroristic attacks throughout Europe. Refugee-related attacks, on the other hand, almost exclusively
+                took place in 2015. Often, opponents of Germany’s migration policies based their arguments on the danger stemming
+                from potential terrorists in disguise as asylum-seekers. The map clearly depicts terroristic attacks by Muslim
+                extremists that many citizens fell victim to, highlighted by the size of the circle displaying the number of people
+                that were killed through the attack. This includes the attack on people attending the concert at Bataclan and the
+                related attacks throughout the city of Paris in December 2015, as well as the attack in Nice and Berlin involving
+                trucks being driven into crowds of people. While nowadays terrorism in Europe is often understood as such terroristic
+                attacks committed by Muslim extremists as part of global terrorist groups such as ISIS, the map clearly shows that
+                there are many more forms of terror occurring all over Europe. However, just like the size of the depicted circles
+                increases with the amount of people killed, it is clear why such far-reaching attacks attract more attention by the
+                media and wider public. Nevertheless, the reader is given the opportunity to analyse the different kinds of attacks
+                in more detail using the filters. Doing so, one can identify areas where specific kinds of attacks and weapons or
+                specific perpetrators are more common. For example, bombings and explosions occur more often in Ireland or the Ukraine,
+                where more politically motivated attacks took place. Overall, the map lets the reader explore a big data set in a lot
+                of detail by allowing multiple filter selections and using both colour and shape as well as tooltips and the information
+                box to provide more information on the attacks. Its interactivity not only makes the experience more engaging, but also
+                helps the reader make comparisons and draw conclusions.
+            </p><br>
+            <i>The visualisation has been created by Tobias Ludwig, Johannes Jacob and Mona Timmermann as part of
+                the module "Interactive Data Visualisation" at the University of Copenhagen in the winter term 2017/2018.</i>
+         </div>
         </div>
     </span>
 
