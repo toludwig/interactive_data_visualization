@@ -1,41 +1,56 @@
 function count_all() {
-    var counts = [];
-    for(var i=0; i<49; i++)
-        counts[i] = 0;
+    var counts = {};
+    var i=0;
+    for(var y=2013; y<2017; y++)
+        for(var m=1; m<13; m++){
+            counts[new Date(y, m, 1)] = 0;
+            i++;
+        }
     for (var i = 0; i < DATA.length; i++) {
-        var year = +DATA[i].iyear - 2013;
-        var month = +DATA[i].imonth;
-        var yearmonth = (year * 12) + month;
-        counts[yearmonth]++;
+        var date = new Date(+DATA[i].iyear, +DATA[i].imonth, 1);
+        counts[date]++;
     }
     return counts;
 }
 
 
 function count_refugees() {
-    var counts = [];
-    for(var i=0; i<49; i++)
-        counts[i] = 0;
+    var counts = {};
+    var i=0;
+    for(var y=2013; y<2017; y++)
+        for(var m=1; m<13; m++){
+            counts[new Date(y, m, 1)] = 0;
+            i++;
+        }
     for(var i=0; i<DATA.length; i++){
-        var year = +DATA[i].iyear - 2013;
-        var month = +DATA[i].imonth;
-        var yearmonth = (year * 12) + month;
         if(DATA[i].target == 7) { // target == Refugees
-            counts[yearmonth]++;
+            var date = new Date(+DATA[i].iyear, +DATA[i].imonth, 1);
+            counts[date]++;
         }
     }
     return counts;
+}
+
+function sort_dict(dict){
+    // from stackoverflow: https://stackoverflow.com/a/25500462
+    var items = Object.keys(dict).map(function(key) {
+        return [key, dict[key]];
+    });
+    // Sort the array by key
+    items.sort(function(first, second) {
+        var date1 = new Date(first[0]);
+        var date2 = new Date(second[0]);
+        return date1 - date2;
+    });
+    return items;
 }
 
 
 
 function drawLines() {
 
-    var all = count_all();
-    var ref = count_refugees();
-
-    console.log(all);
-    console.log(ref);
+    var all = sort_dict(count_all());
+    var ref = sort_dict(count_refugees());
 
     svg = d3.select("#lineplot");
 
@@ -43,24 +58,24 @@ function drawLines() {
     var width = 700,
         height = 400;
     var xScale = d3.scaleLinear()
-        .domain([0, 48])
+        .domain([new Date(2013, 1, 1), new Date(2017, 1, 1)])
         .range([padding, width-padding]);
     var yScale = d3.scaleLinear()
-        .domain([0, d3.max(all)])
+        .domain([0, 230])
         .range([height-padding, padding]);
 
     svg.append('g')
         .attr('transform', 'translate(0,' + (height - padding) + ')')
         .attr("class", "axis")
-        .call(d3.axisBottom(xScale).ticks(24));
+        .call(d3.axisBottom(xScale).ticks(6).tickFormat(d3.timeFormat("%m/%Y")));
     svg.append('g')
         .attr('transform', 'translate('+padding+', 0)')
         .attr("class", "axis")
         .call(d3.axisLeft(yScale));
 
     var line = d3.line()
-        .x(function(d, i) { return xScale(i); })
-        .y(function(d)    { return yScale(d); });
+        .x(function(d) { return xScale(new Date(d[0])); })
+        .y(function(d) { return yScale(d[1]); });
 
     svg.append("path")
         .datum(all)

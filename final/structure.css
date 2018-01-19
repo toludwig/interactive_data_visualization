@@ -195,8 +195,8 @@ div.label {
     padding: 0;
 }
 #toggle3:checked ~ #expand_numbers {
-    height: 48vh;
-    width: 55vw;
+    height: 450px;
+    width: 750px;
     padding: 1%
 }
 
