@@ -165,7 +165,7 @@ div.label {
 #toggle2:checked ~ #expand_about {
     height: 80vh;  
     width: 60vw;
-    padding: 1%
+    padding: 3%
 }
 /* NUMBERS BUTTON */
 #numbers {
