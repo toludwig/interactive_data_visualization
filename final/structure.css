@@ -86,7 +86,7 @@ html, body {
     visibility: hidden;
 }
 #toggle1:checked ~ #expand {
-    height: 70vh;
+    height: 62vh;
     padding:1%;
 }
 .toggle:checked ~ #legend_lab::before {
@@ -127,7 +127,7 @@ html, body {
 div.bullets {
     width:5%; 
     height: 3%;
-    z-index: 5;
+    z-index: 3;
     position: absolute;
     border-radius: 5px;
     vertical-align: middle;
