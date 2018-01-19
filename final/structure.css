@@ -86,7 +86,7 @@ html, body {
     visibility: hidden;
 }
 #toggle1:checked ~ #expand {
-    height: 62vh;
+    height: 68vh;
     padding:1%;
 }
 .toggle:checked ~ #legend_lab::before {
